@@ -11,10 +11,6 @@
             margin-top: 1.5em;
         }
 
-        .side-by-side label {
-            display: inline-block;
-        }
-
         label {
             padding: 0px 3px 0px 0px
         }
@@ -24,70 +20,12 @@
             display: inline-block;
         }
 
-        .five-columns, .four-columns, .three-columns, .two-columns {
-            display: table;
-            height: 100%;
-            width: 100%;
-        }
-
-        .two-columns > div {
-            display: table-cell;
-            width: 50%;
-        }
-
-        .three-columns > div {
-            display: table-cell;
-            width: 33%;
-        }
-
-        .four-columns > div {
-            display: table-cell;
-            width: 25%;
-        }
-
-        .five-columns > div {
-            display: table-cell;
-            width: 20%;
-        }
-
-        .two-columns-old {
-            column-count: 2;
-            -webkit-column-count: 2;
-            -moz-column-count: 2;
-        }
-
         p.radio > * {
             display: inline;
             float: none !important;
             min-width: initial;
         }
 
-        .section-container {
-            background: #F2F2F2;
-            box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.2);
-            padding: 10px 5px 10px 15px;
-            line-height: 1.5em; /*add this for vertical spacing between elements*/
-        }
-
-        .section-container-color {
-            background: #F2F2F2;
-            box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.2);
-            padding: 10px 5px 10px 15px;
-            line-height: 1.5em; /*add this for vertical spacing between elements*/
-        }
-
-        .section-container input[type="checkbox"] {
-            margin: 0px 5px; /*changed values to vertical, horizontal*/
-            top:5px; /*added to offset the checkbox position to line up*/
-        }
-
-        .section-container label { /*new definition to override labels inside section-containers*/
-            margin: 0px;
-        }
-
-       - .section {
-            width: 100%;
-        }
     </style>
 
     <translations defaultLocale="en">
