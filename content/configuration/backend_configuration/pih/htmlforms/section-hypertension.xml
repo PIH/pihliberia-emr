@@ -20,173 +20,87 @@
 
     <style type="text/css">
 
-        .narrow {
-        width: 200px;
-        }
-
-        .field-error {
-        color: #ff6666;
-        font-size: 1.1em;
-        display: block;
-        }
-
         form fieldset {
-        min-width: 90%;
-        display: block;
+            min-width: 90%;
+            display: block;
         }
 
         .encounter-summary-container #calculated-ratio {
-        font-size: 1em;
-        font-weight: normal;
-        }
-
-        .half-size-text {
-        color: #ff6666;
-        font-size: 50%;
-        display: block;
-        }
-
-        .section-container {
-        background: #F2F2F2;
-        box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.2);
-        padding: 10px 5px 10px 15px;
-        line-height: 1.5em; /*add this for vertical spacing between elements*/
-        margin-bottom: 20px; /* Add spacing below the section */
-        }
-
-        .section-container input[type="checkbox"] {
-        margin: 0px 5px; /*changed values to vertical, horizontal*/
-        top:5px; /*added to offset the checkbox position to line up*/
-        }
-
-        .section-container label { /*new definition to override labels inside section-containers*/
-        margin: 0px;
-        }
-
-        - .section {
-        width: 100%;
+            font-size: 1em;
+            font-weight: normal;
         }
 
         textarea {
-        width: 95%;
-        }
-
-        .five-columns, .four-columns, .three-columns{
-        display: table;
-        height: 100%;
-        width: 100%;
+            width: 95%;
         }
 
         .two-columns {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .two-columns > div {
-        width: 48%;
-        }
-
-        .two-columns {
-        display: flex; /* Use flexbox for layout */
-        flex-wrap: wrap; /* Allow items to wrap to the next line */
+            width: 48%;
         }
 
         .column {
-        width: 48%; /* Adjust column width as needed (slightly less than 50% to add space between columns) */
-        margin-right: 2%; /* Add spacing between columns */
-        margin-bottom: 10px; /* Add spacing between rows */
-        display: flex; /* Use flexbox for vertical alignment */
-        align-items: center; /* Align items vertically in the center */
-        }
-
-        .three-columns > div {
-        display: table-cell;
-        width: 33%;
-        }
-
-        .four-columns > div {
-        display: table-cell;
-        width: 25%;
-        }
-
-        .five-columns > div {
-        display: table-cell;
-        width: 20%;
+            width: 48%; /* Adjust column width as needed (slightly less than 50% to add space between columns) */
+            margin-right: 2%; /* Add spacing between columns */
+            margin-bottom: 10px; /* Add spacing between rows */
+            display: flex; /* Use flexbox for vertical alignment */
+            align-items: center; /* Align items vertically in the center */
         }
 
         .two-columns-new {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            width: 100%;
         }
 
         .two-columns-new .column-item {
-        width: 48%; /* Adjust to 45% if you want more middle spacing */
-        margin-bottom: 15px;
-        vertical-align: top;
-        padding: 5px;
-        box-sizing: border-box;
+            width: 48%; /* Adjust to 45% if you want more middle spacing */
+            margin-bottom: 15px;
+            vertical-align: top;
+            padding: 5px;
+            box-sizing: border-box;
         }
 
         /* Ensure the toggleable radio buttons don't break the layout */
         .list-inline-radios {
-        display: flex;
-        margin-left: 25px; /* Indent the Yes/No/Unknown buttons */
-        margin-top: 5px;
-        }
-
-        .side-by-side label {
-        display: inline-block;
-        }
-
-        .list-inline label, .list-inline input[type="radio"], .list-inline span,
-        .list-inline-wide label, .list-inline-wide input[type="radio"], .list-inline-wide span,
-        .list-inline-extra-wide label, .list-inline-extra-wide input[type="radio"], .list-inline-extra-wide span {
-        display: inline-block;
-        float: none;
-        }
-
-        .list-inline label:first-child {
-        width: 220px;
-        }
-
-        .list-inline-wide label:first-child {
-        width: 320px;
-        }
-
-        .list-inline-extra-wide label:first-child {
-        width: 420px;
+            display: flex;
+            margin-left: 25px; /* Indent the Yes/No/Unknown buttons */
+            margin-top: 5px;
         }
 
         label {
-        padding: 0px 3px 0px 0px
-        font-weight: bold;
+            padding: 0px 3px 0px 0px
+            font-weight: bold;
         }
 
         form input[type="radio"], .form input[type="radio"] {
-        float: none;
-        display: inline-block;
+            float: none;
+            display: inline-block;
         }
 
         .inline {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px; /* Adjust spacing between radio button and text */
+            display: inline-flex;
+            align-items: center;
+            gap: 5px; /* Adjust spacing between radio button and text */
         }
 
         .block {
-        display: flex;
-        align-items: center;
-        gap: 10px; /* Adjust spacing */
-        flex-wrap: wrap; /* Ensures proper alignment in smaller screens */
+            display: flex;
+            align-items: center;
+            gap: 10px; /* Adjust spacing */
+            flex-wrap: wrap; /* Ensures proper alignment in smaller screens */
         }
 
         obs[style="radio"] {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
         }
 
         .htn-section {
@@ -306,7 +220,7 @@
                             </obsgroup>
                         </template>
                         <render category="PIH:HYPERTENSION" nickname="htn" code="Hypertension"/>
-                        <render category="PIH:3405" nickname="cardiovascular_disease" code="heart attack"/>
+                        <render category="PIH:3405" nickname="cardiovascular_disease" code="Heart attack"/>
                         <render category="PIH:7496" nickname="ischemic_heart_disease" code="Ischemic heart disease"/>
                         <render category="PIH:7483" nickname="retinopathy" code="Retinopathy"/>
                         <render category="PIH:3681" nickname="renal-failure" code="Renal failure"/>
@@ -316,10 +230,10 @@
                         <render category="PIH:20459" nickname="erectile" code="Erectile dysfunction"/>
                     </repeat>
 
-                    <obs conceptId="PIH:NCD category" answerConceptId="PIH:OTHER"
-                         style="checkbox" toggle="other"
-                         showCommentField="true" commentFieldLabel="(please specify other Complications)"/>
-                    <br/>
+                    <obs conceptId="PIH:14456" answerConceptId="PIH:OTHER"
+                         style="checkbox"
+                         showCommentField="true" commentFieldLabel="(please specify other complications)"/>
+                    <br/><br/>
 
                     <!-- Family History -->
                     <includeIf velocityTest="$encounter.encounterType.uuid == 'ae06d311-1866-455b-8a64-126a9bd74171'">
@@ -328,9 +242,12 @@
                         </strong>
                         <familyHistoryRelativeCheckboxes concept="PIH:903"
                                                          relatives="PIH:FATHER,PIH:MOTHER,PIH:SIBLING,PIH:OTHER"/>
-                        <obs conceptId="PIH:2889" answerConceptId="PIH:OTHER"
-                             style="checkbox" toggle="other"
-                             showCommentField="true" commentFieldLabel="(If other, please specify)"/>
+                        <familyHistoryRelativeCheckboxes concept="PIH:2889"
+                                                         relatives="PIH:FATHER,PIH:MOTHER,PIH:SIBLING,PIH:OTHER"/>
+                        <familyHistoryRelativeCheckboxes id="familyOther" class="medicalHistoryText famHistory"
+                                                         concept="PIH:OTHER" code="pihcore.other"
+                                                         relatives="PIH:FATHER,PIH:MOTHER,PIH:SIBLING,PIH:OTHER"
+                                                         specify="true"/>
                         <br/>
 
                         <!-- Family Planning -->
