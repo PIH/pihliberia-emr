@@ -6,30 +6,6 @@
             display: block;
         }
 
-        #who-when-where {
-        margin-bottom: 6px;
-        border-bottom: 1px solid #ccc;
-        }
-
-        #who-when-where p {
-        display: inline-block;
-        padding-right: 20px;
-        }
-
-        #where > input[type=text] {
-        display: inline-block;
-        }
-
-        .narrow {
-        width: 200px;
-        }
-
-        .field-error {
-        color: #ff6666;
-        font-size: 1.1em;
-        display: block;
-        }
-
         .family-history-item .label {
             display: inline-block;
             width: 250px;
@@ -64,29 +40,6 @@
             vertical-align: middle;
         }
 
-        .side-by-side label {
-            display: inline-block;
-        }
-
-        .list-inline label, .list-inline input[type="radio"], .list-inline span,
-        .list-inline-wide label, .list-inline-wide input[type="radio"], .list-inline-wide span,
-        .list-inline-extra-wide label, .list-inline-extra-wide input[type="radio"], .list-inline-extra-wide span {
-            display: inline-block;
-            float: none;
-        }
-
-        .list-inline label:first-child {
-            width: 220px;
-        }
-
-        .list-inline-wide label:first-child {
-            width: 320px;
-        }
-
-        .list-inline-extra-wide label:first-child {
-            width: 420px;
-        }
-
         label {
             padding: 0px 3px 0px 0px
             width: 150px;
@@ -113,102 +66,47 @@
             vertical-align: middle;
         }
 
-        .five-columns, .four-columns, .three-columns, .two-columns {
-            display: table;
-            height: 100%;
-            width: 100%;
-        }
-
-        .two-columns > div {
-            display: table-cell;
-            width: 50%;
-        }
-
-        .three-columns > div {
-            display: table-cell;
-            width: 33%;
-        }
-
-        .five-columns > div {
-            display: table-cell;
-            width: 20%;
-        }
-
-        .two-columns-old {
-            column-count: 2;
-            -webkit-column-count: 2;
-            -moz-column-count: 2;
-        }
-
         p.radio > * {
             display: inline;
             float: none !important;
             min-width: initial;
         }
 
-        .section-container {
-            background: #F2F2F2;
-            box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.2);
-            padding: 10px 5px 10px 15px;
-            line-height: 1.5em; /*add this for vertical spacing between elements*/
-        }
-
-        .section-container-color {
-            background: #F2F2F2;
-            box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.2);
-            padding: 10px 5px 10px 15px;
-            line-height: 1.5em; /*add this for vertical spacing between elements*/
-        }
-
-        .section-container input[type="checkbox"] {
-            margin: 0px 5px; /*changed values to vertical, horizontal*/
-            top:5px; /*added to offset the checkbox position to line up*/
-        }
-
-        .section-container label { /*new definition to override labels inside section-containers*/
-            margin: 0px;
-        }
-
-       - .section {
-            width: 100%;
-        }
-
         .section-container p {
-        margin-bottom: 15px;
+            margin-bottom: 15px;
         }
 
         textarea {
-        width: 98%;
+            width: 98%;
         }
 
         input[type='text'], input[type='text']:focus {
-        border: 0;
-        border-bottom: 1px solid #DDD;
+            border: 0;
+            border-bottom: 1px solid #DDD;
         }
 
         input[type='text']:focus {
-        outline: none;
+            outline: none;
         }
 
         input, textarea, select {
-        padding: 8px;
-        border-radius: 4px;
+            padding: 8px;
+            border-radius: 4px;
         }
 
         @media (max-width: 600px) {
-        .side-by-side {
-        flex-direction: column;
-        align-items: flex-start;
+            .side-by-side {
+            flex-direction: column;
+            align-items: flex-start;
         }
 
         label {
-        width: auto;
-        text-align: left;
+            width: auto;
+            text-align: left;
         }
 
         input[type="text"], textarea, select {
-        width: 100%;
-        }
+            width: 100%;
         }
 
     </style>
@@ -308,7 +206,7 @@
                         </strong>
                     </label>
 
-                    <div class="two-columns-old">
+                    <div class="two-columns-without-divs">
                         <repeat>
                             <template>
                                 <obs conceptId="PIH:Type of referring service"
@@ -333,12 +231,12 @@
                         <label class="inline">
                             <uimessage code="pihcore.refer.date"/>
                         </label>
-                        <obs conceptId="CIEL:163181" allowTime="false" placeholder="lorum ipsum" class="inline"/>
+                        <obs conceptId="CIEL:163181" allowTime="false" placeholder="enter date" class="inline"/>
                     </span>
                 </fieldset>
 
                 <!-- Duration of Symptoms -->
-                <div class="two-columns-new">
+                <div class="two-columns">
                     <label class="inline">
                         Duration of symptoms:
                     </label>
@@ -350,15 +248,8 @@
 
                             <obs id="duration-timeunits-id"
                                  conceptId="CIEL:1732"
-                                 answerConceptIds="CIEL:1072,CIEL:1073,CIEL:1074,CIEL:1734" style="radio"
+                                 answerConceptIds="CIEL:1072,CIEL:1073,CIEL:1074,CIEL:1734,CIEL:1067" style="radio"
                                  class="inline"/>
-                        </span>
-
-                        <span class="inline">
-                            <obs id="duration-timeunits-uknown-id"
-                                 conceptId="CIEL:1732"
-                                 answerConceptId="CIEL:1067" style="checkbox" class="inline first-label-inline">
-                            </obs>
                         </span>
                     </obsgroup>
                     <br />
@@ -390,6 +281,7 @@
                         <obs conceptId="PIH:12602" labelText="" class="inline"/>
                     </span>
 
+                    <br/>
                     <label class="inline">
                         Has the patient ever received medication for symptoms?
                     </label>
@@ -436,14 +328,15 @@
 
                     <span id="church-or-traditional-healer-comment">
                         <label class="inline">
-                            What was the diagnosis and treatment (describe):
+                            Comment by church or traditional healer:
                         </label>
                         <span class="list-inline">
                             <obs conceptId="PIH:12606" style="textarea"/>
                         </span>
                     </span>
 
-                    <includeIf velocityTest="$patient.gender == 'F' and $patient.age gt 12 and $patient.age lt 49">
+                    <includeIf velocityTest="$patient.gender == 'F' &amp;&amp; $patient.getAge($encounter.getEncounterDatetime()) >= 12 &amp;&amp; $patient.getAge($encounter.getEncounterDatetime()) &lt;= 49">
+                        <br/>
                         <p>
                             <label class="inline">
                                 Has the patient delivered within the past 5 years?
