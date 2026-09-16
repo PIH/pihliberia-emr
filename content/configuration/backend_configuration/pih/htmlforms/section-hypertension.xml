@@ -229,10 +229,10 @@
                         </strong>
                         <familyHistoryRelativeCheckboxes concept="PIH:903"
                                                          relatives="PIH:FATHER,PIH:MOTHER,PIH:SIBLING,PIH:OTHER"/>
-                        <familyHistoryRelativeCheckboxes id="familyOther" class="medicalHistoryText famHistory"
+                        <!-- familyHistoryRelativeCheckboxes id="familyOther" class="medicalHistoryText famHistory"
                                                          concept="PIH:OTHER" code="pihcore.other"
                                                          relatives="PIH:FATHER,PIH:MOTHER,PIH:SIBLING,PIH:OTHER"
-                                                         specify="true"/>
+                                                         specify="true"/ -->
                         <br/>
 
                         <!-- Family Planning -->

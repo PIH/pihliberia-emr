@@ -269,9 +269,9 @@
                                                      relatives="PIH:FATHER,PIH:MOTHER,PIH:SIBLING,PIH:OTHER"/>
                     <familyHistoryRelativeCheckboxes concept="PIH:3716"
                                                      relatives="PIH:FATHER,PIH:MOTHER,PIH:SIBLING,PIH:OTHER"/>
-                    <obs conceptId="PIH:2889" answerConceptId="PIH:OTHER"
-                         style="checkbox" toggle="other"
-                         showCommentField="true" commentFieldLabel="(If other, please specify)"/>
+                    <familyHistoryRelativeCheckboxes concept="PIH:2889"
+                                                     relatives="PIH:FATHER,PIH:MOTHER,PIH:SIBLING,PIH:OTHER"/>
+
                 </includeIf>
                 <br/>
 

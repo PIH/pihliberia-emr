@@ -825,9 +825,7 @@
                                      answerConceptId="PIH:CONFUSION" style="checkbox" class="first-label-inline"/>
                             </span>
                             <span class="block">
-                                <obsgroup groupingConceptId="PIH:GENERAL EXAM FINDINGS">
-                                    <obs conceptId="CIEL:160632" labelText="Other: " style="textarea" rows="2"/>
-                                </obsgroup>
+                                <obs conceptId="CIEL:163042" labelText="Other: " style="textarea" rows="2"/>
                             </span>
                         </td>
                     </tr>
@@ -872,9 +870,7 @@
                                      answerConceptId="CIEL:162941" style="checkbox" class="first-label-inline"/>
                             </span>
                             <span class="block">
-                                <obsgroup groupingConceptId="PIH:HEENT EXAM FINDINGS">
-                                    <obs conceptId="CIEL:160632" labelText="Other: " style="textarea" rows="2"/>
-                                </obsgroup>
+                                <obs conceptId="CIEL:163045" labelText="Other: " style="textarea" rows="2"/>
                             </span>
                         </td>
                     </tr>
@@ -908,9 +904,7 @@
                                 <obs conceptId="CIEL:159485"/>
                             </span>
                             <span class="block">
-                                <obsgroup groupingConceptId="PIH:CHEST EXAM FINDINGS">
-                                    <obs conceptId="CIEL:160632" labelText="Other: " style="textarea" rows="2"/>
-                                </obsgroup>
+                                <obs conceptId="CIEL:160689" labelText="Other: " style="textarea" rows="2"/>
                             </span>
                         </td>
                     </tr>
@@ -919,7 +913,7 @@
                         <td>
                             <span class="inline">
                                 <obs conceptId="PIH:CARDIAC EXAM FINDINGS"
-                                     answerConceptId="PIH:REGULAR RHYTHM" answerLabel="Irregular Heartbeat"
+                                     answerConceptId="PIH:REGULAR RHYTHM"
                                      style="checkbox"
                                      class="first-label-inline"/>
                             </span>
@@ -961,6 +955,16 @@
                                      labelText="PMI displaced" answerLabel="" style="checkbox"
                                      class="first-label-inline"/>
                             </span>
+
+                            <span class="inline">
+                                <obs conceptId="PIH:CARDIAC EXAM FINDINGS"
+                                     answerConceptId="PIH:S3 GALLOP" style="checkbox" class="first-label-inline"/>
+                            </span>
+                            <span class="inline">
+                                <obs conceptId="PIH:CARDIAC EXAM FINDINGS"
+                                     answerConceptId="PIH:S4 GALLOP" style="checkbox" class="first-label-inline"/>
+                            </span>
+                            <br/>
                             <span class="inline">
 
                                 <repeat>
@@ -988,18 +992,8 @@
                                     <render index="2"/> <!-- murmur #2-->
                                 </repeat>
                             </span>
-                            <span class="inline">
-                                <obs conceptId="PIH:CARDIAC EXAM FINDINGS"
-                                     answerConceptId="PIH:S3 GALLOP" style="checkbox" class="first-label-inline"/>
-                            </span>
-                            <span class="inline">
-                                <obs conceptId="PIH:CARDIAC EXAM FINDINGS"
-                                     answerConceptId="PIH:S4 GALLOP" style="checkbox" class="first-label-inline"/>
-                            </span>
                             <span class="block">
-                                <obsgroup groupingConceptId="PIH:CARDIAC EXAM FINDINGS">
-                                    <obs conceptId="CIEL:160632" labelText="Other: " style="textarea" rows="2"/>
-                                </obsgroup>
+                                <obs conceptId="CIEL:163046" labelText="Other: " style="textarea" rows="2"/>
                             </span>
                         </td>
                     </tr>
@@ -1060,9 +1054,7 @@
                                 </span>
                             </span>
                             <span class="block">
-                                <obsgroup groupingConceptId="PIH:ABDOMINAL EXAM FINDINGS">
-                                    <obs conceptId="CIEL:160632" labelText="Other: " style="textarea" rows="2"/>
-                                </obsgroup>
+                                <obs conceptId="CIEL:160947" labelText="Other: " style="textarea" rows="2"/>
                             </span>
                         </td>
                     </tr>
@@ -1092,9 +1084,7 @@
                                      class="first-label-inline"/>
                             </span>
                             <span class="block">
-                                <obsgroup groupingConceptId="PIH:NEUROLOGIC EXAM FINDINGS">
-                                    <obs conceptId="CIEL:160632" labelText="Other: " style="textarea" rows="2"/>
-                                </obsgroup>
+                                <obs conceptId="PIH:Neurological examination (text)" labelText="Other: " style="textarea" rows="2"/>
                             </span>
                         </td>
                     </tr>
@@ -1147,19 +1137,17 @@
                                 <label class="inline">
                                     Location of weak pulse
                                 </label>
-                                <obs conceptId="CIEL:159485"/>
+                                <obs conceptId="PIH:12732"/>
                             </span>
                             <br/>
                             <span id="location-of-ulceration" class="first-label-inline">
                                 <label class="inline">
                                     Location of ulceration
                                 </label>
-                                <obs conceptId="CIEL:159485"/>
+                                <obs conceptId="PIH:21732"/>
                             </span>
                             <span class="block">
-                                <obsgroup groupingConceptId="PIH:EXTREMITY EXAM FINDINGS">
-                                    <obs conceptId="CIEL:160632" labelText="Other: " style="textarea" rows="2"/>
-                                </obsgroup>
+                                <obs conceptId="PIH:Extremity exam (text)" labelText="Other: " style="textarea" rows="2"/>
                             </span>
                         </td>
                     </tr>
