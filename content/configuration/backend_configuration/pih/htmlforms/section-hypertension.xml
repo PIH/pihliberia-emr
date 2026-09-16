@@ -180,27 +180,14 @@
              headerCode="Visit">
         <div id="htn-form" class="section-container">
 
-            <div class="two-columns-new">
-
-                <!-- Type of visit -->
-                <p class="side-by-side">
-                    <label>
-                        <uimessage code="pihcore.type_of_visit"/>
-                    </label>
-                    <obs conceptId="PIH:6189" style="radio"
-                         answerConceptIds="PIH:1246,PIH:12612,PIH:6192"
-                         answerCodes="Scheduled,Non scheduled,Urgent"/>
-                </p>
-
-                <fieldset>
-                    <!-- Hypertension complications -->
-                    <strong>
-                        Complications related to hypertension
-                    </strong>
+            <!-- Hypertension complications -->
+            <strong>
+                Complications related to hypertension
+            </strong>
 
                     <repeat>
                         <template>
-                            <obsgroup groupingConceptId="PIH:14456" showIfEmpty="false">
+                            <obsgroup groupingConceptId="PIH:21731" showIfEmpty="false">
                                 <div class="two-columns">
                                     <div>
                                         <obs id="{nickname}-onset-q"
@@ -220,12 +207,12 @@
                             </obsgroup>
                         </template>
                         <render category="PIH:HYPERTENSION" nickname="htn" code="Hypertension"/>
-                        <render category="PIH:3405" nickname="cardiovascular_disease" code="Heart attack"/>
-                        <render category="PIH:7496" nickname="ischemic_heart_disease" code="Ischemic heart disease"/>
+                        <render category="PIH:3405" nickname="heartattack" code="Heart attack"/>
+                        <render category="PIH:7496" nickname="ischemicheart" code="Ischemic heart disease"/>
                         <render category="PIH:7483" nickname="retinopathy" code="Retinopathy"/>
-                        <render category="PIH:3681" nickname="renal-failure" code="Renal failure"/>
+                        <render category="PIH:3681" nickname="renalfailure" code="Renal failure"/>
                         <render category="CIEL:111103" nickname="stroke" code="Stroke"/>
-                        <render category="PIH:7494" nickname="Peripheral-vascular-disease" code="PVD"/>
+                        <render category="PIH:7494" nickname="pvd" code="PVD"/>
                         <render category="PIH:821" nickname="neuropathy" code="Neuropathy"/>
                         <render category="PIH:20459" nickname="erectile" code="Erectile dysfunction"/>
                     </repeat>
@@ -242,8 +229,6 @@
                         </strong>
                         <familyHistoryRelativeCheckboxes concept="PIH:903"
                                                          relatives="PIH:FATHER,PIH:MOTHER,PIH:SIBLING,PIH:OTHER"/>
-                        <familyHistoryRelativeCheckboxes concept="PIH:2889"
-                                                         relatives="PIH:FATHER,PIH:MOTHER,PIH:SIBLING,PIH:OTHER"/>
                         <familyHistoryRelativeCheckboxes id="familyOther" class="medicalHistoryText famHistory"
                                                          concept="PIH:OTHER" code="pihcore.other"
                                                          relatives="PIH:FATHER,PIH:MOTHER,PIH:SIBLING,PIH:OTHER"
@@ -251,7 +236,7 @@
                         <br/>
 
                         <!-- Family Planning -->
-                        <includeIf velocityTest="$patient.gender == 'F' and $patient.age gt 14 and $patient.age lt 49">
+                <includeIf velocityTest="$patient.gender == 'F' &amp;&amp; $patient.getAge($encounter.getEncounterDatetime()) >= 14 &amp;&amp; $patient.getAge($encounter.getEncounterDatetime()) &lt;= 49">
                             <strong>
                                 <uimessage code="Family Planning, if female patient 14-49 years"/>
                             </strong>
@@ -277,9 +262,7 @@
                             </div>
                         </includeIf>
                     </includeIf>
-                </fieldset>
             </div>
-        </div>
     </section>
 
     <!-- Hypertension Followup Section-->
@@ -300,7 +283,7 @@
                                     <div class="list-inline-radios" id="{name}-htn-dx-ynu">
                                         <obs conceptId="CIEL:1729"
                                              answerConceptIds="PIH:YES,PIH:NO,PIH:UNKNOWN"
-                                             answerCodes="Yes,No,Unk"
+                                             answerCodes="yes,no,unknown"
                                              style="radio"/>
                                     </div>
                                 </obsgroup>

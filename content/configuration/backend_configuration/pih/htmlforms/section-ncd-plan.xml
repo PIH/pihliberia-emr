@@ -84,7 +84,8 @@
                             <option value="161442AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" label="Ketones (urine)" />
 
                             <option value="3cd4e194-26fe-102b-80cb-0017a47871b2" label="Blood glucose" />
-                            <option value="3cd4374e-26fe-102b-80cb-0017a47871b2" label="Serum creatinine (umol/L)" />
+                            <option value="668cd2a5-60dd-4dc4-889b-e09f072c6a1a" label="Creatinine (mg/dL)"/>
+                            <!-- option value="3cd4374e-26fe-102b-80cb-0017a47871b2" label="Serum creatinine (umol/L)" / -->
                             <option value="3cd76b58-26fe-102b-80cb-0017a47871b2" label="Serum sodium (Na)" />
                             <option value="3cd76ce8-26fe-102b-80cb-0017a47871b2" label="Serum potassium (K)" />
 
@@ -115,6 +116,7 @@
                             <option value="e286d1c8-e3df-45d6-a6cf-7cee0bdf370b" label="Sickle RT SCAN" />
                             <option value="165544AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" label="Hb electrophoresis" />
                             <option value="161519AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" label="HPLC" />
+                            <option value="16e928e5-bdfb-4ec8-a9c2-9d64c78a0ce5" label="INR"/>
                         </orderProperty>
                     </div>
                 </orderTemplate>

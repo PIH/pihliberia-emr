@@ -67,16 +67,6 @@
              headerCode="Visit">
         <div id="visit" class="section-container">
 
-            <!-- Type of visit -->
-            <p class="side-by-side">
-                <label>
-                    <uimessage code="pihcore.type_of_visit"/>
-                </label>
-                <obs conceptId="PIH:6189" style="radio"
-                     answerConceptIds="PIH:1246,PIH:12612,PIH:6192"
-                     answerCodes="Scheduled,Non scheduled,Urgent"/>
-            </p>
-
             <!-- Diabetes diagnoses -->
             <fieldset>
                 <includeIf velocityTest="$encounter.encounterType.uuid == 'ae06d311-1866-455b-8a64-126a9bd74171'">

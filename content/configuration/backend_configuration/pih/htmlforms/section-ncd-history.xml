@@ -52,20 +52,6 @@
             display: inline-block;
         }
 
-        #test-orders input[type=checkbox] {
-            float: none;
-            vertical-align: middle;
-        }
-
-        #test-orders p {
-            margin-bottom: 5px
-        }
-
-        #test-orders span, #test-orders label {
-            display: inline !important;
-            vertical-align: middle;
-        }
-
         p.radio > * {
             display: inline;
             float: none !important;
@@ -191,9 +177,19 @@
              headerCode="Patient Details">
         <div class="section-container">
 
-            <!-- Chief Complaint -->
+            <!-- Type of visit -->
+            <p class="side-by-side">
+                <label>
+                    <uimessage code="pihcore.type_of_visit"/>
+                </label>
+                <obs conceptId="PIH:6189" style="radio"
+                     answerConceptIds="PIH:1246,PIH:12612,PIH:6192"
+                     answerCodes="Scheduled,Non scheduled,Urgent"/>
+            </p>
+
+            <!-- Reason for referral -->
             <p>
-                <obs conceptId="CIEL:160531" style="textarea" id="chief-complaint"
+                <obs conceptId="CIEL:164359" style="textarea" id="chief-complaint"
                      labelCode="pihcore.ncd.referral.reason"/>
             </p>
 
@@ -904,6 +900,7 @@
                                 <obs conceptId="PIH:CHEST EXAM FINDINGS"
                                      answerConceptId="CIEL:125061" style="checkbox" class="first-label-inline"/>
                             </span>
+                            <br/>
                             <span id="location-of-crackles" class="first-label-inline">
                                 <label class="inline">
                                     Location of crackles
@@ -1152,6 +1149,7 @@
                                 </label>
                                 <obs conceptId="CIEL:159485"/>
                             </span>
+                            <br/>
                             <span id="location-of-ulceration" class="first-label-inline">
                                 <label class="inline">
                                     Location of ulceration
@@ -1167,94 +1165,6 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
-    </section>
-
-    <style type="text/css">
-
-        #test-orders {
-        padding-top padding-bottom: 0px;
-        line-height: 0.1;
-        }
-
-        #test-orders .orderwidget-orderable-section {
-        border-bottom: none;
-        }
-
-        #test-orders .orderwidget-existing-order-section {
-        display:none;
-        }
-
-        #test-orders .orderwidget-section-header {
-        padding-bottom: 25px;
-        }
-
-        .two-column-old {
-        column-count: 2;
-        -webkit-column-count: 2;
-        -moz-column-count: 2;
-        }
-    </style>
-    <br/>
-
-    <!-- Lab Section -->
-    <section id="test-orders" sectionTag="fieldset" headerTag="legend" headerStyle="title"
-             headerCode="pihcore.lab.lab_tests.title">
-        <div class="section-container two-column-old">
-            <order orderType="52a447d3-a64a-11e3-9aeb-50e549534c5e" onLoadFunction="renderOrderWidgetAsCheckboxes">
-                <orderTemplate>
-                    <div style="display:none;">
-                        <orderProperty name="action">
-                            <option value="NEW"/>
-                            <option value="DISCONTINUE"/>
-                        </orderProperty>
-                        <orderProperty name="urgency" value="ROUTINE"/>
-                        <orderProperty name="previousOrder"/>
-                        <orderProperty name="careSetting" value="OUTPATIENT"/>
-                        <orderProperty name="concept" label="">
-                            <option value="PIH:12653" label="Urea (mg/dL)"/>
-                            <option value="3cd3bd5a-26fe-102b-80cb-0017a47871b2" label="Total protein"/>
-                            <option value="1875AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" label="Urine protein"/>
-                            <option value="161442AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" label="Ketones (urine)"/>
-
-                            <option value="3cd4e194-26fe-102b-80cb-0017a47871b2" label="Blood glucose"/>
-                            <option value="668cd2a5-60dd-4dc4-889b-e09f072c6a1a" label="Creatinine (mg/dL)"/>
-                            <option value="3cd76b58-26fe-102b-80cb-0017a47871b2" label="Serum sodium (Na)"/>
-                            <option value="3cd76ce8-26fe-102b-80cb-0017a47871b2" label="Serum potassium (K)"/>
-
-                            <option value="3ccc7158-26fe-102b-80cb-0017a47871b2" label="Hemoglobin (Hb)"/>
-                            <option value="3cd2a906-26fe-102b-80cb-0017a47871b2" label="Leukocytes (WBC) (blood)"/>
-                            <option value="3cd3d038-26fe-102b-80cb-0017a47871b2" label="Platelets (blood)"/>
-                            <option value="161132AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                                    label="Glomerular filtration rate (GFR)"/>
-
-                            <option value="159644AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" label="HbA1c"/>
-
-                            <option value="3cd6c946-26fe-102b-80cb-0017a47871b2" label="HIV rapid"/>
-
-                            <option value="3ce44134-26fe-102b-80cb-0017a47871b2" label="B-hCG (pregnancy)"/>
-                            <option value="3ccc94a8-26fe-102b-80cb-0017a47871b2" label="Urine hCG (pregnancy)"/>
-
-                            <option value="3ce406c4-26fe-102b-80cb-0017a47871b2" label="HbsAg"/>
-                            <option value="bb47e511-beda-45c4-a1a9-ab51502e5969" label="HbcAg"/>
-                            <option value="ae5f7e1a-c200-4afd-a40f-279bcbcf8ce0" label="HbeAg"/>
-                            <option value="89ff1e43-edc8-466d-bcf4-310e5e6dd060" label="Hepatitis B Viral Load"/>
-                            <option value="f3a5fd9c-321b-42f6-9f1b-472b68786a73" label="Hepatitis C Viral Load"/>
-                            <option value="161471AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" label="Hepatitis C Ab Spot"/>
-
-                            <option value="3cd27760-26fe-102b-80cb-0017a47871b2" label="ALT"/>
-                            <option value="3cd275d0-26fe-102b-80cb-0017a47871b2" label="AST"/>
-                            <option value="e6901490-7735-4a80-a5b9-4de40219125d" label="APRI"/>
-
-                            <option value="160225AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" label="Sickling test"/>
-                            <option value="e286d1c8-e3df-45d6-a6cf-7cee0bdf370b" label="Sickle RT SCAN"/>
-                            <option value="165544AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" label="Hb electrophoresis"/>
-                            <option value="161519AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" label="HPLC"/>
-                            <option value="16e928e5-bdfb-4ec8-a9c2-9d64c78a0ce5" label="INR"/>
-                        </orderProperty>
-                    </div>
-                </orderTemplate>
-            </order>
         </div>
     </section>
 
@@ -1317,14 +1227,14 @@
             <label>
                 <uimessage code="Reason evaluated in the NCD clinic"/>
             </label>
-            <obs conceptId="CIEL:164359" rows="4"/>
+            <obs conceptId="CIEL:160430" rows="4"/>
         </div>
     </section>
 
     <section sectionTag="fieldset" headerTag="legend" headerStyle="title"
              headerCode="pihcore.visitNote.clinicalNotes">
         <div class="section-container">
-            <obs conceptId="CIEL:161011" style="textarea" />
+            <obs conceptId="CIEL:159395" style="textarea" />
         </div>
     </section>
 

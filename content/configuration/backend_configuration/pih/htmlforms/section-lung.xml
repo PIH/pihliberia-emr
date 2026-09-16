@@ -20,50 +20,9 @@
 
     <style type="text/css">
 
-        .narrow {
-            width: 200px;
-        }
-
-        .field-error {
-            color: #ff6666;
-            font-size: 1.1em;
-            display: block;
-        }
-
         form fieldset {
             min-width: 90%;
             display: block;
-        }
-
-        .encounter-summary-container #calculated-ratio {
-            font-size: 1em;
-            font-weight: normal;
-        }
-
-        .half-size-text {
-            color: #ff6666;
-            font-size: 50%;
-            display: block;
-        }
-
-        .section-container {
-            background: #F2F2F2;
-            box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.2);
-            padding: 10px 5px 10px 15px;
-            line-height: 1.5em; /*add this for vertical spacing between elements*/
-        }
-
-        .section-container input[type="checkbox"] {
-            margin: 0px 5px; /*changed values to vertical, horizontal*/
-            top:5px; /*added to offset the checkbox position to line up*/
-        }
-
-        .section-container label { /*new definition to override labels inside section-containers*/
-            margin: 0px;
-        }
-
-        - .section {
-            width: 100%;
         }
 
         textarea {
@@ -72,17 +31,6 @@
 
         ul.copd {
             list-style-position: outside;
-        }
-
-        .five-columns, .four-columns, .three-columns, .two-columns {
-            display: table;
-            height: 100%;
-            width: 100%;
-        }
-
-        .two-columns > div {
-            display: table-cell;
-            width: 50%;
         }
 
         .two-columns {
@@ -96,44 +44,6 @@
         margin-bottom: 10px; /* Add spacing between rows */
         display: flex; /* Use flexbox for vertical alignment */
         align-items: center; /* Align items vertically in the center */
-        }
-
-        .three-columns > div {
-            display: table-cell;
-            width: 33%;
-        }
-
-        .four-columns > div {
-            display: table-cell;
-            width: 25%;
-        }
-
-        .five-columns > div {
-            display: table-cell;
-            width: 20%;
-        }
-
-        .side-by-side label {
-            display: inline-block;
-        }
-
-        .list-inline label, .list-inline input[type="radio"], .list-inline span,
-        .list-inline-wide label, .list-inline-wide input[type="radio"], .list-inline-wide span,
-        .list-inline-extra-wide label, .list-inline-extra-wide input[type="radio"], .list-inline-extra-wide span {
-            display: inline-block;
-            float: none;
-        }
-
-        .list-inline label:first-child {
-            width: 220px;
-        }
-
-        .list-inline-wide label:first-child {
-            width: 320px;
-        }
-
-        .list-inline-extra-wide label:first-child {
-            width: 420px;
         }
 
         label {
@@ -232,19 +142,6 @@
         border: 1px solid #ddd;
         }
 
-        th {
-        background-color: #f2f2f2;
-        }
-
-        .flex-container {
-        display: flex;
-        gap: 20px;
-        }
-
-        .flex-container > div {
-        flex: 1;
-        }
-
         /* Make obs radio options inline using flexbox and !important to override HFE's default styles. */
         .radio-container {
         display: flex !important;
@@ -325,16 +222,6 @@
              headerCode="Visit">
         <div id="asthma-copd" class="section-container">
 
-            <!-- Type of Visit -->
-            <p class="side-by-side">
-                <label>
-                    <uimessage code="pihcore.type_of_visit"/>
-                </label>
-                <obs conceptId="PIH:6189" style="radio"
-                     answerConceptIds="PIH:1246,PIH:12612,PIH:6192"
-                     answerCodes="Scheduled,Non scheduled,Urgent"/>
-            </p>
-
             <!-- CLD diagnoses -->
             <fieldset>
                 <includeIf velocityTest="$encounter.encounterType.uuid == 'ae06d311-1866-455b-8a64-126a9bd74171'">
@@ -355,11 +242,9 @@
                                     </template>
                                     <render parId="PIH:ASTHMA" message="Asthma"/>
                                     <render parId="PIH:3716" message="COPD"/>
+                                    <render parId="PIH:2889" message="Other chronic lung disease" />
                                 </repeat>
 
-                                <obs conceptId="PIH:2889" answerConceptId="PIH:OTHER"
-                                     style="checkbox" toggle="other"
-                                     showCommentField="true" commentFieldLabel="(please specify other diagnoses)"/>
                             </div>
                         </div>
 
