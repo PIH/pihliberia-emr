@@ -21,15 +21,15 @@
         <contentType>zip</contentType>
         <frontendGroup>org.pih.openmrs</frontendGroup>
         <frontendArtifact>openmrs-frontend-pihemr</frontendArtifact>
-        <frontendVersion>1.45.0</frontendVersion>
+        <frontendVersion>1.46.0-SNAPSHOT</frontendVersion>
         <frontendType>zip</frontendType>
         <parentGroup>org.pih.openmrs</parentGroup>
         <parentArtifact>pihemr-distro</parentArtifact>
-        <parentVersion>3.3.0</parentVersion>
+        <parentVersion>3.4.0-SNAPSHOT</parentVersion>
         <parentType>jar</parentType>
         <parentContentGroupId>org.pih.openmrs</parentContentGroupId>
         <parentContentArtifactId>pihemr-content</parentContentArtifactId>
-        <parentContentVersion>3.3.0</parentContentVersion>
+        <parentContentVersion>3.4.0-SNAPSHOT</parentContentVersion>
         <parentContentType>zip</parentContentType>
     </properties>
 
