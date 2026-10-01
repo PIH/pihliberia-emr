@@ -142,35 +142,6 @@
             <fieldset>
                 <table>
                     <tbody>
-                        <!--  Hep B SAg Test - Closing this! Would use if the lab module is not in used -->
-                        <!--
-                        <tr>
-                            <obsgroup groupingConceptId="CIEL:161472">
-                                <td>
-                                    <label>
-                                        Hep B SAg Test
-                                    </label>
-                                </td>
-                                <td>
-                                    <span class="block;">
-                                        <label class="list-inline">
-                                            Date:
-                                        </label>
-                                        <obs conceptId="PIH:12847" class="list-inline"/>
-                                    </span>
-                                    <span class="block;">
-                                        <label>
-                                            Result:
-                                        </label>
-                                        <obs conceptId="CIEL:161472" style="radio" class="list-inline"
-                                             answerSeparator=""
-                                             answerConceptIds="PIH:703, PIH:664, PIH:1138"/>
-                                    </span>
-                                </td>
-                            </obsgroup>
-                        </tr>
-                        -->
-
                         <!-- Treated for Hep B -->
                         <tr>
                             <obsgroup groupingConceptId="PIH:14889">
@@ -206,32 +177,6 @@
                                 </td>
                             </obsgroup>
                         </tr>
-
-                        <!-- Family Medicine Method -->
-                        <includeIf velocityTest="$patient.gender == 'F' and $patient.age gt 14 and $patient.age lt 49">
-                            <tr>
-                                <td style="width: 15%;">
-                                    Family Planning, if female patient 14-49 years
-                                </td>
-                                <td style="width: 35%;">
-                                    <repeat>
-                                        <template>
-                                            <span>
-                                                <obs conceptId="PIH:374"
-                                                     style="checkbox"
-                                                     answerConceptId="{concept}"
-                                                     labelText="{label}" answerLabel=""/>
-                                            </span>
-                                        </template>
-                                        <render concept="PIH:780" label="OC (pills)"/>
-                                        <render concept="PIH:907" label="Depo (Injection)"/>
-                                        <render concept="PIH:1107" label="None"/>
-                                    </repeat>
-                                    <obs conceptId="PIH:374" answerConceptId="PIH:5622"
-                                         style="checkbox" commentFieldLabel="(If other, please specify)"/>
-                                </td>
-                            </tr>
-                        </includeIf>
                     </tbody>
                 </table>
             </fieldset>
@@ -320,7 +265,7 @@
                         <render qId="CIEL:159449" symptName="Alcohol use"/>
                         <render qId="CIEL:163731" symptName="Tobacco use"/>
                         <render qId="PIH:DEPRESSION" symptName="Concerns of depression"/>
-                        <render qId="PIH:Currently taking medication" symptName="taking-meds"/>
+                        <render qId="PIH:Currently taking medication" symptName="Taking meds"/>
                         <render qId="CIEL:159596" symptName="Regular diet"/>
                         <render qId="PIH:Paracetamol" symptName="Taking PCM"/>
                         <render qId="CIEL:162306" symptName="Took NSAIDs"/>
@@ -333,23 +278,6 @@
 
     <div id="buttons-section"></div>
     <ifMode mode="VIEW" include="false">
-        <style type="text/css">
-            .ncdButtonDark.confirm, ncdButtonDark.confirm {
-                background: #3f746d;
-                border-color: #3f746d;
-            }
-
-            .ncdButtonLight.confirm, ncdButtonLight.confirm {
-                background: #6f9792;
-                border-color: #6f9792;
-            }
-
-            .ncdButtonSelf.confirm, ncdButtonSelf.confirm {
-                background: #6f9792;
-                border-color: #6f9792;
-                color: black;
-            }
-        </style>
 
         <div id="buttonsTopRow">
             <repeat>

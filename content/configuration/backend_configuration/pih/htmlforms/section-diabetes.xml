@@ -25,11 +25,6 @@
             display: block;
         }
 
-        .encounter-summary-container #calculated-ratio {
-            font-size: 1em;
-            font-weight: normal;
-        }
-
         textarea {
             width: 95%;
         }
@@ -191,23 +186,6 @@
 
     <div id="buttons-section"></div>
     <ifMode mode="VIEW" include="false">
-        <style type="text/css">
-            .ncdButtonDark.confirm, ncdButtonDark.confirm {
-                background: #3f746d;
-                border-color: #3f746d;
-            }
-
-            .ncdButtonLight.confirm, ncdButtonLight.confirm {
-                background: #6f9792;
-                border-color: #6f9792;
-            }
-
-            .ncdButtonSelf.confirm, ncdButtonSelf.confirm {
-                background: #6f9792;
-                border-color: #6f9792;
-                color: black;
-            }
-        </style>
 
         <div id="buttonsTopRow">
             <repeat>

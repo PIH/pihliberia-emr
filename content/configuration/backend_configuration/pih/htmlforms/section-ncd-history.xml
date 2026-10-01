@@ -667,6 +667,41 @@
         </div>
     </section>
 
+
+        <!-- Family Planning -->
+        <includeIf velocityTest="$patient.gender == 'F' &amp;&amp; $patient.getAge($encounter.getEncounterDatetime()) >= 14 &amp;&amp; $patient.getAge($encounter.getEncounterDatetime()) &lt;= 49">
+
+            <section id="family-planning" sectionTag="fieldset" headerTag="legend" headerStyle="title"
+                     headerCode="pihcore.familyPlanning.title">
+                <div class="section-container">
+                    <label>
+                        <uimessage code="for female patient between 14-49 years"/>
+                    </label>
+                    <div style="margin-left: 0.5em;">
+                        <repeat>
+                            <template>
+                                <span style="display: block;">
+                                    <obs conceptId="PIH:374" style="checkbox"
+                                         answerConceptId="{concept}" labelText="{label}"
+                                         answerLabel=""/>
+                                </span>
+                            </template>
+                            <render concept="PIH:780" label="OC (pills)"/>
+                            <render concept="PIH:907" label="Depo (injection)"/>
+                            <render concept="PIH:1107" label="None"/>
+                        </repeat>
+
+                        <span style="display: block;">
+                            <obs conceptId="PIH:374" style="checkbox"
+                                 answerConceptId="PIH:5622" labelText=""
+                                 commentFieldLabel="(If other, please specify)"/>
+                        </span>
+                    </div>
+                </div>
+            </section>
+        </includeIf>
+
+
     <!-- Social History -->
     <section id="social-history" sectionTag="fieldset" headerTag="legend" headerStyle="title"
              headerCode="pihcore.ncd.social.history.title">

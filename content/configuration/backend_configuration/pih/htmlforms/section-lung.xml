@@ -273,35 +273,6 @@
                                                      relatives="PIH:FATHER,PIH:MOTHER,PIH:SIBLING,PIH:OTHER"/>
 
                 </includeIf>
-                <br/>
-
-                <!-- Family Method -->
-                <includeIf velocityTest="$patient.gender == 'F' and $patient.age gt 14 and $patient.age lt 49">
-                <strong>
-                    <uimessage code="Family Planning, if female patient 14-49 years"/>
-                </strong>
-                <div style="margin-left: 0.5em;">
-                    <repeat>
-                        <template>
-                            <span style="display: block;">
-                                <obs conceptId="PIH:374" style="checkbox"
-                                     answerConceptId="{concept}" labelText="{label}"
-                                     answerLabel=""/>
-                            </span>
-                        </template>
-                        <render concept="PIH:780" label="OC (pills)"/>
-                        <render concept="PIH:907" label="Depo (Injection)"/>
-                        <render concept="PIH:1107" label="None"/>
-                    </repeat>
-
-                    <span style="display: block;">
-                        <obs conceptId="PIH:374" style="checkbox"
-                             answerConceptId="PIH:5622" labelText=""
-                             commentFieldLabel="(If other, please specify)"/>
-                    </span>
-                </div>
-                </includeIf>
-
             </fieldset>
         </div>
     </section>
@@ -433,23 +404,6 @@
 
     <div id="buttons-section"></div>
     <ifMode mode="VIEW" include="false">
-        <style type="text/css">
-            .ncdButtonDark.confirm, ncdButtonDark.confirm {
-                background: #3f746d;
-                border-color: #3f746d;
-            }
-
-            .ncdButtonLight.confirm, ncdButtonLight.confirm {
-                background: #6f9792;
-                border-color: #6f9792;
-            }
-
-            .ncdButtonSelf.confirm, ncdButtonSelf.confirm {
-                background: #6f9792;
-                border-color: #6f9792;
-                color: black;
-            }
-        </style>
 
         <div id="buttonsTopRow">
             <repeat>
