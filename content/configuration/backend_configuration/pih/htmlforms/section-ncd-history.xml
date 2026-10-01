@@ -578,7 +578,8 @@
                             </label> &amp;nbsp&amp;nbsp
                             <span class="list-inline">
                                 <obs id="medication-reaction" conceptId="CIEL:165273" style="radio"
-                                     answerConceptIds="PIH:YES,PIH:NO,PIH:UNKNOWN">
+                                     answerConceptIds="PIH:YES,PIH:NO,PIH:UNKNOWN"
+                                     answerCodes="pihcore.yes,pihcore.no,pihcore.unknown">
                                     <controls>
                                         <when value="PIH:YES" thenDisplay="#medication-side-effect"/>
                                     </controls>
@@ -651,12 +652,12 @@
                     <tr>
                         <td colspan="2">
                             <label class="inline">
-                                Based on the Patient current condition,
-                                can the Patient work for an income?
+                                Based on the Patient current condition, can the patient work for an income?
                             </label>
                             <span class="list-inline">
                                 <obs id="money-source-while-sick" conceptId="PIH:12615"
                                      answerConceptIds="PIH:YES,PIH:NO,PIH:UNKNOWN" labelText=""
+                                     answerCodes="pihcore.yes,pihcore.no,pihcore.unknown"
                                      style="radio" answerSeparator=""/>
                             </span>
                         </td>
