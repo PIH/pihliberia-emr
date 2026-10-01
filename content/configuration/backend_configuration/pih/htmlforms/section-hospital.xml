@@ -102,6 +102,7 @@
                                     <label>
                                         <uimessage code="Number of hospitalizations since last visit"/>
                                     </label>
+                                    <!-- ToDo: duplicate question in section-ncd-history.xml -->
                                     <obs conceptId="CIEL:1773" />
                                 </p>
                             </includeIf>

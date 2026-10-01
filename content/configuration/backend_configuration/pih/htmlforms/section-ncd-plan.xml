@@ -133,7 +133,7 @@
                     <strong>Chest X-ray</strong>
                     <br/>
 
-                    <obsgroup groupingConceptId="PIH:Radiology report construct"
+                    <obsgroup groupingConceptId="PIH:Radiology report construct" showIfEmpty="false"
                               hiddenConceptId="PIH:Radiology procedure performed" hiddenAnswerConceptId="CIEL:12">
                         <obs conceptId="PIH:12847" labelCode="Date"/>
                         <br/>
@@ -162,7 +162,7 @@
                     <strong>Bone X-ray</strong>
                     <br/>
 
-                    <obsgroup groupingConceptId="PIH:Radiology report construct"
+                    <obsgroup groupingConceptId="PIH:Radiology report construct" showIfEmpty="false"
                               hiddenConceptId="PIH:Radiology procedure performed" hiddenAnswerConceptId="PIH:12556">
                         <obs conceptId="PIH:12847" labelCode="Date"/>
                         <br/>
@@ -188,7 +188,7 @@
                     </strong>
                     <br/>
 
-                    <obsgroup groupingConceptId="PIH:Radiology report construct"
+                    <obsgroup groupingConceptId="PIH:Radiology report construct" showIfEmpty="false"
                               hiddenConceptId="PIH:Radiology procedure performed" hiddenAnswerConceptId="CIEL:845">
                         <obs conceptId="PIH:12847" labelCode="Date"/>
                         <br/>
@@ -219,7 +219,7 @@
                     </strong>
                     <br/>
 
-                    <obsgroup groupingConceptId="PIH:Radiology report construct"
+                    <obsgroup groupingConceptId="PIH:Radiology report construct" showIfEmpty="false"
                               hiddenConceptId="PIH:Radiology procedure performed" hiddenAnswerConceptId="CIEL:159565">
                         <obs conceptId="PIH:12847" labelCode="Date"/>
                         <br/>
@@ -249,7 +249,7 @@
                     </strong>
                     <br/>
 
-                    <obsgroup groupingConceptId="PIH:Radiology report construct"
+                    <obsgroup groupingConceptId="PIH:Radiology report construct" showIfEmpty="false"
                               hiddenConceptId="PIH:Radiology procedure performed" hiddenAnswerConceptId="CIEL:159567">
                         <obs conceptId="PIH:12847" labelCode="Date"/>
                         <br/>

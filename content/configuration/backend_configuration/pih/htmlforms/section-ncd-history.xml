@@ -1,19 +1,10 @@
-<htmlform formUuid="b0b5ed18-f477-45d5-87f9-ad3df76e9b5b" formName="NCD History" formVersion="1.0">
+<htmlform formUuid="b0b5ed18-f477-45d5-87f9-ad3df76e9b5b" formName="NCD History"
+          formVersion="1.0">
 
     <style type="text/css">
 
         form fieldset {
             display: block;
-        }
-
-        .family-history-item .label {
-            display: inline-block;
-            width: 250px;
-        }
-
-        .family-history-item .relative {
-            display: inline-block;
-            width: 120px;
         }
 
         .section-header {
@@ -98,70 +89,12 @@
     </style>
 
 
-    <!-- special formatting when in view mode -->
-    <style type="text/css">
-        <ifMode mode="VIEW" include="false">
-            #family-history br {
-                display: none;
-            }
-        </ifMode>
-    </style>
-
     <ifMode mode="VIEW" include="false">
         <script type="text/javascript">
             jq(function() {
-            var validateFamHistoryText = function(divElem) {
-                        var parentDiv = divElem.closest('.medicalHistoryText');
 
-                        if (typeof parentDiv !== "undefined" ) {
-                            var fieldError = parentDiv.find('.field-error');
-                            var commentsInput= parentDiv.find('input[type=text]');
-                            if (typeof commentsInput !== "undefined" ) {
-                                var comments = commentsInput.val();
-                                if ((typeof comments !=="undefined") &amp;&amp; comments.length > 0 ) {
-                                    if ( parentDiv.find('input:checked').length &lt; 1 ) {
-                                        if (parentDiv.hasClass("famHistory")) {
-                                            fieldError.html("<uimessage code='pihcore.historyNote.family.indicateParent'/>").show();
-                                        } else if (parentDiv.hasClass("patientHistory")) {
-                                            fieldError.html("<uimessage code='pihcore.historyNote.pastMedicalHistory.checkWithoutComments'/>").show();
-                                        }
-
-                                        return false;
-                                    }
-                                } else {
-                                    // if there are no comments make sure the adjacent Parent checkbox is not checked
-                                    if ( parentDiv.find('input:checked').length &gt; 0 ) {
-                                        fieldError.html("<uimessage code='pihcore.historyNote.family.specifyComments'/>").show();
-                                        return false;
-                                    }
-                                }
-                            }
-                            fieldError.html(" ").hide();
-                        }
-                        return true;
-                    }
-
-
-                    jq('.medicalHistoryText').find('input[type=checkbox]').change(function() {
-                            validateFamHistoryText(jq(this));
-                     });
-
-                    jq('.medicalHistoryText').find('input[type=text]').change(function() {
-                        validateFamHistoryText(jq(this));
-                    });
-
-                    beforeSubmit.push(function() {
-                        var numErrors = 0;
-                        jq('.medicalHistoryText').find('input[type=text]').each(function() {
-                            if (!validateFamHistoryText(jq(this)) ) {
-                                ++numErrors;
-                            }
-                        });
-                        return ( numErrors == 0 );
-                    });
-
-                    // handlers for next and submit buttons, see nextAndSubmitButtons.js
-                    setUpNextAndSubmitButtons();
+                // handlers for next and submit buttons, see nextAndSubmitButtons.js
+                setUpNextAndSubmitButtons();
 
             });
         </script>
@@ -187,215 +120,223 @@
                      answerCodes="Scheduled,Non scheduled,Urgent"/>
             </p>
 
+            <h2>Referral from</h2>
             <!-- Reason for referral -->
             <p>
-                <obs conceptId="CIEL:164359" style="textarea" id="chief-complaint"
+                <obs conceptId="CIEL:164359" style="textarea" id="referral-reason"
                      labelCode="pihcore.ncd.referral.reason"/>
             </p>
 
-            <!-- Referred From -->
-            <p>
-                <fieldset>
-                    <label>
-                        <strong>
-                            <uimessage code="Patient referred from:"/>
-                        </strong>
-                    </label>
+            <label>
+                <uimessage code="Patient referred from:"/>
+            </label>
 
-                    <div class="two-columns-without-divs">
-                        <repeat>
-                            <template>
-                                <obs conceptId="PIH:Type of referring service"
-                                     style="checkbox"
-                                     answerConceptId="{point}" answerCode="{message}"/>
-                            </template>
-                            <render point="CIEL:160542" message="pihcore.location.opd" comment="Outpatient"/>
-                            <render point="CIEL:160473" message="pihcore.location.ed" comment="Emergency"/>
-                            <render point="CIEL:160448" message="pihcore.location.med.ward" comment="Medical"/>
-                            <render point="CIEL:165048" message="pihcore.location.ped.ward" comment="Pediatrics"/>
-                            <render point="PIH:MATERNITY WARD" message="pihcore.location.ob.ward" comment="Maternity"/>
-                            <render point="PIH:5489" message="Mental Health" comment="Mental Health"/>
-                        </repeat>
+            <div class="two-columns">
+                <div>
+                    <repeat>
+                        <template>
+                            <obs conceptId="PIH:Type of referring service"
+                                 style="checkbox"
+                                 answerConceptId="{point}" answerCode="{message}"/>
+                        </template>
+                        <render point="CIEL:160542" message="pihcore.location.opd" comment="Outpatient"/>
+                        <render point="CIEL:160473" message="pihcore.location.ed" comment="Emergency"/>
+                        <render point="CIEL:160448" message="pihcore.location.med.ward" comment="Medical"/>
+                        <render point="CIEL:165048" message="pihcore.location.ped.ward" comment="Pediatrics"/>
+                        <render point="PIH:MATERNITY WARD" message="pihcore.location.ob.ward" comment="Maternity"/>
+                        <render point="PIH:5489" message="Mental Health" comment="Mental Health"/>
+                    </repeat>
 
-                        <span class="list-inline" style="display:inline-block; width:45%;">
-                            <obs conceptId="PIH:Type of referring service" style="checkbox"
-                                 answerConceptId="PIH:OTHER" commentFieldLabel="" class="first-label-inline"/>
-                        </span>
-                    </div>
-
+                    <span class="list-inline" style="display:inline-block; width:45%;">
+                        <obs conceptId="PIH:Type of referring service" style="checkbox"
+                             answerConceptId="PIH:OTHER" commentFieldLabel="" class="first-label-inline"/>
+                    </span>
+                </div>
+                <div>
                     <span class="first-label-inline">
                         <label class="inline">
                             <uimessage code="pihcore.refer.date"/>
                         </label>
                         <obs conceptId="CIEL:163181" allowTime="false" placeholder="enter date" class="inline"/>
                     </span>
-                </fieldset>
+                </div>
+            </div>
 
-                <!-- Duration of Symptoms -->
-                <div class="two-columns">
+            <!-- Duration of (NCD) Symptoms -->
+            <div class="two-columns">
+                <label class="inline">
+                    Duration of symptoms:
+                </label>
+
+                <!-- General NCD symptoms with duration-->
+                <obsgroup groupingConceptId="CIEL:1727" showIfEmpty="false"
+                          hiddenConceptId="CIEL:1728" hiddenAnswerConceptId="CIEL:168358">
+                    <span id="symptom-duration-id" class="list-inline">
+                        <obs id="duration-id"
+                             conceptId="CIEL:1731" class="inline"/>
+
+                        <obs id="duration-timeunits-id"
+                             conceptId="CIEL:1732"
+                             answerConceptIds="CIEL:1072,CIEL:1073,CIEL:1074,CIEL:1734,CIEL:1067" style="radio"
+                             class="inline"/>
+                    </span>
+                </obsgroup>
+                <br />
+
+                <!-- Hospitalization History -->
+                <label class="inline">
+                    Has the patient ever been hospitalized for these symptoms?
+                </label>
+
+                <span class="list-inline">
+                    <obs conceptId="CIEL:163403" style="radio" labelText=""
+                         answerConceptIds="PIH:YES,PIH:NO,PIH:UNKNOWN"
+                         answerCodes="pihcore.yes,pihcore.no,pihcore.unknown"/>
+                </span>
+                <br/>
+
+                <span class="first-label-inline">
                     <label class="inline">
-                        Duration of symptoms:
+                        Total number of hospitalizations:
                     </label>
+                    <!-- ToDo: duplicate question in section-hospital.xml -->
+                    <obs conceptId="CIEL:1773" labelText="" class="inline"/>
+                </span>
 
-                    <obsgroup groupingConceptId="CIEL:1727">
-                        <span id="symptom-duration-id" class="list-inline">
-                            <obs id="duration-id"
-                                 conceptId="CIEL:1731" class="inline"/>
+                &amp;nbsp&amp;nbsp
 
-                            <obs id="duration-timeunits-id"
-                                 conceptId="CIEL:1732"
-                                 answerConceptIds="CIEL:1072,CIEL:1073,CIEL:1074,CIEL:1734,CIEL:1067" style="radio"
-                                 class="inline"/>
-                        </span>
-                    </obsgroup>
-                    <br />
-
-                    <!-- Hospitalization History -->
+                <span class="first-label-inline">
                     <label class="inline">
-                        Has the patient ever been hospitalized for these symptoms?
+                        Last date of admission:
+                    </label>
+                    <obs conceptId="PIH:12602" labelText="" class="inline"/>
+                </span>
+
+                <br/>
+                <label class="inline">
+                    Has the patient ever received medication for symptoms?
+                </label>
+
+                <span class="list-inline">
+                    <obs id="patient-ever-received-medication" conceptId="PIH:12603" style="radio"
+                         answerConceptIds="PIH:YES,PIH:NO,PIH:UNKNOWN"
+                         answerCodes="pihcore.yes,pihcore.no,pihcore.unknown">
+                        <controls>
+                            <when value="PIH:YES" thenDisplay="#patient-recently-taken-medication"/>
+                        </controls>
+                    </obs>
+                </span>
+                <br/>
+
+                <span id="patient-recently-taken-medication">
+                    <label class="inline">
+                        Has the patient recently taken medication?
                     </label>
 
                     <span class="list-inline">
-                        <obs conceptId="CIEL:163403" style="radio" labelText=""
-                             answerConceptIds="PIH:YES,PIH:NO,PIH:UNKNOWN"/>
-                    </span>
-                    <br/>
-
-                    <span class="first-label-inline">
-                        <label class="inline">
-                            Total number of hospitalizations:
-                        </label>
-                        <obs conceptId="CIEL:1773" labelText="" class="inline"/>
-                    </span>
-
-                    &amp;nbsp&amp;nbsp
-
-                    <span class="first-label-inline">
-                        <label class="inline">
-                            Last date of admission:
-                        </label>
-                        <obs conceptId="PIH:12602" labelText="" class="inline"/>
-                    </span>
-
-                    <br/>
-                    <label class="inline">
-                        Has the patient ever received medication for symptoms?
-                    </label>
-
-                    <span class="list-inline">
-                        <obs id="patient-ever-received-medication" conceptId="PIH:12603" style="radio"
-                             answerConceptIds="PIH:YES,PIH:NO,PIH:UNKNOWN">
+                        <obs id="obs-patient-recently-taken-medication" conceptId="PIH:12604" style="radio"
+                             answerConceptIds="PIH:YES,PIH:NO,PIH:UNKNOWN"
+                             answerCodes="pihcore.yes,pihcore.no,pihcore.unknown">
                             <controls>
-                                <when value="PIH:YES" thenDisplay="#patient-recently-taken-medication"/>
+                                <when value="PIH:YES" thenDisplay="#patient-medications"/>
                             </controls>
                         </obs>
                     </span>
+                </span>
+                <br />
+
+                <label class="inline">
+                    Has the patient ever been to the church-yard or seen a traditional healer for these symptoms?
+                </label>
+
+                <span class="list-inline">
+                    <obs id="visit-to-church-yard-or-traditional-healer" conceptId="PIH:12605" style="radio"
+                         answerConceptIds="PIH:YES,PIH:NO,PIH:UNKNOWN"
+                         answerCodes="pihcore.yes,pihcore.no,pihcore.unknown">
+                        <controls>
+                            <when value="PIH:YES" thenDisplay="#church-or-traditional-healer-comment"/>
+                        </controls>
+                    </obs>
+                </span>
+                <br/>
+
+                <span id="church-or-traditional-healer-comment">
+                    <label class="inline">
+                        Comment by church or traditional healer:
+                    </label>
+                    <span class="list-inline">
+                        <obs conceptId="PIH:12606" style="textarea"/>
+                    </span>
+                </span>
+
+                <includeIf velocityTest="$patient.gender == 'F' &amp;&amp; $patient.getAge($encounter.getEncounterDatetime()) >= 12 &amp;&amp; $patient.getAge($encounter.getEncounterDatetime()) &lt;= 49">
                     <br/>
-
-                    <span id="patient-recently-taken-medication">
+                    <p>
                         <label class="inline">
-                            Has the patient recently taken medication?
+                            Has the patient delivered within the past 5 years?
                         </label>
-
                         <span class="list-inline">
-                            <obs id="obs-patient-recently-taken-medication" conceptId="PIH:12604" style="radio"
-                                 answerConceptIds="PIH:YES,PIH:NO,PIH:UNKNOWN">
+                            <obs id="delivery-within-past-5-years" style="radio" conceptId="PIH:12722"
+                                 answerConceptIds="PIH:YES,PIH:NO,PIH:UNKNOWN"
+                                 answerCodes="pihcore.yes,pihcore.no,pihcore.unknown">
                                 <controls>
-                                    <when value="PIH:YES" thenDisplay="#patient-medications"/>
+                                    <when value="PIH:YES" thenDisplay="#mch-concept-set"/>
                                 </controls>
                             </obs>
                         </span>
-                    </span>
-                    <br />
-
-                    <label class="inline">
-                        Has the patient ever been to the church-yard or seen a traditional healer for these symptoms?
-                    </label>
-
-                    <span class="list-inline">
-                        <obs id="visit-to-church-yard-or-traditional-healer" conceptId="PIH:12605" style="radio"
-                             answerConceptIds="PIH:YES,PIH:NO,PIH:UNKNOWN">
-                            <controls>
-                                <when value="PIH:YES" thenDisplay="#church-or-traditional-healer-comment"/>
-                            </controls>
-                        </obs>
-                    </span>
-                    <br/>
-
-                    <span id="church-or-traditional-healer-comment">
-                        <label class="inline">
-                            Comment by church or traditional healer:
-                        </label>
-                        <span class="list-inline">
-                            <obs conceptId="PIH:12606" style="textarea"/>
-                        </span>
-                    </span>
-
-                    <includeIf velocityTest="$patient.gender == 'F' &amp;&amp; $patient.getAge($encounter.getEncounterDatetime()) >= 12 &amp;&amp; $patient.getAge($encounter.getEncounterDatetime()) &lt;= 49">
                         <br/>
-                        <p>
-                            <label class="inline">
-                                Has the patient delivered within the past 5 years?
-                            </label>
-                            <span class="list-inline">
-                                <obs id="delivery-within-past-5-years" style="radio" conceptId="PIH:12722"
-                                     answerConceptIds="PIH:YES,PIH:NO,PIH:UNKNOWN">
-                                    <controls>
-                                        <when value="PIH:YES" thenDisplay="#mch-concept-set"/>
-                                    </controls>
-                                </obs>
+                        <span id="mch-concept-set">
+                            <span class="inline">
+                                <!-- Gravida -->
+                                <label class="inline">
+                                    Number of times with big belly?
+                                </label>
+                                <obs conceptId="CIEL:5624" labelText="" class="inline"/>
+                            </span>
+                            <span class="inline">
+                                <!-- Parity -->
+                                <label class="inline">
+                                    How many children has she born:
+                                </label>
+                                <obs conceptId="CIEL:1053" labelText="" class="inline"/>
                             </span>
                             <br/>
-                            <span id="mch-concept-set">
-                                <span class="inline">
-                                    <label class="inline">
-                                        Number of times with big belly?
-                                    </label>
-                                    <obs conceptId="CIEL:5624" labelText="" class="inline"/>
-                                </span>
-                                <span class="inline">
-                                    <label class="inline">
-                                        How many children has she born:
-                                    </label>
-                                    <obs conceptId="CIEL:1053" labelText="" class="inline"/>
-                                </span>
+                            <br/>
+                            <span class="inline">
+                                <label class="inline">
+                                    Any problems during big belly with:
+                                </label>
                                 <br/>
-                                <br/>
-                                <span class="inline">
-                                    <label class="inline">
-                                        Any problems during big belly with:
-                                    </label>
-                                    <br/>
-                                    <repeat>
-                                        <template>
-                                            <span class="inline" style="width:45%;">
-                                                <obs conceptId="CIEL:160079" style="checkbox"
-                                                     answerConceptId="{concept}"/>
-                                            </span>
-                                        </template>
+                                <repeat>
+                                    <template>
+                                        <span class="inline" style="width:45%;">
+                                            <obs conceptId="CIEL:160079" style="checkbox"
+                                                 answerConceptId="{concept}"/>
+                                        </span>
+                                    </template>
 
-                                        <render concept="CIEL:140147"/>
-                                        <render concept="CIEL:165193"/>
-                                        <render concept="CIEL:138291"/>
-                                        <render concept="CIEL:113054"/>
-                                    </repeat>
-                                </span>
-                                <br/>
-                                <br/>
-                                <span>
-                                    <label class="inline">
-                                        Did her symptoms start around the time of delivery?
-                                    </label>
-                                    <span class="list-inline">
-                                        <obs conceptId="PIH:12733" answerConceptIds="PIH:YES,PIH:NO,PIH:UNKNOWN"
-                                             style="radio"/>
-                                    </span>
+                                    <render concept="CIEL:140147"/>
+                                    <render concept="CIEL:165193"/>
+                                    <render concept="CIEL:138291"/>
+                                    <render concept="CIEL:113054"/>
+                                </repeat>
+                            </span>
+                            <br/>
+                            <br/>
+                            <span>
+                                <label class="inline">
+                                    Did her symptoms start around the time of delivery?
+                                </label>
+                                <span class="list-inline">
+                                    <obs conceptId="PIH:12733" answerConceptIds="PIH:YES,PIH:NO,PIH:UNKNOWN"
+                                         style="radio"
+                                         answerCodes="pihcore.yes,pihcore.no,pihcore.unknown"/>
                                 </span>
                             </span>
-                        </p>
-                    </includeIf>
-                </div>
-            </p>
+                        </span>
+                    </p>
+                </includeIf>
+            </div>
         </div>
     </section>
 
@@ -412,7 +353,7 @@
                     <span class="tb-symptom-name list-inline">
                         <obs id="tb-persistent-cough" style="radio"
                              conceptIds="PIH:SYMPTOM PRESENT,PIH:SYMPTOM ABSENT,PIH:SYMPTOM PRESENCE UNKNOWN"
-                             conceptLabels="Yes,No,Unknown" answerConceptId="PIH:11567" labelText="">
+                             conceptLabels="yes,no,unknown" answerConceptId="PIH:11567" labelText="">
                             <controls>
                                 <when value="PIH:SYMPTOM PRESENT" thenDisplay="#tb-persistent-cough-type"/>
                             </controls>
@@ -431,7 +372,7 @@
                 <span class="tb-symptom-name list-inline">
                     <obs id="tb-persistent-feverSweats" style="radio"
                          conceptIds="PIH:SYMPTOM PRESENT,PIH:SYMPTOM ABSENT,PIH:SYMPTOM PRESENCE UNKNOWN"
-                         conceptLabels="Yes,No,Unknown" answerConceptId="PIH:11565" labelText=""/>
+                         conceptLabels="yes,no,unknown" answerConceptId="PIH:11565" labelText=""/>
                 </span>
             </div>
 
@@ -442,7 +383,7 @@
                 <span class="tb-symptom-name list-inline">
                     <obs id="tb-persistent-wtLoss3kg" style="radio"
                          conceptIds="PIH:SYMPTOM PRESENT,PIH:SYMPTOM ABSENT,PIH:SYMPTOM PRESENCE UNKNOWN"
-                         conceptLabels="Yes,No,Unknown" answerConceptId="PIH:11566" labelText="">
+                         conceptLabels="yes,no,unknown" answerConceptId="PIH:11566" labelText="">
                         <controls>
                             <when value="PIH:SYMPTOM PRESENT" thenDisplay="#tb-persistent-wtLoss3kg-type"/>
                         </controls>
@@ -458,7 +399,7 @@
                     <label class="inline">
                         How much weight loss?
                     </label>
-                    <obs conceptId="CIEL:5624" labelText="" class="inline"/>
+                    <obs conceptId="PIH:6477" labelText="" class="inline"/>
                     <label class="inline">kg</label>
 
                 </span>
@@ -554,8 +495,7 @@
                                         <label>
                                             Document any other relevant history:
                                         </label>
-                                        <obs id="other-relevant-history" conceptId="CIEL:160632"
-                                             answerConceptId="CIEL:160741"
+                                        <obs id="other-relevant-history" conceptId="PIH:21745"
                                              style="textarea"/>
                                     </td>
                                 </tr>
@@ -584,7 +524,7 @@
                 <tbody>
                     <repeat with="['1'],['2'],['3'],['4'],['5']">
                         <tr id="medication-{0}" class="medication">
-                            <obsgroup groupingConceptId="CIEL:160741">
+                            <obsgroup groupingConceptId="CIEL:160741" showIfEmpty="false">
                                 <td id="{0}-rx">
                                     <obs id="{0}-rx-name" class="medication-name" conceptId="CIEL:1282"
                                          style="autocomplete" answerClasses="Drug"/>
@@ -658,7 +598,7 @@
                             <label>
                                 Document any other relevant past medical history:
                             </label>
-                            <obs id="other-relevant-history" conceptId="CIEL:160632" answerConceptId="CIEL:160741"
+                            <obs id="other-relevant-history" conceptId="CIEL:160221"
                                  style="textarea"/>
                         </td>
                     </tr>
@@ -762,7 +702,7 @@
                             </repeat>
                             <br/>
                             <span class="inline">
-                                <obsgroup groupingConceptId="PIH:12736">
+                                <obsgroup groupingConceptId="PIH:12736" showIfEmpty="false">
                                     <label class="inline">
                                         Time to travel to clinic
                                     </label>&amp;nbsp
@@ -1005,7 +945,7 @@
                                 <repeat>
                                     <template>
                                         <span class="inline">
-                                            <obsgroup groupingConceptId="PIH:CARDIAC MURMUR CONSTRUCT">
+                                            <obsgroup groupingConceptId="PIH:CARDIAC MURMUR CONSTRUCT" showIfEmpty="false">
                                                 <span>
                                                     <obs conceptId="PIH:CARDIAC EXAM FINDINGS"
                                                          answerConceptId="PIH:CARDIAC MURMUR" style="checkbox"
