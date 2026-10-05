@@ -574,7 +574,7 @@
                     <tr>
                         <td>
                             <label class="inline">
-                                Has the patient ever had a reaction to medication/ drug allergy?
+                                Has the patient ever had a reaction to medication or drug allergy?
                             </label> &amp;nbsp&amp;nbsp
                             <span class="list-inline">
                                 <obs id="medication-reaction" conceptId="CIEL:165273" style="radio"
@@ -616,7 +616,7 @@
                      headerCode="pihcore.familyPlanning.title">
                 <div class="section-container">
                     <label>
-                        <uimessage code="for female patient between 14-49 years"/>
+                        <uimessage code="For female patient between 14-49 years"/>
                     </label>
                     <div style="margin-left: 0.5em;">
                         <repeat>
@@ -642,7 +642,6 @@
             </section>
         </includeIf>
 
-
     <!-- Social History -->
     <section id="social-history" sectionTag="fieldset" headerTag="legend" headerStyle="title"
              headerCode="pihcore.ncd.social.history.title">
@@ -652,7 +651,7 @@
                     <tr>
                         <td colspan="2">
                             <label class="inline">
-                                Based on the Patient current condition, can the patient work for an income?
+                                Based on the patient current condition, can the patient work for an income?
                             </label>
                             <span class="list-inline">
                                 <obs id="money-source-while-sick" conceptId="PIH:12615"
@@ -676,7 +675,7 @@
                             </label>
                             &amp;nbsp
                             <span>
-                                <obs conceptId="CIEL:1731" class="inline"/>
+                                <obs conceptId="CIEL:1474" class="inline"/>
                             </span>
 
                         </td>
@@ -747,8 +746,7 @@
                             <label>
                                 Document any other pertinent social information:
                             </label>
-                            <obs id="other-relevant-history" conceptId="CIEL:160632"
-                                 answerConceptId="CIEL:160741"
+                            <obs id="other-social-history" conceptId="CIEL:162143"
                                  style="textarea"/>
 
                         </td>
@@ -1170,7 +1168,8 @@
                 <render category="PIH:6692" nickname="type_2_diabetes" code="Diabetes mellitus 2"/>
                 <render category="PIH:HEART FAILURE" nickname="heart_failure" code="Chronic heart failure"/>
                 <render category="PIH:Sickle-Cell Anemia" nickname="sickle" code="Sickle cell disease"/>
-                <render category="PIH:3714" nickname="cirrhosis" code="Liver disease" />
+                <!-- Changed from cirrhosis to liver disease (CIEL:6032) -->
+                <render category="CIEL:6032" nickname="liver_disease" code="Liver disease" />
                 <render category="CIEL:145438" nickname="kidney_failure" code="Chronic kidney disease"/>
                 <render category="PIH:ASTHMA" nickname="asthma" code="Asthma"/>
                 <render category="PIH:3716" nickname="copd" code="COPD"/>
