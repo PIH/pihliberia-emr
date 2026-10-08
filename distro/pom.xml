@@ -18,19 +18,15 @@
         <contentGroup>org.pih.openmrs</contentGroup>
         <contentArtifact>pihliberia-content</contentArtifact>
         <contentVersion>${project.version}</contentVersion>
-        <contentType>zip</contentType>
         <frontendGroup>org.pih.openmrs</frontendGroup>
         <frontendArtifact>openmrs-frontend-pihemr</frontendArtifact>
         <frontendVersion>1.46.0-SNAPSHOT</frontendVersion>
-        <frontendType>zip</frontendType>
         <parentGroup>org.pih.openmrs</parentGroup>
         <parentArtifact>pihemr-distro</parentArtifact>
         <parentVersion>3.4.0-SNAPSHOT</parentVersion>
-        <parentType>jar</parentType>
         <parentContentGroupId>org.pih.openmrs</parentContentGroupId>
         <parentContentArtifactId>pihemr-content</parentContentArtifactId>
         <parentContentVersion>3.4.0-SNAPSHOT</parentContentVersion>
-        <parentContentType>zip</parentContentType>
     </properties>
 
     <dependencies>
@@ -38,28 +34,27 @@
             <groupId>${parentGroup}</groupId>
             <artifactId>${parentArtifact}</artifactId>
             <version>${parentVersion}</version>
-            <type>${parentType}</type>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${contentGroup}</groupId>
             <artifactId>${contentArtifact}</artifactId>
             <version>${project.version}</version>
-            <type>${contentType}</type>
+            <type>zip</type>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${frontendGroup}</groupId>
             <artifactId>${frontendArtifact}</artifactId>
             <version>${frontendVersion}</version>
-            <type>${frontendType}</type>
+            <type>zip</type>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${parentContentGroupId}</groupId>
             <artifactId>${parentContentArtifactId}</artifactId>
             <version>${parentContentVersion}</version>
-            <type>${parentContentType}</type>
+            <type>zip</type>
             <scope>provided</scope>
         </dependency>
     </dependencies>
