@@ -18,19 +18,15 @@
         <contentGroup>org.pih.openmrs</contentGroup>
         <contentArtifact>pihliberia-content</contentArtifact>
         <contentVersion>${project.version}</contentVersion>
-        <contentType>zip</contentType>
         <frontendGroup>org.pih.openmrs</frontendGroup>
         <frontendArtifact>openmrs-frontend-pihemr</frontendArtifact>
         <frontendVersion>1.46.0-SNAPSHOT</frontendVersion>
-        <frontendType>zip</frontendType>
         <parentGroup>org.pih.openmrs</parentGroup>
         <parentArtifact>pihemr-distro</parentArtifact>
         <parentVersion>3.4.0-SNAPSHOT</parentVersion>
-        <parentType>jar</parentType>
         <parentContentGroupId>org.pih.openmrs</parentContentGroupId>
         <parentContentArtifactId>pihemr-content</parentContentArtifactId>
         <parentContentVersion>3.4.0-SNAPSHOT</parentContentVersion>
-        <parentContentType>zip</parentContentType>
     </properties>
 
     <dependencies>
@@ -38,7 +34,6 @@
             <groupId>${parentGroup}</groupId>
             <artifactId>${parentArtifact}</artifactId>
             <version>${parentVersion}</version>
-            <type>jar</type>
             <scope>provided</scope>
         </dependency>
         <dependency>
