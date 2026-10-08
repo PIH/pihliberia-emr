@@ -38,28 +38,28 @@
             <groupId>${parentGroup}</groupId>
             <artifactId>${parentArtifact}</artifactId>
             <version>${parentVersion}</version>
-            <type>${parentType}</type>
+            <type>jar</type>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${contentGroup}</groupId>
             <artifactId>${contentArtifact}</artifactId>
             <version>${project.version}</version>
-            <type>${contentType}</type>
+            <type>zip</type>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${frontendGroup}</groupId>
             <artifactId>${frontendArtifact}</artifactId>
             <version>${frontendVersion}</version>
-            <type>${frontendType}</type>
+            <type>zip</type>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${parentContentGroupId}</groupId>
             <artifactId>${parentContentArtifactId}</artifactId>
             <version>${parentContentVersion}</version>
-            <type>${parentContentType}</type>
+            <type>zip</type>
             <scope>provided</scope>
         </dependency>
     </dependencies>
