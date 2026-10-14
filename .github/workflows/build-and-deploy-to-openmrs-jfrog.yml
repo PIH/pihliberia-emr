@@ -39,3 +39,14 @@ jobs:
       runner-label: kouka
       notify_ci_dashboard: true
     secrets: inherit
+
+  deploy-to-jjd-ci:
+    if: github.repository_owner == 'PIH'
+    needs: build-and-publish
+    uses: PIH/openmrs-contrib-distro-tools/.github/workflows/deploy-via-runner.yml@main
+    with:
+      runner-label: appclstr-01
+      instances: jjd-ci
+      host: false
+      notify_ci_dashboard: true
+    secrets: inherit
