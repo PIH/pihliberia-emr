@@ -28,7 +28,6 @@ jobs:
     uses: ./.github/workflows/smoke-tests.yml
     secrets: inherit
 
-  # legacy kouka server, until the jjd-ci instance replaces it (TASKS-556)
   deploy-to-kouka:
     if: github.repository_owner == 'PIH'
     needs: build-and-publish
