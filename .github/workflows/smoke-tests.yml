@@ -5,13 +5,13 @@ on:
   workflow_call:
 
 jobs:
-  kouka:
+  jjd-ci:
     if: github.repository_owner == 'PIH'
     uses: PIH/openmrs-contrib-distro-tools/.github/workflows/execute-pihemr-smoke-tests.yml@main
     with:
       image_name: partnersinhealth/pihliberia-emr
-      instance_name: kouka
-      pih_config: liberia,liberia-harper,liberia-harper-kouka
+      instance_name: jjd-ci
+      pih_config: liberia,liberia-harper,liberia-harper-jjd-ci
       seed_image_name: partnersinhealth/pihliberia-emr-seed-liberia
       suite: liberia
       notify_ci_dashboard: true

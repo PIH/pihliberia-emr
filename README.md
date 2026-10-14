@@ -26,7 +26,7 @@ Component versions are defined in `distro/pom.xml` and resolved into `distro/ope
 
 | Site | PIH Config |
 |---|---|
-| `kouka` | `liberia,liberia-harper,liberia-harper-kouka` |
+| `jjd-ci` | `liberia,liberia-harper,liberia-harper-jjd-ci` |
 | `harper-demo` | `liberia,liberia-harper,liberia-harper-demo` |
 | `jjdossen` | `liberia,liberia-harper,liberia-harper-jjdossen` |
 | `pleebo` | `liberia,liberia-pleebo` |
@@ -126,7 +126,7 @@ openmrs-docker harper-demo logs
 openmrs-docker harper-demo destroy
 ```
 
-The same pattern applies to `kouka.env`, `jjdossen.env`, and `pleebo.env` — substitute the instance name accordingly.
+The same pattern applies to `jjd-ci.env`, `jjdossen.env`, and `pleebo.env` — substitute the instance name accordingly.
 
 ## CI and Publishing
 
@@ -134,7 +134,7 @@ CI is handled by GitHub Actions. On every push to `master`, the [Build and deplo
 
 1. Builds and publishes the Maven artifact to [Maven Central](https://central.sonatype.com/artifact/org.pih.openmrs/pihliberia-distro) as `org.pih.openmrs:pihliberia-distro`.
 2. Builds and pushes a multi-platform Docker image (amd64 + arm64) to Docker Hub at [`partnersinhealth/pihliberia-emr`](https://hub.docker.com/r/partnersinhealth/pihliberia-emr), tagged with both `latest` and the Maven project version.
-3. Fires the existing Bamboo `kouka` deploy trigger, exactly as the legacy `deploy.yml` workflow did.
+3. Deploys to the legacy `kouka` server (on its own runner) and to the `jjd-ci` instance on `appclstr-01` (`deploy-via-runner`).
 
 A separate [Build seeded images](.github/workflows/build-seeded-images.yml) workflow runs nightly and publishes a single pre-initialized generic Liberia seed image to Docker Hub (`partnersinhealth/pihliberia-emr-seed-liberia`), which each site-specific dev instance layers its own `OPENMRS_PIH_CONFIG` on top of.
 
