@@ -28,18 +28,6 @@ jobs:
     uses: ./.github/workflows/smoke-tests.yml
     secrets: inherit
 
-  deploy-to-kouka:
-    if: github.repository_owner == 'PIH'
-    needs: build-and-publish
-    concurrency:
-      group: deploy-to-kouka-${{ github.ref }}
-      cancel-in-progress: true
-    uses: PIH/openmrs-contrib-distro-tools/.github/workflows/deploy-via-runner.yml@main
-    with:
-      runner-label: kouka
-      notify_ci_dashboard: true
-    secrets: inherit
-
   deploy-to-jjd-ci:
     if: github.repository_owner == 'PIH'
     needs: build-and-publish

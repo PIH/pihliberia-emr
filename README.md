@@ -134,7 +134,7 @@ CI is handled by GitHub Actions. On every push to `master`, the [Build and deplo
 
 1. Builds and publishes the Maven artifact to [Maven Central](https://central.sonatype.com/artifact/org.pih.openmrs/pihliberia-distro) as `org.pih.openmrs:pihliberia-distro`.
 2. Builds and pushes a multi-platform Docker image (amd64 + arm64) to Docker Hub at [`partnersinhealth/pihliberia-emr`](https://hub.docker.com/r/partnersinhealth/pihliberia-emr), tagged with both `latest` and the Maven project version.
-3. Deploys to the legacy `kouka` server (on its own runner) and to the `jjd-ci` instance on `appclstr-01` (`deploy-via-runner`).
+3. Deploys to the `jjd-ci` instance on `appclstr-01` (`deploy-via-runner`).
 
 A separate [Build seeded images](.github/workflows/build-seeded-images.yml) workflow runs nightly and publishes a single pre-initialized generic Liberia seed image to Docker Hub (`partnersinhealth/pihliberia-emr-seed-liberia`), which each site-specific dev instance layers its own `OPENMRS_PIH_CONFIG` on top of.
 
