@@ -1,6 +1,6 @@
 # PIH Liberia EMR Distribution
 
-This repository defines the OpenMRS distribution for PIH Liberia. It packages together the [PIH EMR](https://github.com/PIH/openmrs-distro-pihemr) parent distribution,
+This repository defines the OpenMRS distribution for PIH Liberia. It packages together the [PIH EMR](https://github.com/PIH/pihemr) parent distribution,
 Liberia-specific content, and the PIH EMR frontend into a single deployable artifact.
 For more background on OpenMRS distributions, see the [OpenMRS wiki](https://wiki.openmrs.org/display/docs/OpenMRS+Distributions).
 
@@ -80,7 +80,7 @@ openmrs-sdk run <server-id>
 #### Updating a server with the latest distribution (war, modules, owas, config, frontend)
 
 > [!NOTE]
-> For those who are familiar with previously running `./pihemrDeploy.sh` from `openmrs-distro-pihemr`,
+> For those who are familiar with previously running `./pihemrDeploy.sh` from `pihemr`,
 > this is the equivalent of that, with the addition that this will also update the configuration and frontend.
 
 ```bash
@@ -94,8 +94,8 @@ more rapid iteration of content changes for testing.
 
 > [!NOTE]
 > For those who are familiar with previously running `./install.sh` from `openmrs-config-pihliberia`, this is the 
-> equivalent of that, with the exception that this will not automatically build in local changes to `openmrs-config-pihemr`.
-> One will first need to run a `mvn clean install` in `openmrs-config-pihemr` to incorporate local changes from it.
+> equivalent of that, with the exception that this will not automatically build in local changes to `pihemr`.
+> One will first need to run a `mvn clean install` in `pihemr` to incorporate local changes from it.
 
 ```bash
 openmrs-sdk update-config <server-id>
