@@ -2,7 +2,7 @@
 
 This module defines the Liberia-specific [OpenMRS Initializer](https://github.com/mekomsolutions/openmrs-module-initializer) configuration. At build time, the contents of `configuration/` are assembled into a zip artifact published as `org.pih.openmrs:pihliberia-content`.
 
-This content package is merged with the shared [PIH EMR content](https://github.com/PIH/openmrs-config-pihemr) (`org.pih.openmrs:pihemr-content`) when the distribution is built.
+This content package is merged with the shared [PIH EMR content](https://github.com/PIH/pihemr) (`org.pih.openmrs:pihemr-content`) when the distribution is built.
 
 ## Configuration Structure
 
