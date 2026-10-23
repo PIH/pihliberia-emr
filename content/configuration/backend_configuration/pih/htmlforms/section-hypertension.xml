@@ -25,11 +25,6 @@
             display: block;
         }
 
-        .encounter-summary-container #calculated-ratio {
-            font-size: 1em;
-            font-weight: normal;
-        }
-
         textarea {
             width: 95%;
         }
@@ -217,9 +212,8 @@
                         <render category="PIH:20459" nickname="erectile" code="Erectile dysfunction"/>
                     </repeat>
 
-                    <obs conceptId="PIH:14456" answerConceptId="PIH:OTHER"
-                         style="checkbox"
-                         showCommentField="true" commentFieldLabel="(please specify other complications)"/>
+                    <obs conceptId="PIH:14457" style="textarea"
+                         labelText="If other complications, specify:"/>
                     <br/><br/>
 
                     <!-- Family History -->

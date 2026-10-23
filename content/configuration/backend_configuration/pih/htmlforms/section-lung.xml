@@ -211,8 +211,8 @@
         <script type="text/javascript">
             jq(function() {
 
-            // handlers for next and submit buttons, see nextAndSubmitButtons.js
-            setUpNextAndSubmitButtons();
+                // handlers for next and submit buttons, see nextAndSubmitButtons.js
+                setUpNextAndSubmitButtons();
             });
         </script>
     </ifMode>
@@ -223,57 +223,55 @@
         <div id="asthma-copd" class="section-container">
 
             <!-- CLD diagnoses -->
-            <fieldset>
-                <includeIf velocityTest="$encounter.encounterType.uuid == 'ae06d311-1866-455b-8a64-126a9bd74171'">
-                    <div class="two-columns">
-                        <div class="form-row">
+            <includeIf velocityTest="$encounter.encounterType.uuid == 'ae06d311-1866-455b-8a64-126a9bd74171'">
+                <div class="two-columns">
+                    <div class="form-row">
 
-                            <strong class="form-label">
-                                <uimessage code="CLD Diagnoses "/>
-                            </strong>
-                            <div class="checkbox-group">
-                                <repeat>
-                                    <template>
-                                        <obsgroup groupingConceptId="PIH:Visit Diagnoses" showIfEmpty="false">
-                                            <obs conceptId="PIH:DIAGNOSIS" answerConceptId="{parId}"
-                                                 answerCode="{message}"
-                                                 style="checkbox"/>
-                                        </obsgroup>
-                                    </template>
-                                    <render parId="PIH:ASTHMA" message="Asthma"/>
-                                    <render parId="PIH:3716" message="COPD"/>
-                                    <render parId="PIH:2889" message="Other chronic lung disease" />
-                                </repeat>
+                        <strong class="form-label">
+                            <uimessage code="CLD Diagnoses "/>
+                        </strong>
+                        <div class="checkbox-group">
+                            <repeat>
+                                <template>
+                                    <obsgroup groupingConceptId="PIH:Visit Diagnoses" showIfEmpty="false">
+                                        <obs conceptId="PIH:DIAGNOSIS" answerConceptId="{parId}"
+                                             answerCode="{message}"
+                                             style="checkbox"/>
+                                    </obsgroup>
+                                </template>
+                                <render parId="PIH:ASTHMA" message="Asthma"/>
+                                <render parId="PIH:3716" message="COPD"/>
+                                <render parId="PIH:2889" message="Other chronic lung disease" />
+                            </repeat>
 
-                            </div>
-                        </div>
-
-                        <!-- Treatment date -->
-                        <div class="form-row">
-                            <label class="form-label">
-                                Date CLD treatment started
-                            </label>
-                            <div>
-                                <obs conceptId="PIH:11131"/>
-                            </div>
                         </div>
                     </div>
 
-                    <br/>
+                    <!-- Treatment date -->
+                    <div class="form-row">
+                        <label class="form-label">
+                            Date CLD treatment started
+                        </label>
+                        <div>
+                            <obs conceptId="PIH:21783" allowTime="false" />
+                        </div>
+                    </div>
+                </div>
 
-                    <!-- Family history/involvement -->
-                    <strong class="inline">
-                        <uimessage code="Family history "/>
-                    </strong>
-                    <familyHistoryRelativeCheckboxes concept="PIH:ASTHMA"
-                                                     relatives="PIH:FATHER,PIH:MOTHER,PIH:SIBLING,PIH:OTHER"/>
-                    <familyHistoryRelativeCheckboxes concept="PIH:3716"
-                                                     relatives="PIH:FATHER,PIH:MOTHER,PIH:SIBLING,PIH:OTHER"/>
-                    <familyHistoryRelativeCheckboxes concept="PIH:2889"
-                                                     relatives="PIH:FATHER,PIH:MOTHER,PIH:SIBLING,PIH:OTHER"/>
+                <br/>
 
-                </includeIf>
-            </fieldset>
+                <!-- Family history/involvement -->
+                <strong class="inline">
+                    <uimessage code="Family history "/>
+                </strong>
+                <familyHistoryRelativeCheckboxes concept="PIH:ASTHMA"
+                                                 relatives="PIH:FATHER,PIH:MOTHER,PIH:SIBLING,PIH:OTHER"/>
+                <familyHistoryRelativeCheckboxes concept="PIH:3716"
+                                                 relatives="PIH:FATHER,PIH:MOTHER,PIH:SIBLING,PIH:OTHER"/>
+                <familyHistoryRelativeCheckboxes concept="PIH:2889"
+                                                 relatives="PIH:FATHER,PIH:MOTHER,PIH:SIBLING,PIH:OTHER"/>
+
+            </includeIf>
         </div>
     </section>
 
@@ -282,41 +280,43 @@
              headerCode="Patient Exposures">
         <div id="asthma-copd" class="section-container">
 
-            <div class="form-row">
-                <span class="first-label-inline">
 
-                    <!-- TB contacts -->
-                    <label>
-                        Has contact with a TB person?
-                    </label>
-                    <obs id="tb-contact" conceptId="PIH:2133" answerConceptIds="PIH:YES,PIH:NO,PIH:UNKNOWN"
-                         style="radio" labelText=""/>
-                    <br/>
+            <span class="first-label-inline">
 
-                    <!-- Cooking fire method -->
-                    <label>
-                        Cooking fire method?
-                    </label>
-                    <obs id="cooking-method" conceptId="PIH:20889" answerConceptIds="PIH:20891,PIH:20892,PIH:20890"
-                         style="radio" labelText=""/>
-                    <br/>
+                <!-- TB contacts -->
+                <label>
+                    Has contact with a TB person?
+                </label>
+                <obs id="tb-contact" conceptId="PIH:2133" answerConceptIds="PIH:YES,PIH:NO,PIH:UNKNOWN"
+                     style="radio" labelText=""/>
+                <br/>
 
-                    <!-- Smoking -->
-                    <label>
-                        Smoked since last visit
-                    </label>
-                    <obs id="smoke-since-last-visit" conceptId="PIH:1551" answerConceptIds="PIH:1065,PIH:1066" answerLabels="Yes,No"
-                         style="radio"/>
-                    <br/>
+                <!-- Cooking fire method -->
+                <label>
+                    Cooking fire method?
+                </label>
+                <obs id="cooking-method" conceptId="PIH:20889"
+                     answerConceptIds="PIH:20891,PIH:20892,PIH:20890"
+                     style="radio" labelText=""/>
+                <br/>
 
-                    <!-- Secondhand smoke -->
-                    <label>
-                        Secondhand Smoke Exposure
-                    </label>
-                    <obs id="secondhand-smoke" conceptId="CIEL:152721" answerConceptIds="CIEL:159450,CIEL:159452,CIEL:1090"
-                         style="radio"/>
-                </span>
-            </div>
+                <!-- Smoking -->
+                <label>
+                    Smoked since last visit
+                </label>
+                <obs id="smoke-since-last-visit" conceptId="PIH:1551"
+                     answerConceptIds="PIH:1065,PIH:1066" answerLabels="Yes,No"
+                     style="radio"/>
+                <br/>
+
+                <!-- Secondhand smoke -->
+                <label>
+                    Secondhand Smoke Exposure
+                </label>
+                <obs id="secondhand-smoke" conceptId="CIEL:152721"
+                     answerConceptIds="CIEL:159450,CIEL:159452,CIEL:1090"
+                     style="radio"/>
+            </span>
         </div>
     </section>
 
@@ -364,7 +364,7 @@
                     <repeat>
                         <template>
                             <p class="list-inline">
-                                <obsgroup groupingConceptId="PIH:14875" showIfEmpty="false">
+                                <obsgroup groupingConceptId="PIH:21782" showIfEmpty="false">
                                     <obs style="radio"
                                          conceptIds="PIH:SYMPTOM PRESENT,PIH:SYMPTOM ABSENT"
                                          conceptLabels="Yes,No"

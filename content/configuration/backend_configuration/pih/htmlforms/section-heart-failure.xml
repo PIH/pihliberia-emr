@@ -39,19 +39,19 @@
         }
 
         .nyha-classification-wrapper br {
-        display: block;
-        content: "";
-        margin-top: 5px;
+            display: block;
+            content: "";
+            margin-top: 5px;
         }
 
         .nyha-classification-wrapper input[type="radio"] {
-        float: left;
-        margin-right: 10px;
+            float: left;
+            margin-right: 10px;
         }
 
         .nyha-classification-wrapper label {
-        display: inline-block;
-        vertical-align: middle;
+            display: inline-block;
+            vertical-align: middle;
         }
     </style>
 
@@ -101,19 +101,18 @@
                                     <render parId="PIH:3720" message="Diabetes"/>
                                 </repeat>
 
-                                <obs conceptId="PIH:2889" answerConceptId="PIH:OTHER"
-                                     style="checkbox" toggle="other"
-                                     showCommentField="true" commentFieldLabel="(please specify other diagnoses)"/>
+                                <obs conceptId="PIH:14743" style="textarea"
+                                     labelText="If other complications, specify:"/>
                             </div>
                         </div>
 
                         <!-- Treatment date -->
                         <div class="form-row">
                             <label class="form-label">
-                                Date CHF treatment started
+                                Date CHF treatment started (TBD)
                             </label>
                             <div>
-                                <obs conceptId="PIH:11131"/>
+                                <obs conceptId="PIH:21781" allowTime="false"/>
                             </div>
                         </div>
                     </div>
@@ -144,8 +143,8 @@
                                 </obsgroup>
                             </p>
                         </template>
-                        <render qId="CIEL:130783" symptName="PND"/>
-                        <render qId="CIEL:141599" symptName="DOE"/>
+                        <render qId="CIEL:130783" symptName="Paroxysmal nocturnal dyspnea (PND)"/>
+                        <render qId="CIEL:141599" symptName="Dyspea on exertion (DOE)"/>
                         <render qId="PIH:3486" symptName="Orthopnea"/>
                         <render qId="PIH:COUGH" symptName="Dry cough"/>
                         <render qId="PIH:FATIGUE" symptName="Fatigue"/>
@@ -157,33 +156,24 @@
                     <uimessage code="Exam"/>
                 </h5>
                 <div class="two-columns-new">
-                    <obsgroup groupingConceptId="PIH:12636">
-                        <strong>
-                            Body Edema
-                        </strong>
-                        <obs conceptId="PIH:12636" style="radio" class="list-inline"
-                             answerSeparator=""
-                             answerConceptIds="PIH:12704, PIH:12711, PIH:12703, PIH:12996"
-                             answerLabels="Trace, 1+ Pitting, 2+ Pitting, 3+ Pitting"/>
-                    </obsgroup>
-                    <obs id="no-edema"
-                         conceptId="PIH:12636"
-                         answerConceptId="CIEL:1066" style="checkbox" class="inline first-label-inline">
-                    </obs>
+                    <strong>
+                        Body edema
+                    </strong>
+                    <obs conceptId="PIH:12636" style="radio" class="list-inline"
+                         answerSeparator=""
+                         answerConceptIds="PIH:12704,PIH:12711,PIH:12703,PIH:12996,CIEL:1107"
+                         answerLabels="trace,1+ pitting,2+ pitting,3+ pitting,none"/>
                 </div>
-                <br/>
 
                 <div class="two-columns-new">
-                    <obsgroup groupingConceptId="PIH:PATIENTS FLUID MANAGEMENT">
-                        <strong>
-                            Volume Status
-                        </strong>
-                        <obs conceptId="PIH:PATIENTS FLUID MANAGEMENT" style="radio"
-                             class="list-inline"
-                             answerSeparator=""
-                             answerConceptIds="PIH:3272, PIH:3273, PIH:3274">
-                        </obs>
-                    </obsgroup>
+                    <strong>
+                        Volume Status
+                    </strong>
+                    <obs conceptId="PIH:PATIENTS FLUID MANAGEMENT" style="radio"
+                         class="list-inline"
+                         answerSeparator=""
+                         answerConceptIds="PIH:3272, PIH:3273, PIH:3274">
+                    </obs>
                 </div>
 
                 <!-- Risk assessment -->
@@ -195,13 +185,12 @@
                         <strong>
                             <uimessage code="pihcore.ncd.hf.nyhaClassification"/>
                         </strong>
+                        <obs conceptId="PIH:NYHA CLASS"
+                             style="radio"
+                             answerConceptIds="PIH:NYHA CLASS 1,PIH:NYHA CLASS 2,PIH:NYHA CLASS 3,PIH:NYHA CLASS 4"
+                             answerLabels="I (No limitations),II (Slight limitation of activity),III (Marked limitation of activity),IV (Unable to carry out any physical activity)"
+                             answerSeparator="&lt;br/&gt;"/>
                     </p>
-
-                    <obs conceptId="PIH:NYHA CLASS"
-                         style="radio"
-                         answerConceptIds="PIH:NYHA CLASS 1,PIH:NYHA CLASS 2,PIH:NYHA CLASS 3,PIH:NYHA CLASS 4"
-                         answerLabels="I (No limitations),II (Slight limitation of activity),III (Marked limitation of activity),IV (Unable to carry out any physical activity)"
-                         answerSeparator="&lt;br/&gt;"/>
                 </div>
                 <br />
 

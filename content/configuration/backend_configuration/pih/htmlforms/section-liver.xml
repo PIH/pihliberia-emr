@@ -120,9 +120,10 @@
                                     <render parId="PIH:3720" message="Diabetes"/>
                                 </repeat>
 
-                                <obs conceptId="PIH:2889" answerConceptId="PIH:OTHER"
-                                     style="checkbox" toggle="other"
-                                     showCommentField="true" commentFieldLabel="(please specify other diagnosis)"/>
+                                <br/>
+                                <obs conceptId="PIH:21788"
+                                     style="textarea"
+                                     labelText="please specify other liver diagnosis"/>
                             </div>
                         </div>
 
@@ -132,7 +133,7 @@
                                 Date Liver treatment started
                             </label>
                             <div>
-                                <obs conceptId="PIH:11131"/>
+                                <obs conceptId="PIH:21787" allowTime="false"/>
                             </div>
                         </div>
                     </div>
@@ -144,7 +145,7 @@
                     <tbody>
                         <!-- Treated for Hep B -->
                         <tr>
-                            <obsgroup groupingConceptId="PIH:14889">
+                            <obsgroup groupingConceptId="PIH:14890" showIfEmpty="false">
                                 <td>
                                     <label>
                                         Has previous treatment for Hepatitis B?
@@ -213,7 +214,7 @@
                 </repeat>
                 <div class="first-label-inline">
                     <label>
-                        <uimessage code="Pain scale: "/>
+                        <uimessage code="Pain scale (0-10): "/>
                     </label>
                     <obs conceptId="PIH:3604" labelText="" class="inline"/>
                 </div>
@@ -240,8 +241,9 @@
                         <render qId="PIH:12704" symptName="Trace Edema"/>
                         <render qId="PIH:12492" symptName="Asterixis"/>
                     </repeat>
-                    <obs conceptId="PIH:374" answerConceptId="PIH:5622"
-                         style="checkbox" commentFieldLabel="Other exam findings or comments"/>
+
+                    <obs conceptId="PIH:21789"
+                         style="textarea" labelText="Other liver findings or comments"/>
                 </div>
 
                 <!-- Risk Assessment -->

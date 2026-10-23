@@ -46,8 +46,8 @@
         <script type="text/javascript">
             jq(function() {
 
-            // handlers for next and submit buttons, see nextAndSubmitButtons.js
-            setUpNextAndSubmitButtons();
+                // handlers for next and submit buttons, see nextAndSubmitButtons.js
+                setUpNextAndSubmitButtons();
             });
         </script>
     </ifMode>
@@ -78,13 +78,12 @@
                                     <render parId="PIH:3699" message="CKD"/>
                                     <render parId="PIH:903" message="Hypertension"/>
                                     <render parId="PIH:3720" message="Diabetes"/>
-                                    <render parId="PIH:3405" message="heart attack"/>
+                                    <render parId="PIH:3405" message="Heart attack"/>
                                     <render parId="PIH:7496" message="Ischemic heart disease"/>
                                 </repeat>
 
-                                <obs conceptId="PIH:2889" answerConceptId="PIH:OTHER"
-                                     style="checkbox" toggle="other"
-                                     showCommentField="true" commentFieldLabel="please specify other diagnoses"/>
+                                <obs conceptId="PIH:21784" style="textarea"
+                                     labelText="If other complications, specify:"/>
                             </div>
                         </div>
 
@@ -94,7 +93,7 @@
                                 Date CKD treatment started
                             </label>
                             <div>
-                                <obs conceptId="PIH:11131"/>
+                                <obs conceptId="PIH:21785" allowTime="false"/>
                             </div>
                         </div>
                     </div>
@@ -132,8 +131,9 @@
                         <render qId="PIH:PRURITIS" symptName="Pruritis"/>
                         <render qId="PIH:12704" symptName="Trace Edema"/>
                     </repeat>
-                    <obs conceptId="PIH:374" answerConceptId="PIH:5622"
-                         style="checkbox" commentFieldLabel="Other exam findings or comments"/>
+                    <!-- ToDo: Replace these concepts with PIH:21786
+                    <obs conceptId="PIH:21786"
+                         style="textarea" labelText="Other exam findings or comments"/ -->
                 </div>
                 <br/>
 

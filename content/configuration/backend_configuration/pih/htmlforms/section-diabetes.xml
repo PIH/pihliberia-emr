@@ -162,7 +162,7 @@
                             </p>
                         </template>
                         <render qId="PIH:6756" questionName="On insulin" q="insulin"/>
-                        <render qId="PIH:14464" questionName="disease controlled" q="disease control"/>
+                        <render qId="PIH:14464" questionName="Disease controlled" q="disease control"/>
                         <render qId="PIH:14531" questionName="On ACE inhibitors" q="ACE inhibitors"/>
                         <render qId="PIH:14532" questionName="Indications for ACE inhibitors (proteinuria present; BP &gt;= 135/75)" q="Indications for ACE inhibitors"/>
                         <render qId="CIEL:167957" questionName="Severe hypoglycemia in last month" q="severe"/>
