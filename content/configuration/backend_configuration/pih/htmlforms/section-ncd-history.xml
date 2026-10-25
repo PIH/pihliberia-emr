@@ -346,22 +346,29 @@
 
         <div class="section-container">
             <div>
-                <div class="ep-mh-section">
-                    <span class="tb-symptom-name">
-                        <uimessage code="pihcore.tbscreen.cough"/>
-                    </span>
-                    <span class="tb-symptom-name list-inline">
-                        <obs id="tb-persistent-cough" style="radio"
-                             conceptIds="PIH:SYMPTOM PRESENT,PIH:SYMPTOM ABSENT,PIH:SYMPTOM PRESENCE UNKNOWN"
-                             conceptLabels="yes,no,unknown" answerConceptId="PIH:11567" labelText="">
-                            <controls>
-                                <when value="PIH:SYMPTOM PRESENT" thenDisplay="#tb-persistent-cough-type"/>
-                            </controls>
-                        </obs>
-                    </span>
-                    <span id="tb-persistent-cough-type" class="list-inline">
-                        <obs conceptId="PIH:11563" answerConceptIds="CIEL:5957,CIEL:138905" style="radio"/>
-                    </span>
+                <div class="ep-mh-section two-columns">
+                    <div>
+                        <p class="side-by-side">
+                            <label>
+                                <uimessage code="pihcore.tbscreen.cough"/>
+                            </label>
+
+                            <obs id="tb-persistent-cough" style="radio"
+                                 conceptIds="PIH:SYMPTOM PRESENT,PIH:SYMPTOM ABSENT,PIH:SYMPTOM PRESENCE UNKNOWN"
+                                 conceptLabels="yes,no,unknown" answerConceptId="PIH:11567" labelText="">
+                                <controls>
+                                    <when value="PIH:SYMPTOM PRESENT" thenDisplay="#tb-persistent-cough-type"/>
+                                </controls>
+                            </obs>
+                        </p>
+                    </div>
+
+                    <div id="tb-persistent-cough-type">
+                        <obs conceptId="PIH:11563" style="checkbox"
+                             answerConceptId="CIEL:5957" />
+                        <obs conceptId="PIH:11563" style="checkbox"
+                             answerConceptId="CIEL:138905" />
+                    </div>
                 </div>
             </div>
 
@@ -375,25 +382,31 @@
                          conceptLabels="yes,no,unknown" answerConceptId="PIH:11565" labelText=""/>
                 </span>
             </div>
+            <br/>
 
-            <div class="ep-mh-section">
-                <span class="tb-symptom-name">
-                    <uimessage code="pihcore.tbscreen.wtLoss3kg"/>
-                </span>
-                <span class="tb-symptom-name list-inline">
-                    <obs id="tb-persistent-wtLoss3kg" style="radio"
-                         conceptIds="PIH:SYMPTOM PRESENT,PIH:SYMPTOM ABSENT,PIH:SYMPTOM PRESENCE UNKNOWN"
-                         conceptLabels="yes,no,unknown" answerConceptId="PIH:11566" labelText="">
-                        <controls>
-                            <when value="PIH:SYMPTOM PRESENT" thenDisplay="#tb-persistent-wtLoss3kg-type"/>
-                        </controls>
-                    </obs>
-                </span>
-                <span id="tb-persistent-wtLoss3kg-type" class="list-inline">
-                    <obs conceptId="PIH:11563" answerConceptIds="CIEL:140936"
-                         answerLabels="Clothing is looser" style="radio"/>
-                </span>
-                <br />
+            <div class="ep-mh-section two-columns">
+                    <div>
+                        <p class="side-by-side">
+                            <label>
+                                <uimessage code="pihcore.tbscreen.wtLoss3kg"/>
+                            </label>
+                            <obs id="tb-persistent-wtLoss3kg" style="radio"
+                                 conceptIds="PIH:SYMPTOM PRESENT,PIH:SYMPTOM ABSENT,PIH:SYMPTOM PRESENCE UNKNOWN"
+                                 conceptLabels="yes,no,unknown" answerConceptId="PIH:11566" labelText="">
+                                <controls>
+                                    <when value="PIH:SYMPTOM PRESENT" thenDisplay="#tb-persistent-wtLoss3kg-type"/>
+                                </controls>
+                            </obs>
+                        </p>
+                    </div>
+                    <div id="tb-persistent-wtLoss3kg-type" >
+                        <obs conceptId="PIH:11563" style="checkbox"
+                             answerConceptId="CIEL:140936"
+                             answerLabels="Clothing is looser" />
+                    </div>
+                </div>
+        
+
 
                 <span class="inline">
                     <label class="inline">
@@ -404,7 +417,7 @@
 
                 </span>
 
-            </div>
+
         </div>
     </section>
 
@@ -1054,7 +1067,7 @@
                             </span>
                             <span class="inline">
                                 <obs conceptId="PIH:NEUROLOGIC EXAM FINDINGS"
-                                     answerConceptId="CIEL:165589 " style="checkbox"
+                                     answerConceptId="CIEL:165589" style="checkbox"
                                      class="first-label-inline"/>
                             </span>
                             <span class="block">
