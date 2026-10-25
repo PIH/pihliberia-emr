@@ -238,7 +238,7 @@
                     <template>
                         <div class="column-item">
                             <span class="{expression}">
-                                <obsgroup groupingConceptId="PIH:12389">
+                                <obsgroup groupingConceptId="PIH:14462" showIfEmpty="false">
                                     <obs conceptId="CIEL:1728" answerConceptId="{concept}" style="checkbox"
                                          labelText="{label}" answerLabel=""
                                          toggle="{id: '{name}-htn-dx-ynu', style: 'hide'}"/>

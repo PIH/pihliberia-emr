@@ -252,6 +252,29 @@
                         <uimessage code="Risk Assessment"/>
                     </h5>
 
+                    <div>
+                        <obsgroup groupingConceptId="PIH:14827" showIfEmpty="false">
+                            <repeat>
+                                <template>
+                                    <p class="list-inline-wide">
+                                        <obs style="radio"
+                                             conceptId="{qId}" answerConceptIds="CIEL:1065,CIEL:1066,CIEL:1067"
+                                             answerCodes="yes,no,unknown"
+                                             labelText="{fuName}"/>
+                                    </p>
+                                </template>
+                                <render qId="PIH:14912" fuName="US screening past 6 months "/>
+                                <render qId="PIH:1552" fuName="Alcohol use"/>
+                                <render qId="PIH:2545" fuName="Tobacco use"/>
+                                <render qId="PIH:11884" fuName="Concerns of depression"/>
+                                <render qId="PIH:21790" fuName="Regular diet"/>
+                                <render qId="PIH:21791" fuName="Paracetamol (PCM) use"/>
+                                <render qId="PIH:Currently taking medication" fuName="Taking meds"/>
+                                <render qId="PIH:14712" fuName="NSAID use"/>
+                            </repeat>
+                        </obsgroup>
+                    </div>
+
                     <repeat>
                         <template>
                             <p class="list-inline">
@@ -263,14 +286,8 @@
                                 </obsgroup>
                             </p>
                         </template>
-                        <render qId="PIH:14912" symptName="US screening past 6 months "/>
-                        <render qId="CIEL:159449" symptName="Alcohol use"/>
-                        <render qId="CIEL:163731" symptName="Tobacco use"/>
-                        <render qId="PIH:DEPRESSION" symptName="Concerns of depression"/>
-                        <render qId="PIH:Currently taking medication" symptName="Taking meds"/>
-                        <render qId="CIEL:159596" symptName="Regular diet"/>
-                        <render qId="PIH:Paracetamol" symptName="Taking PCM"/>
-                        <render qId="CIEL:162306" symptName="Took NSAIDs"/>
+
+
                     </repeat>
                 </div>
 

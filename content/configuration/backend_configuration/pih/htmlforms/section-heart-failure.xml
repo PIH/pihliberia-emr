@@ -38,21 +38,6 @@
             display: inline-block;
         }
 
-        .nyha-classification-wrapper br {
-            display: block;
-            content: "";
-            margin-top: 5px;
-        }
-
-        .nyha-classification-wrapper input[type="radio"] {
-            float: left;
-            margin-right: 10px;
-        }
-
-        .nyha-classification-wrapper label {
-            display: inline-block;
-            vertical-align: middle;
-        }
     </style>
 
     <ifMode mode="VIEW" include="false">
@@ -85,7 +70,7 @@
                             <div class="checkbox-group">
                                 <repeat>
                                     <template>
-                                        <obsgroup groupingConceptId="PIH:11499" showIfEmpty="false">
+                                        <obsgroup groupingConceptId="PIH:Visit Diagnoses" showIfEmpty="false">
                                             <obs conceptId="PIH:DIAGNOSIS" answerConceptId="{parId}"
                                                  answerCode="{message}"
                                                  style="checkbox"/>
@@ -181,7 +166,7 @@
                     <uimessage code="Risk assessment"/>
                 </h5>
                 <div class="nyha-classification-wrapper">
-                    <p>
+                    <p class="side-by-side">
                         <strong>
                             <uimessage code="pihcore.ncd.hf.nyhaClassification"/>
                         </strong>
@@ -195,22 +180,22 @@
                 <br />
 
                 <div>
-                    <repeat>
-                        <template>
-                            <p class="side-by-side">
-                                <obsgroup groupingConceptId="PIH:14733" showIfEmpty="false">
+                    <obsgroup groupingConceptId="PIH:14724" showIfEmpty="false">
+                        <repeat>
+                            <template>
+                                <p class="list-inline-wide">
                                     <obs style="radio"
-                                         conceptIds="PIH:SYMPTOM PRESENT,PIH:SYMPTOM ABSENT,PIH:SYMPTOM PRESENCE UNKNOWN"
-                                         conceptLabels="yes,no,unknown" answerConceptId="{qId}"
-                                         labelText="{symptName}"/>
-                                </obsgroup>
-                            </p>
-                        </template>
-                        <render qId="CIEL:70468" symptName="Drink alcohol"/>
-                        <render qId="PIH:2545" symptName="Smoke tobacco"/>
-                        <render qId="PIH:DEPRESSION" symptName="Concerns of depression"/>
-                        <render qId="PIH:Currently taking medication" symptName="Took meds today"/>
-                    </repeat>
+                                         conceptId="{qId}" answerConceptIds="CIEL:1065,CIEL:1066,CIEL:1067"
+                                         answerCodes="yes,no,unknown"
+                                         labelText="{fuName}"/>
+                                </p>
+                            </template>
+                            <render qId="PIH:1552" fuName="Alcohol use"/>
+                            <render qId="PIH:2545" fuName="Tobacco use"/>
+                            <render qId="PIH:11884" fuName="Concerns of depression"/>
+                            <render qId="PIH:Currently taking medication" fuName="Took meds today"/>
+                        </repeat>
+                    </obsgroup>
                 </div>
 
             </div>

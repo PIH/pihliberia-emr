@@ -166,23 +166,24 @@
                 <h5>
                     <uimessage code="Risk assessment"/>
                 </h5>
+
                 <div>
-                    <repeat>
-                        <template>
-                            <p class="side-by-side">
-                                <obsgroup groupingConceptId="PIH:14732" showIfEmpty="false">
+                    <obsgroup groupingConceptId="PIH:14717" showIfEmpty="false">
+                        <repeat>
+                            <template>
+                                <p class="list-inline-wide">
                                     <obs style="radio"
-                                         conceptIds="PIH:SYMPTOM PRESENT,PIH:SYMPTOM ABSENT,PIH:SYMPTOM PRESENCE UNKNOWN"
-                                         conceptLabels="yes,no,unknown" answerConceptId="{qId}"
-                                         labelText="{symptName}"/>
-                                </obsgroup>
-                            </p>
-                        </template>
-                        <render qId="CIEL:162306" symptName="NSAID use"/>
-                        <render qId="PIH:2545" symptName="Tobacco use"/>
-                        <render qId="PIH:DEPRESSION" symptName="Concerns of depression"/>
-                        <render qId="PIH:Currently taking medication" symptName="Took meds today"/>
-                    </repeat>
+                                         conceptId="{qId}" answerConceptIds="CIEL:1065,CIEL:1066,CIEL:1067"
+                                         answerCodes="yes,no,unknown"
+                                         labelText="{fuName}"/>
+                                </p>
+                            </template>
+                            <render qId="PIH:14712" fuName="NSAID use"/>
+                            <render qId="PIH:2545" fuName="Tobacco use"/>
+                            <render qId="PIH:11884" fuName="Concerns of depression"/>
+                            <render qId="PIH:Currently taking medication" fuName="Taking meds"/>
+                        </repeat>
+                    </obsgroup>
                 </div>
 
             </div>
