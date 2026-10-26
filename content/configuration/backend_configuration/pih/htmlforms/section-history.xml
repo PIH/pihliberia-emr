@@ -94,7 +94,7 @@
 
     <ifMode mode="VIEW" include="false">
         <h1>
-            <uimessage code="pihcore.history.title"/>
+            <uimessage code="Family Medicine History"/>
         </h1>
     </ifMode>
 
@@ -150,7 +150,7 @@
                     <br/>
                     <repeat>
                         <template>
-                            <obs conceptId="PIH:Type of referring service" style="checkbox"
+                            <obs conceptId="PIH:REFERRED FROM ANOTHER SITE" style="checkbox"
                                  answerConceptId="{point}" answerCode="{message}"/>
                         </template>
                         <render point="PIH:12866" message="Pleebo Health Center"/>
@@ -159,7 +159,8 @@
                     </repeat>
 
                     <!-- Non-PIH facility -->
-                    <obs conceptId="PIH:Type of referring service" style="checkbox"
+                    <br/>
+                    <obs conceptId="PIH:REFERRED FROM ANOTHER SITE" style="checkbox"
                          answerConceptId="PIH:8856" commentFieldLabel="" size="10"/>
                     <br/><br/>
 
@@ -168,11 +169,11 @@
                             <uimessage code="pihcore.refer.community"/>
                         </strong>
 
-                        <obs conceptId="PIH:Type of referring service" style="checkbox"
+                        <obs conceptId="PIH:14494" style="checkbox"
                              answerConceptId="CIEL:1555"/>
-                        <obs conceptId="PIH:Type of referring service" style="checkbox"
+                        <obs conceptId="PIH:14494" style="checkbox"
                              answerConceptId="PIH:14495"/>
-                        <obs conceptId="PIH:Type of referring service" style="checkbox"
+                        <obs conceptId="PIH:14494" style="checkbox"
                              answerConceptId="PIH:14645" answerCode="CHV (Community Health Volunteer)"/>
                     </p>
                 </div>
@@ -207,8 +208,6 @@
     <section id="patient-history" sectionTag="fieldset" headerTag="legend" headerStyle="title"
              headerCode="Past Medical History">
         <div class="section-container">
-            <!-- ANTECEDENTS PERSONNELS / HABITUDES -->
-
             <h2>
                 <uimessage code="Medical History"/>
             </h2>
@@ -220,7 +219,6 @@
                     <pastMedicalHistoryCheckbox concept="PIH:HEART DISEASE" specify="true" class="medicalHistoryText patientHistory" />
                     <!--<pastMedicalHistoryCheckbox concept="PIH:SURGERY" specify="true" class="medicalHistoryText patientHistory"/>-->
                     <pastMedicalHistoryCheckbox concept="PIH:Traumatic Injury" specify="true" class="medicalHistoryText patientHistory"/>
-                    <!-- TODO paper form has Surgery/Trauma. verify splitting okay -->
                     <pastMedicalHistoryCheckbox concept="PIH:EPILEPSY"/>
                     <pastMedicalHistoryCheckbox concept="CIEL: 117635" comment="Hemoglobinopathy" specify="true"
                                                 class="medicalHistoryText patientHistory"/>
@@ -243,9 +241,7 @@
                     <pastMedicalHistoryCheckbox concept="CIEL:117703" />
                     <pastMedicalHistoryCheckbox concept="CIEL:165623" label="COVID-19" />
                     <pastMedicalHistoryCheckbox concept="PIH:OTHER" code="pihcore.other" specify="true" class="medicalHistoryText patientHistory"/>
-
                 </div>
-
             </div>
 
             <!-- only show these diseases if female -->
@@ -258,7 +254,7 @@
         <br/>
 
         <!-- Surgical -->
-        <div class="section-container-color">
+        <div class="section-container">
 
             <h2>
                 <uimessage code="Surgical History"/>
@@ -272,7 +268,6 @@
             <span class="list-inline">
                 <obs id="surgery-toggle" conceptId="PIH:13119" style="radio"
                      answerConceptIds="PIH:YES,PIH:NO" answerCodes="yes,no">
-
                     <control>
                         <when value="PIH:YES" thenDisplay="#surgery-block"/>
                     </control>
@@ -563,7 +558,7 @@
                 <div class="two-columns" >
                     <p>
                         Term of birth:  premie, at term, post date
-                        <obsgroup groupingConceptId="CIEL:1633" >
+                        <obsgroup groupingConceptId="CIEL:1633" showIfEmpty="false">
                             <obs conceptId="CIEL:1628"
                                  answerConceptIds="CIEL:1860,CIEL:1395,CIEL:113600"
                                  style="radio" answerSeparator="" />
@@ -750,8 +745,7 @@
                                         <label>
                                             Document any other relevant history:
                                         </label>
-                                        <obs id="other-life-style-relevant-history" conceptId="CIEL:160632"
-                                             answerConceptId="CIEL:160741"
+                                        <obs id="other-life-style-relevant-history" conceptId="PIH:21745"
                                              style="textarea"/>
                                     </td>
                                 </tr>
@@ -886,7 +880,7 @@
 
                     <repeat>
                         <template>
-                            <obsgroup groupingConceptId="PIH:Family planning history construct">
+                            <obsgroup groupingConceptId="PIH:Family planning history construct" showIfEmpty="false">
                                 <tr>
                                     <td id="{comment}-fp">
                                         <obs conceptId="CIEL:374"
@@ -964,7 +958,7 @@
                             </label>
                             &amp;nbsp
                             <span>
-                                <obs conceptId="CIEL:1731" class="inline"/>
+                                <obs conceptId="PIH:NUMBER OF PEOPLE WHO LIVE IN HOUSE INCLUDING PATIENT" class="inline"/>
                             </span>
 
                         </td>
@@ -991,7 +985,7 @@
                             </repeat>
                             <br/>
                             <span class="inline">
-                                <obsgroup groupingConceptId="PIH:12736">
+                                <obsgroup groupingConceptId="PIH:12736" showIfEmpty="false">
                                     <label class="inline">
                                         Time to travel to clinic:
                                     </label>&amp;nbsp
@@ -1057,8 +1051,8 @@
                             </label>
                             <span class="list-inline">
                                 <obs conceptId="CIEL:1712" style="radio"
-                                     answerConceptIds="CIEL:1107,CIEL:1713,CIEL:1714,CIEL:160130,CIEL:159785"
-                                     answerCodes="Primary school, Secondary school, Vocational training, University" class="inline"/>
+                                     answerConceptIds="PIH:NONE,CIEL:1713,CIEL:1714,CIEL:160130,CIEL:159785"
+                                     answerCodes="None,Primary school,Secondary school,Vocational training,University" class="inline"/>
                             </span>
                             <br/>
                             <label class="inline">
@@ -1076,10 +1070,7 @@
                             <label>
                                 Document any other pertinent social information:
                             </label>
-                            <obs id="other-relevant-social-history" conceptId="CIEL:160632"
-                                 answerConceptId="CIEL:160741"
-                                 style="textarea"/>
-
+                            <obs conceptId="CIEL:162143" style="textarea" />
                         </td>
                     </tr>
                 </tbody>
@@ -1097,8 +1088,6 @@
     <section id="previous-hospital" sectionTag="fieldset" headerTag="legend" headerStyle="title"
              headerCode="zl.consultNote.previousHospitalization.title">
         <div class="section-container">
-            <!-- HOSPITALISATION ANTERIEURE -->
-
             <table>
                 <tr>
                     <th>
@@ -1133,69 +1122,30 @@
                     </th>
                 </tr>
 
-                <tr>
-                    <obsgroup groupingConceptId="PIH:HOSPITALIZATION CONSTRUCT">
-                        <td>
-                            <obs conceptId="CIEL:1640" allowTime="false"/> <!-- Admit date -->
-                        </td>
-                        <td>
-                            <obs conceptId="CIEL:1641" allowTime="false"/> <!-- Exit date -->
-                        </td>
-                        <td>
-                            <obs conceptId="CIEL:162724"/> <!-- Health facility location -->
-                        </td>
-                        <!-- Comment
-                        <td>
-                            <obs conceptId="PIH:6899"/>
-                        </td>
-                        -->
-                        <td>
-                            <obs conceptId="CIEL:162879"/> <!-- Reason for hospitalization -->
-                        </td>
-                    </obsgroup>
-                </tr>
-                <tr>
-                    <obsgroup groupingConceptId="PIH:HOSPITALIZATION CONSTRUCT">
-                        <td>
-                            <obs conceptId="CIEL:1640" allowTime="false"/> <!-- Admit date -->
-                        </td>
-                        <td>
-                            <obs conceptId="CIEL:1641" allowTime="false"/> <!-- Exit date -->
-                        </td>
-                        <td>
-                            <obs conceptId="CIEL:162724"/> <!-- Health facility location -->
-                        </td>
-                        <!-- Comment
-                        <td>
-                            <obs conceptId="PIH:6899"/>
-                        </td>
-                        -->
-                        <td>
-                            <obs conceptId="CIEL:162879"/> <!-- Reason for hospitalization -->
-                        </td>
-                    </obsgroup>
-                </tr>
-                <tr>
-                    <obsgroup groupingConceptId="PIH:HOSPITALIZATION CONSTRUCT">
-                        <td>
-                            <obs conceptId="CIEL:1640" allowTime="false"/> <!-- Admit date -->
-                        </td>
-                        <td>
-                            <obs conceptId="CIEL:1641" allowTime="false"/> <!-- Exit date -->
-                        </td>
-                        <td>
-                            <obs conceptId="CIEL:162724"/> <!-- Health facility location -->
-                        </td>
-                        <!-- Comment
-                        <td>
-                            <obs conceptId="PIH:6899"/>
-                        </td>
-                        -->
-                        <td>
-                            <obs conceptId="CIEL:162879"/> <!-- Reason for hospitalization -->
-                        </td>
-                    </obsgroup>
-                </tr>
+                <repeat with="['1'],['2'],['3']">
+                    <tr>
+                        <obsgroup groupingConceptId="PIH:HOSPITALIZATION CONSTRUCT" showIfEmpty="false">
+                            <td>
+                                <obs conceptId="CIEL:1640" allowTime="false"/> <!-- Admit date -->
+                            </td>
+                            <td>
+                                <obs conceptId="CIEL:1641" allowTime="false"/> <!-- Exit date -->
+                            </td>
+                            <td>
+                                <obs conceptId="CIEL:162724"/> <!-- Health facility location -->
+                            </td>
+                            <!-- Comment
+                            <td>
+                                <obs conceptId="PIH:6899"/>
+                            </td>
+                            -->
+                            <td>
+                                <obs conceptId="CIEL:162879"/> <!-- Reason for hospitalization -->
+                            </td>
+                        </obsgroup>
+                    </tr>
+                </repeat>
+
             </table>
 
             <label>
