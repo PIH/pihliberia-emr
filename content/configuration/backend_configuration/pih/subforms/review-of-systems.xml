@@ -50,7 +50,7 @@
                     </repeat>
 
                     <obs conceptId="PIH:1124" style="checkbox"
-                         answerConceptId=" PIH:13761" answerLabel="Other cardiovascular (comment)"
+                         answerConceptId="PIH:13761" answerLabel="Other cardiovascular (comment)"
                          commentFieldLabel=" "/>
                 </div>
             </div>

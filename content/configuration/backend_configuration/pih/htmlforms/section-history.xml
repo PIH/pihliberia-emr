@@ -1078,13 +1078,6 @@
         </div>
     </section>
 
-    <!-- Review of System Section -->
-    <section id="review-of-systems" sectionTag="fieldset" headerTag="legend" headerStyle="title"
-             headerCode="Review of Systems">
-        <subform path="configuration/pih/subforms/review-of-systems.xml" />
-
-    </section>
-
     <section id="previous-hospital" sectionTag="fieldset" headerTag="legend" headerStyle="title"
              headerCode="zl.consultNote.previousHospitalization.title">
         <div class="section-container">
