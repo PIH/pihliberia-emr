@@ -20,13 +20,13 @@
         <contentVersion>${project.version}</contentVersion>
         <frontendGroup>org.pih.openmrs</frontendGroup>
         <frontendArtifact>openmrs-frontend-pihemr</frontendArtifact>
-        <frontendVersion>1.46.0</frontendVersion>
+        <frontendVersion>1.47.0-SNAPSHOT</frontendVersion>
         <parentGroup>org.pih.openmrs</parentGroup>
         <parentArtifact>pihemr-distro</parentArtifact>
-        <parentVersion>3.4.0</parentVersion>
+        <parentVersion>3.5.0-SNAPSHOT</parentVersion>
         <parentContentGroupId>org.pih.openmrs</parentContentGroupId>
         <parentContentArtifactId>pihemr-content</parentContentArtifactId>
-        <parentContentVersion>3.4.0</parentContentVersion>
+        <parentContentVersion>3.5.0-SNAPSHOT</parentContentVersion>
     </properties>
 
     <dependencies>
