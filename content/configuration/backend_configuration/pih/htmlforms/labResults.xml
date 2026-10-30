@@ -63,11 +63,11 @@
                 <field>
                     <encounterDate id="specimen-collection-date-hematology"
                                    default="now" />
-
-                    <div class="section-container">
+                    <div>
                         <obs conceptId="PIH:11781" answerConceptId="PIH:YES"
                              style="checkbox" answerCode="pihcore.date_estimated"/>
                     </div>
+
                 </field>
             </p>
 
