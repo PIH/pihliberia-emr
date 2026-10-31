@@ -14,7 +14,7 @@ To update a component version, change the corresponding property in `pom.xml` an
 mvn clean install
 ```
 
-Then use `openmrs-sdk update` or `openmrs-docker start --build` to redeploy with the new versions.
+Then use `openmrs-sdk update` or `openmrs-docker <name> start --build` to redeploy with the new versions.
 
 ## Release
 
