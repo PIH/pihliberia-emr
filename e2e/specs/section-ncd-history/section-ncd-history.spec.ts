@@ -317,7 +317,7 @@ test.describe('section-ncd-history', () => {
     const view = await expectViewShowsSavedObs(page, api, FORM, section.encounter.uuid, {
       'Reason for visit: Scheduled visit': '[X] Scheduled', // answerCodes label
     });
-    const v = view.page;
+    const v = view.root;
     await expect(v.locator('#referral-reason .value')).toHaveText('Chest pain on exertion');
     await expect(v.locator('#patient-currently-smokes .value')).toHaveText(/\[X\]\s*currently/i);
     await expect(v.locator('#htn-onset-q .value')).toHaveText(/\[X\]\s*hypertension/i);

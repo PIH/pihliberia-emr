@@ -11,6 +11,11 @@
 //   ifMode EDIT  :46-57  script: show .htmlform, setUpNextAndSubmitButtons() (see _shared nextAndSubmitButtons.js, V4)
 //   ifMode VIEW include=false :17 (style #data-collection), :60 (h2), :75 (#buttons); the EPLD block is VIEW-excluded too
 // Scripts: only the two above. Side effects on save: none (no obs); the encounter type is NCD Followup Consult.
+// Visit-page display: the visit page does NOT show this form's VIEW (the shell renders nothing anyway: the who/when/where block, the
+//   heading and the buttons are ifMode VIEW include=false). The "NCD Followup" entry of encounterTypeConfig.js (liberia key) has
+//   `shortTemplate`/`longTemplate: defaultEncounterShort.page` and no templateModelUrl of its own: it lists the encounter with its `sections`,
+//   each with the VIEW of its own section form (see the section-* specs). The VIEW test asserts that list; the form's own VIEW is
+//   therefore not tested.
 // Not covered here: ENTER with a session location that lacks "NCD Consult Location" (the form is shown and Next hidden: needs a
 //   session at another location, the browser session is shared), the retro-privilege disabled date/provider (see _shared EPLD).
 //
@@ -24,7 +29,7 @@ import { type APIRequestContext } from '@playwright/test';
 import { test, expect } from '../../core';
 import { NCD_CLINIC_LOCATION_UUID, NCD_FOLLOWUP_ENCOUNTER_TYPE_UUID } from '../../core/constants';
 import { getEncounterObs, getPatientEncounters } from '../../commands';
-import { EntryFormPage, SectionFormPage, ViewFormPage, VISIT_PAGE_URL, selectDefaultProvider } from '../../pages';
+import { EntryFormPage, SectionFormPage, VisitPage, VISIT_PAGE_URL, selectDefaultProvider } from '../../pages';
 
 const FORM = 'ncd-followup.xml';
 const HEADING = 'NCD Followup'; // ui.i18n.EncounterType.name.<uuid> in messages_en.properties
@@ -131,16 +136,17 @@ test.describe('ncd-followup', () => {
     });
   });
 
-  // VIEW (shell rule of the skill): the form has no obs of its own; the who/when/where block, h2 and #buttons are
-  // ifMode VIEW include=false, and .htmlform stays display:none because only the ENTER/EDIT scripts show it.
-  test('VIEW: renders no values, no fields and no buttons', async ({ page, createSectionEncounter }) => {
+  // Visit-page display (see the header): the entry lists the encounter with the sections of its configuration; none shows a value.
+  test('the visit page lists the encounter with its sections (the shell form has no VIEW of its own)', async ({ page, createSectionEncounter }) => {
     const section = await createSectionEncounter({ encounterTypeUuid: NCD_FOLLOWUP_ENCOUNTER_TYPE_UUID, patient: PATIENT });
 
-    const view = await ViewFormPage.open(page, FORM, section.encounter.uuid);
-
-    expect(await view.valueTexts()).toEqual([]);
-    await expect(page.locator('span.emptyValue')).toHaveCount(0);
-    await expect(page.locator('#who-when-where, #buttons, select, input, button, h2')).toHaveCount(0);
-    await expect(page.locator('.htmlform')).toBeHidden();
+    const visit = await VisitPage.openOfEncounter(page, section.encounter.uuid);
+    const entry = visit.encounterOfType(NCD_FOLLOWUP_ENCOUNTER_TYPE_UUID);
+    await expect(entry).toHaveCount(1);
+    await visit.expand(entry);
+    for (const id of ['pihcore-ncd-followup', 'pihcore-hospital', 'pihcore-diabetes', 'pihcore-hypertension', 'pihcore-heart-failure', 'pihcore-lung', 'pihcore-kidney', 'pihcore-liver', 'pihcore-palliative', 'pihcore-sickle-cell', 'pihcore-diagnosis', 'pihcore-ncd-plan']) {
+      await expect(visit.section(id), `section ${id} of the NCD Followup entry`).toBeVisible();
+    }
+    await expect(entry.locator('span.value, #who-when-where, #buttons, select, input')).toHaveCount(0); // none of the form's own HTML
   });
 });

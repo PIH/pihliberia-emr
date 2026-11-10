@@ -102,11 +102,11 @@ test.describe('section-lung (NCD Followup encounter)', () => {
     expect(shown.some((t) => numberOf(3).test(t))).toBeTruthy();
     expect(shown.some((t) => numberOf(2).test(t))).toBeTruthy();
     expect(shown.some((t) => numberOf(5).test(t))).toBeTruthy();
-    await expect(view.page.locator('#tb-contact .value')).toHaveText(/\[X\]\s*yes/i);
-    await expect(view.page.locator('#cooking-method .value')).toHaveText(/\[X\]\s*outdoor fire/i);
-    await expect(view.page.locator('#smoke-since-last-visit .value')).toHaveText(/\[X\]\s*yes/i);
-    await expect(view.page.locator('h1')).toHaveCount(0);
-    await expect(view.page.locator('#buttonsTopRow, #buttons, #next, #submit')).toHaveCount(0);
+    await expect(view.root.locator('#tb-contact .value')).toHaveText(/\[X\]\s*yes/i);
+    await expect(view.root.locator('#cooking-method .value')).toHaveText(/\[X\]\s*outdoor fire/i);
+    await expect(view.root.locator('#smoke-since-last-visit .value')).toHaveText(/\[X\]\s*yes/i);
+    await expect(view.root.locator('h1')).toHaveCount(0);
+    await expect(view.root.locator('#buttonsTopRow, #buttons, #next, #submit')).toHaveCount(0);
   });
 
   test('saves the exacerbation question and the disease severity; VIEW shows them', async ({ page, api }) => {
@@ -127,9 +127,9 @@ test.describe('section-lung (NCD Followup encounter)', () => {
 
     // VIEW (targeted): the generic check cannot be used, the labels are text outside the value
     const view = await ViewFormPage.open(page, FORM, section.encounter.uuid);
-    await expect(view.page.locator('p.list-inline', { hasText: 'Exacerbation today?' }).locator('.value')).toHaveText(/\[X\]\s*yes/i);
+    await expect(view.root.locator('p.list-inline', { hasText: 'Exacerbation today?' }).locator('.value')).toHaveText(/\[X\]\s*yes/i);
     expect((await view.valueTexts()).filter((t) => t.startsWith('[X]')).length).toBeGreaterThanOrEqual(2);
-    await expect(view.page.locator('#steroid-inhaler .value')).toHaveCount(0);
+    await expect(view.root.locator('#steroid-inhaler .value')).toHaveCount(0);
   });
 });
 

@@ -19,7 +19,7 @@ import { SectionFormPage, ViewFormPage, expectViewShowsSavedObs } from '../../pa
 // Scripts: :164 setUpNextAndSubmitButtons() (see _shared.e2e.md). No validation, default or derived value. No required field.
 // Side effects on save: postSubmissionAction CleanDiagnosisConstructAction (:19, no Visit Diagnoses group here, so none);
 //   <familyHistoryRelativeCheckboxes> (pihcore tag) stores, per ticked relative, a family-history group (disease, relative, present).
-// VIEW (getAsHtml.action): showIfEmpty=false hides every group that was not saved; a ticked complication is `[X] <label>`, a ticked
+// VIEW (the visit page, which fetches getAsHtml.action for this section): showIfEmpty=false hides every group that was not saved; a ticked complication is `[X] <label>`, a ticked
 //   indicator is a bare `[X]` (its answerLabel is empty, the text is the labelText); the heading and button rows are absent.
 // Not covered here: the #pihcore-<section> jump buttons of #buttonsTopRow and #next (need the visit page; _shared.e2e.md :56
 //   says no Liberia form has `.nextSection`, but the six NCD disease sections do); family history in VIEW (tag rendering unknown).
@@ -202,12 +202,12 @@ test.describe('section-hypertension', () => {
     expect(await view.valueTexts()).toEqual(
       expect.arrayContaining(['[X] Stroke', '[X] Hypertension', 'Hypertensive crisis in 2023', '[X]', '[X] yes', '[X] no']),
     );
-    await expect(view.page.locator('#stroke-onset-date')).toContainText(/15 Mar(ch)? 2024|15\/03\/2024/);
-    await expect(view.page.locator('#tobacco-htn-dx-ynu .value')).toHaveText('[X] yes');
-    await expect(view.page.locator('#ulcers-htn-dx-ynu .value')).toHaveCount(0);
-    await expect(view.page.locator('body')).not.toContainText('PVD');
+    await expect(view.root.locator('#stroke-onset-date')).toContainText(/15 Mar(ch)? 2024|15\/03\/2024/);
+    await expect(view.root.locator('#tobacco-htn-dx-ynu .value')).toHaveText('[X] yes');
+    await expect(view.root.locator('#ulcers-htn-dx-ynu .value')).toHaveCount(0);
+    await expect(view.root).not.toContainText('PVD');
     // ifMode VIEW include=false (:159, :273): no heading, no button rows
-    await expect(view.page.locator('h1, #buttonsTopRow, #buttons, #submit, #next, #cancel')).toHaveCount(0);
+    await expect(view.root.locator('h1, #buttonsTopRow, #buttons, #submit, #next, #cancel')).toHaveCount(0);
   });
 
   test('VIEW: an encounter nothing was saved on shows no value', async ({ page }) => {

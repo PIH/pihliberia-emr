@@ -16,7 +16,7 @@ import { SectionFormPage, ViewFormPage, expectViewShowsSavedObs } from '../../pa
 // Scripts: :47 setUpNextAndSubmitButtons() (see _shared.e2e.md). No validation, default or derived value. No required field.
 // Side effects on save: postSubmissionAction CleanDiagnosisConstructAction (:19): each "Visit Diagnoses" group with a coded
 //   diagnosis gets a "Diagnosis order: Secondary" member (tested).
-// VIEW (getAsHtml.action): showIfEmpty=false hides every group that was not saved; ticked boxes are `[X] <label>`, radios
+// VIEW (the visit page, which fetches getAsHtml.action for this section): showIfEmpty=false hides every group that was not saved; ticked boxes are `[X] <label>`, radios
 //   `[X] yes|no|unknown`; the heading and button rows are absent.
 // Not covered here: the #pihcore-<section> jump buttons of #buttonsTopRow and #next (need the visit page; _shared.e2e.md :56
 //   says no Liberia form has `.nextSection`, but the six NCD disease sections do).
@@ -184,10 +184,10 @@ test.describe('section-kidney', () => {
       expect.arrayContaining(['[X] CKD', '[X] Hypertension', 'Gout nephropathy', '[X] yes', '[X] no', '[X] unknown', '[X] Stage 3']),
     );
     expect(await view.valueTexts()).not.toContain('[X] Diabetes');
-    await expect(view.page.locator('body')).not.toContainText('Pruritis');
-    await expect(view.page.locator('.form-row').filter({ hasText: 'Date CKD treatment started' })).toContainText(/15 Mar(ch)? 2024|15\/03\/2024/);
+    await expect(view.root).not.toContainText('Pruritis');
+    await expect(view.root.locator('.form-row').filter({ hasText: 'Date CKD treatment started' })).toContainText(/15 Mar(ch)? 2024|15\/03\/2024/);
     // ifMode VIEW include=false (:42, :194): no heading, no button rows
-    await expect(view.page.locator('h1, #buttonsTopRow, #buttons, #submit, #next, #cancel')).toHaveCount(0);
+    await expect(view.root.locator('h1, #buttonsTopRow, #buttons, #submit, #next, #cancel')).toHaveCount(0);
   });
 
   test('VIEW: an encounter nothing was saved on shows no value', async ({ page }) => {

@@ -20,7 +20,7 @@ import { SectionFormPage, ViewFormPage, expectViewShowsSavedObs } from '../../pa
 //   when #palliative-hosp = Yes  :281        shows #hosp-pall-reason (reasons + Other)
 // Scripts: :49 setUpNextAndSubmitButtons() (see _shared.e2e.md). No validation, default or derived value. No required field.
 // Side effects on save: postSubmissionAction CleanDiagnosisConstructAction (:19): no Visit Diagnoses group here, so none.
-// VIEW (getAsHtml.action): showIfEmpty=false hides every group that was not saved (the unticked symptoms), checkboxes are
+// VIEW (the visit page, which fetches getAsHtml.action for this section): showIfEmpty=false hides every group that was not saved (the unticked symptoms), checkboxes are
 //   `[X] <label>`, radios `[X] yes|no|...`; heading-less; the ECOG table and the button rows are absent.
 // Not covered here: the #pihcore-<section> jump buttons of #buttonsTopRow and #next (need the visit page; _shared.e2e.md :56
 //   says no Liberia form has `.nextSection`, but the six NCD disease sections do); the tumoral "Other" comment.
@@ -215,12 +215,12 @@ test.describe('section-palliative', () => {
       ]),
     );
     expect(await view.valueTexts()).not.toContain('[X] Lung cancer');
-    await expect(view.page.locator('#Pain-symp .value')).toHaveText('[X] Pain');
-    await expect(view.page.locator('#Nausea-symp')).toHaveCount(0);
-    await expect(view.page.locator('#hosp-pall-reason .value')).toHaveText(['[X] Diarrhea']);
+    await expect(view.root.locator('#Pain-symp .value')).toHaveText('[X] Pain');
+    await expect(view.root.locator('#Nausea-symp')).toHaveCount(0);
+    await expect(view.root.locator('#hosp-pall-reason .value')).toHaveText(['[X] Diarrhea']);
     // ifMode VIEW include=false (:239, :315): no ECOG legend, no button rows
-    await expect(view.page.locator('table[align=left]')).toHaveCount(0);
-    await expect(view.page.locator('#buttonsTopRow, #buttons, #submit, #next, #cancel')).toHaveCount(0);
+    await expect(view.root.locator('table[align=left]')).toHaveCount(0);
+    await expect(view.root.locator('#buttonsTopRow, #buttons, #submit, #next, #cancel')).toHaveCount(0);
   });
 
   test('VIEW: an encounter nothing was saved on shows no value', async ({ page }) => {

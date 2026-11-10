@@ -2,7 +2,8 @@
 // MCH Delivery encounters: a "Plan" heading, the drug-order widget (shared drug-order-widget.xml, see _shared: "Add Medication" opens a new-order row) and Save / Cancel. It has no
 // formEncounterType and no obs of its own. Tested as a section on one parent, an ANC Intake encounter created over REST for a female patient, opened with its edit URL (SectionFormPage.editUrl);
 // ANC Followup and MCH Delivery parents (_availability.e2e.md "Sections") use the same URL and the form does not branch on the encounter type, so they are not repeated.
-// The visit page, the section pencil and the vaccinations widget that follows it are not exercised.
+// The section pencil and the vaccinations widget that follows it are not exercised. VIEW: the visit page's `section-obgyn-plan` entry of the ANC Intake
+// shows the form's VIEW (templateModelUrl active, viewSectionWithHtmlFormLong), and the VIEW test opens it there.
 // First written without a server (locators from the XML), then run and fixed against a local Liberia server: see README.md.
 //
 // Conditions in the form, from documentation inventory (med-order.inv.md):
@@ -12,8 +13,8 @@
 //   replaced the medication fieldsets): the script is dead (V1).
 // Side effects on save: postSubmissionAction ApplyDispositionAction :4 (nothing to apply: no disposition field here). The drug order itself: action NEW, saved with the encounter.
 // Not covered here: revising, renewing or discontinuing an order and the quantity calculator (they need an active order from an earlier encounter), a lab order (not saved by these specs).
-// VIEW: no obs of its own; the VIEW harness runs the form's scripts and loads orderWidget.js, so the VIEW test after the save checks that the order is drawn and that the
-//   ifMode VIEW include=false parts (h1, buttons) are absent.
+// VIEW: no obs of its own; the visit page runs the form's scripts, so the VIEW test after the save checks that the order is drawn and that the
+//   ifMode VIEW include=false parts (h1, buttons) are absent from the section's long view.
 //
 // Findings (V1.. Low; V2 is in _shared):
 //   V1 Low    :56-155  dead script, see above: the validation never runs, so a dose without units etc. is not caught by this form (the order widget has its own checks).
@@ -85,8 +86,8 @@ test.describe('med-order', () => {
 
     // VIEW: nothing of the form is a saved value (the order is drawn by the widget); ifMode VIEW include=false :157, :170
     const view = await ViewFormPage.open(page, FORM, section.encounter.uuid);
-    await expect(page.locator('#drug-orders')).toContainText(/acetylsalicylic/i); // drawn by orderWidget.js from the saved order (unconfirmed: not run)
-    await expect(page.locator('h1')).toHaveCount(0);
-    await expect(page.locator('#buttons, input.submitButton')).toHaveCount(0);
+    await expect(view.root.locator('#drug-orders')).toContainText(/acetylsalicylic/i); // drawn by orderWidget.js from the saved order
+    await expect(view.root.locator('h1')).toHaveCount(0);
+    await expect(view.root.locator('#buttons, input.submitButton')).toHaveCount(0);
   });
 });

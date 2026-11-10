@@ -27,7 +27,7 @@ import { EntryFormPage, ViewFormPage, buttonsSubmit, viewMismatches, VISIT_PAGE_
 //   V1 High   :288   answerCodes "OD,BID,TID,QD,..." labels PIH:QID (four times daily) "QD" (once daily elsewhere: mentalHealth*, epilepsy* use
 //                    "QD" for PIH:OD and "QID" for PIH:QID): the pharmacist who picks "QD" saves four times a day. Fix: "QID". (TESTED, test.fail)
 //   V2 Medium :63-155 the script is outside any ifMode, so it also runs in VIEW (visit page), where htmlForm is undefined: "htmlForm is not
-//                    defined" on load. Fix: wrap it in <ifMode mode="VIEW" include="false">. (TESTED, VIEW test.fail)
+//                    defined" on load (a console error from Angular's exception handler). Fix: wrap it in <ifMode mode="VIEW" include="false">. (TESTED, VIEW test.fixme)
 //   V3 Low    :219, :229  ids with spaces ("Timing of hospital prescription", "Discharge location"): #id selectors are invalid CSS. The specs use [id="..."].
 //   V4 Low    :277   the Text-obs answers list "UI, Bottle, Tube" is split on "," only, so " Bottle" and " Tube" keep a leading space in the saved value.
 //   V5 Low    :128   `.length = 0` assigns instead of comparing, so the blur handler always takes the else branch (only the re-highlighting is wrong).
@@ -271,13 +271,9 @@ test.describe('dispensing', () => {
     expect(after.some((d) => /after meals/.test(d))).toBe(false);
   });
 
-  // V2: remove test.fail() when the script is wrapped in ifMode VIEW include="false"
-  test.fail('V2 VIEW: a saved dispensing encounter renders its medications without a script error', async ({
-    page,
-    api,
-    createEntryContext,
-  }) => {
-    // :63-155 runs in VIEW and calls htmlForm.getBeforeValidation(), undefined on the visit page: ViewFormPage.open throws / failOnJsError fails
+  // VIEW on the visit page (`viewEncounterWithHtmlFormLong`, getAsHtml.action without definitionUiResource): the saved values under their ids.
+  // The medication names are answerDrugs obs, which the form prints in a plain span.obs-field (not span.value): asserted by id, and left out of the generic check.
+  const openDispensingView = async (page: Page, api: APIRequestContext, createEntryContext: CustomTestFixtures['createEntryContext'], consoleErrors?: string[]) => {
     const { encounterUuid, obs } = await saveFull(page, api, createEntryContext);
     const labels: Record<string, string> = {
       'Timing of hospital prescription: Hospitalized': '[X] Inpatient', // answerCodes :219-222
@@ -290,12 +286,38 @@ test.describe('dispensing', () => {
       if (/^Medication frequency: (BID|OD)/.test(o.display)) {
         labels[o.display] = o.display.includes('BID') ? 'BID' : 'OD'; // the form's own labels
       }
+      if (/^Medication\(s\) name:/.test(o.display)) {
+        labels[o.display] = ''; // drug obs: not a span.value, see above
+      }
+    }
+    if (consoleErrors) {
+      page.on('console', (m) => {
+        if (m.type() === 'error') {
+          consoleErrors.push(m.text().split('\n')[0]);
+        }
+      });
     }
     const view = await ViewFormPage.open(page, FORM, encounterUuid);
     expect(await viewMismatches(api, view, encounterUuid, labels)).toEqual([]);
-    await expect(view.page.locator('fieldset.medication')).toHaveCount(2); // showIfEmpty=false hides blocks 3-7
-    await expect(view.page.locator('[id="Discharge location"] .value')).toHaveText('NCD Clinic');
+    return view;
+  };
+
+  test('VIEW (visit page): a saved dispensing encounter shows its two medication blocks and the prescription details', async ({ page, api, createEntryContext }) => {
+    const view = await openDispensingView(page, api, createEntryContext);
+    await expect(view.root.locator('fieldset.medication')).toHaveCount(2); // showIfEmpty=false hides blocks 3-7
+    await expect(view.root.locator('#name1')).toHaveText('Paracetamol, 500mg tablet');
+    await expect(view.root.locator('#name2')).toHaveText('Acetylsalicylic acid, 81mg tablet');
+    await expect(view.root.locator('[id="Discharge location"] .value')).toHaveText('NCD Clinic');
     // ifMode VIEW include=false :157, :331: the heading and the Save / Cancel buttons are not in the VIEW
-    await expect(view.page.locator('h2, #buttons, button.submitButton')).toHaveCount(0);
+    await expect(view.root.locator('h2, #buttons, button.submitButton')).toHaveCount(0);
+  });
+
+  // V2: remove test.fixme() when the script is wrapped in ifMode VIEW include="false". Confirmed with test.fail on the visit page: Angular's exception
+  // handler logs "ReferenceError: htmlForm is not defined" to the console (not an uncaught page error, so the failOnJsError fixture does not see it).
+  test.fixme('V2 VIEW: a saved dispensing encounter renders without a script error', async ({ page, api, createEntryContext }) => {
+    // :63-155 runs in VIEW and calls htmlForm.getBeforeValidation(), undefined on the visit page
+    const consoleErrors: string[] = [];
+    await openDispensingView(page, api, createEntryContext, consoleErrors);
+    expect(consoleErrors.filter((e) => /htmlForm is not defined/.test(e))).toEqual([]);
   });
 });

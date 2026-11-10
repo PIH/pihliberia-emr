@@ -2,11 +2,17 @@
 
 Playwright tests for the Liberia HTML forms. The layout follows `pihmalawi-emr/e2e` (`core/`, `fixtures/`, `commands/`, `pages/`, `specs/`); the harness is copied from `zl-emr/e2e` and `pihsl-emr/e2e` and can move to a shared package later.
 
-> **Status:** written without a server, then run and fixed against a local Liberia server (Nov 2026): the full suite (332 tests) ran in about 13 minutes with `E2E_WORKERS=3`; after the fixes every spec passes (the specs fixed after that run were re-run on their own). Tests marked `test.fail()` assert the *intended* behaviour of a known form bug and pass while the bug exists: the ones that failed in the run failed as predicted, but a marker is only confirmed for the intended reason when its failure message says so, so check that when you fix a bug and remove the marker.
+> **Status:** run against the local Liberia server on `http://localhost:7072/openmrs` (config `liberia,liberia-harper,liberia-harper-demo`, see `htmlforms/documentation/_availability.e2e.md`) on 2026-11-09: the full suite (334 tests) ran in about 14 minutes with `--workers=3`; 331 passed and 3 are `test.fixme` (verified bugs: `dispensing` V2, `section-history` VW1, `section-liver` VW1). VIEW is tested on the real visit page (`pages/visit-page.ts`, `pages/view-form-page.ts`); a form whose visit-page entry does not show its VIEW says so in a `// Visit-page display:` header and its tests assert what the page shows. `section-exam` and `section-other-ncd` are tagged `@unreachable` (`npx playwright test --grep @unreachable`). Tests marked `test.fail()` assert the *intended* behaviour of a known form bug and pass while the bug exists; confirm that one fails for the intended reason (remove the marker once) before relying on it, and use `test.fixme()` for a bug whose test cannot run cleanly.
+
+### Target servers
+
+| `E2E_BASE_URL` | `pih.config` | Forms |
+|---|---|---|
+| `http://localhost:7072/openmrs` | `liberia,liberia-harper,liberia-harper-demo` | all 39 reachable forms: the Pleebo profile differs from Harper only by not listing `familyMedicine`, so the two `family-medicine-*` specs need a Harper stack |
 
 ## Running locally
 
-Needs a running Liberia OpenMRS server (the example uses `http://localhost:7070/openmrs`, config `liberia,liberia-harper,liberia-harper-jjd-ci`) and Node.js 22+ (`nvm use`).
+Needs a running Liberia OpenMRS server (the example uses `http://localhost:7072/openmrs`, config `liberia,liberia-harper,liberia-harper-demo`; the earlier remote stack was `liberia,liberia-harper,liberia-harper-jjd-ci`) and Node.js 22+ (`nvm use`).
 
 ```bash
 cd e2e
@@ -47,6 +53,7 @@ One spec per form, in `specs/<xml file name without .xml>/`. *Form name*, *Form 
 | `ncd-followup.xml` | NCD Followup | 2.0 | `4cabb024-7f47-441c-9a08-9318122f711a` | NCD Followup Consult | `5cbfd6a2-92d9-4ad0-b526-9d29bfe1d10c` |
 | `ncd-initial.xml` | NCD Initial | 2.0 | `edf1cecf-f1fc-4917-8bcb-2bd9669eb2f7` | NCD Initial Consult | `ae06d311-1866-455b-8a64-126a9bd74171` |
 | `outpatientConsult.xml` | Clinic Consult | 1.0 | `a3fc5c38-eb32-11e2-981f-96c0fcb18276` | Consultation | `92fd09b4-5335-4f7e-9f63-b2a663fd09a6` |
+| `patientRegistration-rs.xml` | Patient Registration | 1.0 | `6F6E6FA0-1E99-41A3-9391-E5CB8A127C11` | Patient Registration | `873f968a-73a8-4f9c-ac78-9f4778b751b6` |
 | `patientRegistration-social.xml` | Patient Registration Social | 1.0 | `3C953068-B460-4B1A-8889-0AAD43447CD7` | Patient Registration | `873f968a-73a8-4f9c-ac78-9f4778b751b6` |
 | `peds.xml` | Pediatrics form | 1.0 | `fac9d9a2-d0bc-11ea-9995-3c6aa7c392cc` | PEDS Form | `fac9d9a2-d0bc-11ea-9995-3c6aa7c392cc` |
 | `vitals.xml` | Vitals | 2.2 | `68728aa6-4985-11e2-8815-657001b58a90` | Vital Signs | `4fb47712-34a6-40d2-8ed3-e153abbd25b7` |
@@ -58,6 +65,7 @@ A `section-*` form has no `formEncounterType`: its *Encounter* column lists the 
 | XML file | Form name | Form version | Form uuid | Encounter | Encounter uuid |
 |---|---|---|---|---|---|
 | `med-order.xml` | OB-GYN Plan | 1.0 | `3616e6be-1671-4031-9cc9-a0f1f4b1d100` | ANC Intake | `00e5e810-90ec-11e8-9eb6-529269fb1459` |
+| `section-chief-complaint.xml` | Chief Complaint | 1.0 | `71ee5c0c-d8ae-4777-af9f-bb57f563503a` | Family Medicine Followup | `84d5e978-66d1-4a2c-b209-95d47c911dd8` |
 | `section-diabetes.xml` | Diabetes | 1.0 | `d26b1ddf-d410-4a9f-be0f-b516e7c26c40` | NCD Followup Consult<br>NCD Initial Consult | `5cbfd6a2-92d9-4ad0-b526-9d29bfe1d10c`<br>`ae06d311-1866-455b-8a64-126a9bd74171` |
 | `section-dx.xml` | Diagnostic | 1.0 | `3498f204-a6fa-4df0-b7fd-a94eb03a43c9` | Family Medicine Intake | `1d1faf4f-a848-44c8-ac44-ada8aa5ae40c` |
 | `section-exam.xml` | Examen physique | 1.0 | `b34b71f4-03f1-11e5-8418-1697f925ec7b` | NCD Initial Consult<br>OB/GYN<br>PMTCT Intake<br>PMTCT Followup | `ae06d311-1866-455b-8a64-126a9bd74171`<br>`d83e98fd-dc7b-420f-aa3f-36f648b4483d`<br>`584124b9-1f10-4757-ba09-91fc9075af92`<br>`95e03e7d-9aeb-4a99-bd7a-94e8591ec2c5` |
@@ -73,6 +81,9 @@ A `section-*` form has no `formEncounterType`: its *Encounter* column lists the 
 | `section-ncd-plan.xml` | NCD Plan | 1.0 | `aa8d9374-f343-4818-8433-66f4e6145a7f` | NCD Followup Consult | `5cbfd6a2-92d9-4ad0-b526-9d29bfe1d10c` |
 | `section-other-ncd.xml` | Other NCDs | 1.0 | `319412b8-215c-428d-a1d2-f15c1a96b4d1` | NCD Initial Consult | `ae06d311-1866-455b-8a64-126a9bd74171` |
 | `section-palliative.xml` | Palliative Care | 1.0 | `226796bc-24b0-4af7-98b3-f07b26e390cf` | NCD Followup Consult<br>NCD Initial Consult | `5cbfd6a2-92d9-4ad0-b526-9d29bfe1d10c`<br>`ae06d311-1866-455b-8a64-126a9bd74171` |
+| `section-peds.xml` | Pediatrics feeding and supplements | 1.0 | `c278f802-57be-11e9-8647-d663bd873d93` | Family Medicine Intake<br>Family Medicine Followup | `1d1faf4f-a848-44c8-ac44-ada8aa5ae40c`<br>`84d5e978-66d1-4a2c-b209-95d47c911dd8` |
+| `section-plan.xml` | Plan | 2.0 | `ed673783-ec75-49de-a19f-3976d031aec0` | Family Medicine Intake<br>Family Medicine Followup | `1d1faf4f-a848-44c8-ac44-ada8aa5ae40c`<br>`84d5e978-66d1-4a2c-b209-95d47c911dd8` |
+| `section-prescriptions-print.xml` | Prescriptions | 1.0 | `CA8D072A-2681-4E06-B83C-AD3B0FC3D49D` | Family Medicine Intake | `1d1faf4f-a848-44c8-ac44-ada8aa5ae40c` |
 | `section-review-of-systems.xml` | Review of Systems | 1.0 | `1c57f8d3-65eb-4619-a375-7612b79a7b13` | Family Medicine Intake | `1d1faf4f-a848-44c8-ac44-ada8aa5ae40c` |
 | `section-sickle-cell.xml` | Sickle Cell | 1.0 | `23afe1ed-76c4-4642-b37b-44944a9dbed9` | NCD Followup Consult<br>NCD Initial Consult | `5cbfd6a2-92d9-4ad0-b526-9d29bfe1d10c`<br>`ae06d311-1866-455b-8a64-126a9bd74171` |
 
@@ -93,4 +104,4 @@ A `section-*` form has no `formEncounterType`: its *Encounter* column lists the 
 
 ### Known form bugs
 
-Tests for behaviour that is currently broken assert the **intended** behaviour and are marked `test.fail()` with the finding id (e.g. `section-ncd-history` V1). They stay green while the bug exists and fail once it is fixed: remove the marker then. All of them are **unconfirmed** because the specs were never run. The findings, scripts and side effects of each form are in the header comment of its spec; shared subforms and scripts are documented once in `htmlforms/documentation/_shared.e2e.md`, and when each form is offered in `_availability.e2e.md`. The skill for writing specs is `htmlforms/documentation/hfe-e2e-specs.skill.md`.
+Tests for behaviour that is currently broken assert the **intended** behaviour and are marked `test.fail()` with the finding id (e.g. `section-ncd-history` V1). They stay green while the bug exists and fail once it is fixed: remove the marker then. The findings, scripts and side effects of each form are in the header comment of its spec; shared subforms and scripts are documented once in `htmlforms/documentation/_shared.e2e.md`, and when each form is offered in `_availability.e2e.md`. The skill for writing specs is `htmlforms/documentation/hfe-e2e-specs.skill.md`.

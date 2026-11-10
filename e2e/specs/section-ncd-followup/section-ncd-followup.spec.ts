@@ -50,7 +50,7 @@ const HEIGHT_CONCEPT_UUID = '3ce93cf2-26fe-102b-80cb-0017a47871b2';
 
 // Records a Vitals encounter (weight, height) in the visit of the section encounter.
 const addVitals = async (api: APIRequestContext, section: SectionEncounter, weightKg: number, heightCm: number) => {
-  const now = new Date().toISOString();
+  const now = new Date(Date.now() - 60_000).toISOString();
   const res = await api.post('encounter', {
     data: {
       patient: section.patient.uuid,
@@ -168,11 +168,11 @@ test.describe('section-ncd-followup (NCD Followup encounter)', () => {
     expect(shown).toContain('[X] Diabetes');
     expect(shown.some((t) => numberOf(120).test(t))).toBeTruthy();
     expect(shown.some((t) => numberOf(80).test(t))).toBeTruthy();
-    await expect(view.page.locator('#bp_systolic .value')).toHaveText(numberOf(120));
-    await expect(view.page.locator('#social-support .value')).toHaveText(/\[X\]\s*yes/i);
-    await expect(view.page.locator('#days-missed .value, #specify-support .value')).toHaveCount(0); // nothing saved there
-    await expect(view.page.locator('h1')).toHaveCount(0);
-    await expect(view.page.locator('#buttons, #next, #submit')).toHaveCount(0);
+    await expect(view.root.locator('#bp_systolic .value')).toHaveText(numberOf(120));
+    await expect(view.root.locator('#social-support .value')).toHaveText(/\[X\]\s*yes/i);
+    await expect(view.root.locator('#days-missed .value, #specify-support .value')).toHaveCount(0); // nothing saved there
+    await expect(view.root.locator('h1')).toHaveCount(0);
+    await expect(view.root.locator('#buttons, #next, #submit')).toHaveCount(0);
   });
 
   test('VIEW: shows the answers whose label differs from the concept name', async ({ page, api }) => {
@@ -189,7 +189,7 @@ test.describe('section-ncd-followup (NCD Followup encounter)', () => {
     expect(shown.some((t) => /^\[X\]\s*Scheduled/.test(t))).toBeTruthy();
     expect(shown).toContain('[X] Transport');
     expect(shown.some((t) => /^\[X\]\s*Normal \(BMI/.test(t))).toBeTruthy();
-    await expect(view.page.locator('#muac-results')).toHaveCount(0);
+    await expect(view.root.locator('#muac-results')).toHaveCount(0);
   });
 });
 

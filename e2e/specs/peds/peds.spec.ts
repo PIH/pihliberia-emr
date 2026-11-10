@@ -14,8 +14,11 @@
 //   :115-148 supplement rows: ticking .supplement enables the row's age input, unticking clears and disables it; on load disabled unless ticked.
 // Side effects on save: none (no enrollInProgram, no postSubmissionAction). A disabled input is not posted, so a cleared age is never saved.
 // Not covered here: Cancel, the Next button (V2), Pleebo / Harper differences (none).
-// VIEW: the rich save test (generic check; the feeding checkboxes have an empty label, so their obs are excluded from it and asserted by their [X]) and a VIEW of an empty
-//   encounter created over REST (no values, no buttons).
+// Visit-page display: the visit page does NOT show this form's VIEW. The PEDS Form encounter type (fac9d9a2-..., resolved for `liberia`) has an entry in
+//   encounterTypeConfig.js with `longTemplate: defaultHtmlFormEncounterLong.page` and `templateModelUrl: /module/htmlformentry/encounter.json?...` (HFE's field
+//   list, not getAsHtml.action) and no `editUrl` (so no edit or delete button): the encounter is a card that expands to one label + .obs-value row per saved
+//   field. The VIEW tests assert that card and those rows; the form's own VIEW (ifMode VIEW :150, :235, :322) is therefore not tested. The earlier VIEW
+//   assertions (#vitamin-a .value, ... under getAsHtml.action) were removed for that reason.
 //
 // Findings (V1.. Medium -> Low):
 //   V1 Medium :1-2   no formEncounterType. Confirmed by reading: htmlformentryui HtmlFormUtil sets an encounter type on the Form only from that attribute, HFE gives the
@@ -31,7 +34,7 @@
 import { type APIRequestContext, type Locator, type Page } from '@playwright/test';
 import { test, expect, birthdateYearsAgo } from '../../core';
 import { getPatientEncounters } from '../../commands';
-import { EntryFormPage, SectionFormPage, ViewFormPage, VISIT_PAGE_URL, expectViewShowsSavedObs } from '../../pages';
+import { EntryFormPage, SectionFormPage, VisitPage, VISIT_PAGE_URL } from '../../pages';
 
 const FORM = 'peds.xml';
 // encounter type "PEDS Form" (encountertypes/liberiaEncounterTypes.csv); not in e2e/core/constants.ts
@@ -121,7 +124,7 @@ test.describe('peds', () => {
     });
   });
 
-  test('saves supplements and feeding answers as a PEDS Form encounter; EDIT restores the ages; VIEW shows them', async ({ page, api, createEntryContext }) => {
+  test('saves supplements and feeding answers as a PEDS Form encounter; EDIT restores the ages; the visit page shows them', async ({ page, api, createEntryContext }) => {
     test.fail(); // V1: the form has no formEncounterType, so the save is refused (remove when fixed)
     const context = await createEntryContext(PATIENT);
     await EntryFormPage.open(page, FORM, context);
@@ -162,30 +165,26 @@ test.describe('peds', () => {
     await expect(ageInput(feedingRow(page, 1))).toBeDisabled();
     await expect(feedingRow(page, 4).locator('textarea')).toHaveValue('Weaned slowly');
 
-    // VIEW: answerCode="" gives the feeding checkboxes no label, so their obs are left out of the generic check (empty label = do not look)
-    const labels: Record<string, string> = {};
-    for (const o of obs.filter((x) => /feeding method/i.test(x.concept))) {
-      labels[o.display] = '';
-    }
-    const view = await expectViewShowsSavedObs(page, api, FORM, encounter.uuid, labels);
-    await expect(view.page.locator('#vitamin-a .value')).toHaveText(/\[X\]\s*vitamin a/i);
-    await expect(view.page.locator('#breastfeeding-yes .value')).toHaveText(/\[X\]/);
-    await expect(view.page.locator('#breastfeedAge .value')).toHaveText('4 months');
-    await expect(view.page.locator('#supplements .value')).toHaveCount(2); // only Vitamin A (and its age) was filled
-    expect(await view.valueTexts()).toContain('Weaned slowly');
-    // ifMode VIEW include=false :150, :235, :322
-    await expect(view.page.locator('h2, #buttons')).toHaveCount(0);
+    // Visit-page display (header): one .obs-value row per saved field (never reached while V1 holds: the save is refused)
+    const visit = await VisitPage.open(page, context.visitUuid);
+    const long = await visit.expand(visit.encounterOfType(PEDS_ENCOUNTER_TYPE_UUID));
+    const rows = (await long.locator('.obs-value').allInnerTexts()).map((t) => t.replace(/\s+/g, ' ').trim());
+    expect(rows.join(' | ')).toMatch(/Vitamin A/i);
+    expect(rows).toContain('6 months');
+    expect(rows).toContain('4 months');
+    expect(rows).toContain('Weaned slowly');
+    await expect(long.locator('h2, #buttons, input, textarea')).toHaveCount(0); // none of the form's own HTML
   });
 
-  // VIEW of an encounter with no obs (created over REST: the form cannot be reached through the visit page for it, see the header)
-  test('VIEW: an empty encounter shows no values, no buttons and no headings', async ({ page, createSectionEncounter }) => {
+  // Visit-page display (header): an encounter created over REST (the form cannot save one, V1) with no obs
+  test('the visit page lists an empty PEDS Form encounter with no rows, no form and no edit or delete button', async ({ page, createSectionEncounter }) => {
     const section = await createSectionEncounter({ encounterTypeUuid: PEDS_ENCOUNTER_TYPE_UUID, patient: PATIENT });
-    const view = await ViewFormPage.open(page, FORM, section.encounter.uuid);
-
-    expect(await view.valueTexts()).toEqual([]);
-    await expect(page.locator('#supplements')).toBeVisible();
-    await expect(page.locator('#feeding')).toBeVisible();
-    await expect(page.locator('h2, #buttons')).toHaveCount(0); // ifMode VIEW include=false
-    await expect(page.locator('#supplements span.emptyValue, #feeding span.emptyValue').first()).toBeAttached();
+    const visit = await VisitPage.openOfEncounter(page, section.encounter.uuid);
+    const entry = visit.encounterOfType(PEDS_ENCOUNTER_TYPE_UUID);
+    await expect(entry).toHaveCount(1);
+    const long = await visit.expand(entry);
+    await expect(long.locator('.obs-value')).toHaveCount(0);
+    await expect(long.locator('#supplements, #feeding, h2, #buttons, input, textarea')).toHaveCount(0); // none of the form's own HTML
+    await expect(entry.locator('a.edit-encounter:visible, a.delete-encounter:visible')).toHaveCount(0); // no editUrl: visit.js :287, :297
   });
 });

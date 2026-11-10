@@ -144,10 +144,10 @@ test.describe('section-hospital (NCD Followup encounter)', () => {
     expect(shown).toContain('[X] Hyperglycemia');
     expect(shown.some((t) => numberOf(2).test(t))).toBeTruthy();
     expect(shown.some((t) => numberOf(5).test(t))).toBeTruthy();
-    await expect(view.page.locator('#hospital-stay .value')).toHaveText(/\[X\]\s*yes/i);
-    await expect(view.page.locator('#hosp-outcome .value')).toHaveText(/\[X\]\s*discharge/i);
-    await expect(view.page.locator('#htn-plus-t .value')).toHaveCount(0); // nothing saved in the other tables
-    await expect(view.page.locator('#buttonsTopRow, #buttons, #next, #submit')).toHaveCount(0);
+    await expect(view.root.locator('#hospital-stay .value')).toHaveText(/\[X\]\s*yes/i);
+    await expect(view.root.locator('#hosp-outcome .value')).toHaveText(/\[X\]\s*discharge/i);
+    await expect(view.root.locator('#htn-plus-t .value')).toHaveCount(0); // nothing saved in the other tables
+    await expect(view.root.locator('#buttonsTopRow, #buttons, #next, #submit')).toHaveCount(0);
   });
 });
 

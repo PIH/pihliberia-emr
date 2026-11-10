@@ -1,8 +1,8 @@
-import { type APIRequestContext } from '@playwright/test';
+import { type APIRequestContext, type Locator, type Page } from '@playwright/test';
 import { test, expect, type SectionEncounter } from '../../core';
 import { FAMILY_MEDICINE_INTAKE_ENCOUNTER_TYPE_UUID } from '../../core/constants';
 import { getEncounterObs } from '../../commands';
-import { SectionFormPage, ViewFormPage, expectViewShowsSavedObs } from '../../pages';
+import { SectionFormPage, VisitPage } from '../../pages';
 
 // section-dx.xml ("Diagnostic"): the encounterDiagnosesByObs widget plus a "Clinical impression comments" textarea. On
 // the visit page it is the `pihcore-diagnosis` section of Family Medicine Intake/Followup and NCD Initial/Followup
@@ -15,7 +15,11 @@ import { SectionFormPage, ViewFormPage, expectViewShowsSavedObs } from '../../pa
 // Scripts: :31 setUpNextAndSubmitButtons() only (see _shared.e2e.md, nextAndSubmitButtons.js). No validation, default or
 // derived value. Required fields: none (a blank form saves).
 // Side effects on save: none from the form itself (no postSubmissionAction); the diagnosis widget writes its own obs.
-// VIEW (getAsHtml.action): the comment shows as a value, the Next/Save/Cancel row and the heading (ifMode :28, :50) are absent.
+// Visit-page display: the visit page does NOT show this form's VIEW, although the `pihcore-diagnosis` entry of encounterTypeConfig.js
+//   (:122) has an active templateModelUrl naming section-dx.xml: its `longTemplate` is templates/sections/dxLong.page, which never binds
+//   the fetched HTML and renders the encounter's obs itself (rows Diagnoses, Non-Coded Diagnoses, Clinical Note; short card:
+//   dxSectionShort.page). So the VIEW tests below assert those rows (VisitPage), and the form's own VIEW (ifMode VIEW :4, :28, :50)
+//   is therefore not tested.
 // Not covered here: picking a coded diagnosis in the widget (Angular autocomplete backed by concept search, shared with
 // every consult form), #next (needs the visit page).
 //
@@ -70,28 +74,32 @@ test.describe('section-dx', () => {
     await expect(page.locator('#data-collection textarea:not([name="encounterDiagnoses"])')).toHaveValue('Chronic cough, review in two weeks');
   });
 
-  // VIEW: the comment is a value; the heading and the button row (ifMode VIEW include=false) are not rendered.
-  test('VIEW: shows the comments as a value, and no heading or buttons', async ({ page, api }) => {
+  // Visit-page display (dxLong.page): one row per heading, the saved values in its right column.
+  const dxRow = (long: Locator, heading: string) => long.locator(`div:has(> .left-column > h3:text-is("${heading}")) > .right-column`);
+  const openLong = async (page: Page) => {
+    const visit = await VisitPage.openOfEncounter(page, section.encounter.uuid);
+    return visit.expand(visit.section('pihcore-diagnosis'));
+  };
+
+  test('the visit page shows the saved comments in the Clinical Note row of the diagnosis section', async ({ page }) => {
     await page.locator('#data-collection textarea:not([name="encounterDiagnoses"])').fill('Chronic cough, review in two weeks');
     const form = new SectionFormPage(page, FORM);
     await form.save();
     await form.expectSaved();
 
-    const view = await expectViewShowsSavedObs(page, api, FORM, section.encounter.uuid);
-    expect(await view.valueTexts()).toContain('Chronic cough, review in two weeks');
-    await expect(view.page.locator('#data-collection .value')).toHaveText('Chronic cough, review in two weeks');
-    await expect(view.page.locator('#buttons, #submit, #next, #cancel')).toHaveCount(0);
-    await expect(view.page.locator('h3', { hasText: 'Clinical impressions' })).toHaveCount(0);
+    const long = await openLong(page);
+    await expect(dxRow(long, 'Clinical Note')).toHaveText('Chronic cough, review in two weeks');
+    await expect(dxRow(long, 'Diagnoses').locator('p.diagnosis')).toHaveCount(0); // no coded diagnosis was picked
+    await expect(long.locator('#buttons, #submit, #next, #cancel, textarea')).toHaveCount(0); // none of the form's own HTML
   });
 
-  // VIEW: nothing saved, so the comments field shows no value.
-  test('VIEW: an unfilled comments field is not shown as a value', async ({ page, api }) => {
+  test('the visit page shows no comment when nothing was saved', async ({ page, api }) => {
     const form = new SectionFormPage(page, FORM);
     await form.save();
     await form.expectSaved();
-
-    const view = await ViewFormPage.open(page, FORM, section.encounter.uuid);
-    await expect(view.page.locator('#data-collection .value')).toHaveCount(0);
     expect(await getEncounterObs(api, section.encounter.uuid)).toEqual([]);
+
+    const long = await openLong(page);
+    await expect(dxRow(long, 'Clinical Note')).toHaveText('');
   });
 });

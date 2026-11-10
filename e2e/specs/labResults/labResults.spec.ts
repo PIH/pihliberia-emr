@@ -30,7 +30,8 @@ import { expectViewShowsSavedObs, VISIT_PAGE_URL, visitPagePath } from '../../pa
 //                       for this form; the obs dates come from the encounter date. see _shared V3 for the uuid shadowing of labResults_v1.0.xml.
 //   V5 Medium :2 (see _shared V3)  the Form row is shared with labResults_v1.0.xml (same formUuid), and EDIT and VIEW of a saved encounter render the stored
 //                       definition (v1.0's layout: no #hiv-test, 193 ids vs 99 in ENTER), not labResults.xml. Seen on the first run: the saved HIV result is not
-//                       selected in EDIT and not shown in VIEW. TESTED (test.fail on the EDIT and VIEW tests below; they fail at the HIV field).
+//                       selected in EDIT. TESTED (test.fail on the EDIT test below; it fails at the HIV field). The VIEW on the visit page is not affected
+//                       (checked 2026-11-09: it shows the HIV result), so its VIEW test passes.
 //   V4 Medium :81       the date of test results is a date obs, and HFE refuses a date obs after the encounter date ("Cannot be after encounter date")
 //                       unless allowFutureDates="true"; the encounter date is the specimen collection date, and results come after the collection,
 //                       so the date of results can only be the specimen day. Fix: allowFutureDates="true" on the obs (the script :34 already stops
@@ -193,11 +194,10 @@ test.describe('labResults', () => {
 
   // VIEW :29-38 (the script is ENTER/EDIT only, so VIEW has no script)
   test('VIEW: shows the saved results under their ids, nothing for the others and no Save button', async ({ page, api, createEntryContext }) => {
-    test.fail(); // V5: EDIT/VIEW render labResults_v1.0.xml's layout (remove when the shared formUuid is fixed)
     const { encounterUuid, obs } = await saveResults(page, api, createEntryContext);
     const estimated = obs.find((o) => /^Estimated collection date/i.test(o.display))?.display ?? '';
     // the checkbox shows its own label (answerCode pihcore.date_estimated), not the concept name
-    const view = (await expectViewShowsSavedObs(page, api, FORM, encounterUuid, { [estimated]: '[X] estimated' })).page;
+    const view = (await expectViewShowsSavedObs(page, api, FORM, encounterUuid, { [estimated]: '[X] estimated' })).root;
 
     await expect(view.locator('#hemoglobin .value')).toContainText('12.5');
     await expect(view.locator('#hemoglobin-a1c .value')).toContainText('6.5');
@@ -206,6 +206,7 @@ test.describe('labResults', () => {
     await expect(view.locator('#hiv-test .value')).toContainText('Negative');
     await expect(view.locator('[id="malaria-rdt"] .value')).toHaveCount(2); // V1: both malaria obs carry the id
     await expect(view.locator('#potassium .value, #creatinine-i-stat .value, #total-chol .value')).toHaveCount(0);
-    await expect(view.locator('input.submitButton, input[type=text], select')).toHaveCount(0);
+    // (the visit page adds a hidden jQuery UI helper input of its own inside the long view: .ui-helper-hidden-accessible)
+    await expect(view.locator('input.submitButton, select, :not(.ui-helper-hidden-accessible) > input[type=text]')).toHaveCount(0);
   });
 });

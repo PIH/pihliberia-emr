@@ -2,7 +2,7 @@ import { type Page, type APIRequestContext } from '@playwright/test';
 import { test, expect, type CustomTestFixtures, type EntryContext } from '../../core';
 import { CHECKIN_ENCOUNTER_TYPE_UUID } from '../../core/constants';
 import { getEncounterObs, getPatientEncounters } from '../../commands';
-import { EntryFormPage, expectViewShowsSavedObs, selectDefaultProvider, VISIT_PAGE_URL, visitPagePath } from '../../pages';
+import { EntryFormPage, VisitPage, selectDefaultProvider, VISIT_PAGE_URL, visitPagePath } from '../../pages';
 
 // checkin.xml v2.0: "Check-In": who/when/where (shared EPLD, role Administrative Clerk, tag "Check-In Location"), the type of visit
 // (dropdown of 21 reasons for visit) and the optional Patient Support group (referred / escorted, who, name, phone). Production opens it
@@ -18,7 +18,11 @@ import { EntryFormPage, expectViewShowsSavedObs, selectDefaultProvider, VISIT_PA
 // Side effects on save: one Check-In encounter (55a0d3ea-...) with Reason for visit and, when answered, a Community supporter construct
 //   group; no program, order or disposition.
 // Not covered here: provider/location/date behaviour beyond the location list (_shared.e2e.md), the redirect after registration.
-// VIEW is covered by the save tests (generic check plus targeted ids); EDIT by the re-save test.
+// Visit-page display: the visit page does NOT show this form's VIEW (ifMode VIEW :132-181 is therefore not tested). The Check-In entry of
+//   encounterTypeConfig.js (// checkIn, 55a0d3ea-..., :818) has `shortTemplate: checkInShort.page`, `longTemplate: defaultHtmlFormEncounterLong.page`,
+//   `templateModelUrl: /module/htmlformentry/encounter.json?...` (HFE's field list, not getAsHtml.action) and `showOnVisitList: false`: the
+//   encounter is a collapsed card with the encounter type, date, "by <provider>" and the type-of-visit obs, and expanding it lists one
+//   label + .obs-value row per saved field. The VIEW tests assert that card and those rows. EDIT is covered by the re-save test.
 //
 // Findings:
 //   V1 Low  :87, :99   two obs share id="patientSupportType" in the ENTER/EDIT form (the referred/escorted radios and the "who" dropdown,
@@ -175,8 +179,8 @@ test.describe('checkin', () => {
     expect(after.some((d) => /Test Escort/.test(d))).toBe(true); // the group is kept
   });
 
-  // VIEW :132-181 (getAsHtml.action): the saved answers under the VIEW ids; ifMode VIEW include=false :29 (the entry form) is absent
-  test('VIEW: shows the saved type of visit and support group, hides the unanswered location and the entry widgets', async ({ page, api, createEntryContext }) => {
+  // Visit-page display (header): the card and the rows of defaultHtmlFormEncounterLong, one .obs-value per saved field
+  test('the visit page shows the saved type of visit and support group as rows of the check-in entry, and none of the form', async ({ page, api, createEntryContext }) => {
     const context = await newPatient(createEntryContext);
     await openSimple(page, context);
     await selectDefaultProvider(page);
@@ -184,29 +188,37 @@ test.describe('checkin', () => {
     await typeOfVisit(page).selectOption({ label: 'Outpatient' });
     await fillSupport(page);
     await saveSimple(page);
-    const { encounterUuid } = await savedCheckin(api, context.patient.uuid);
+    await savedCheckin(api, context.patient.uuid);
 
-    const view = (await expectViewShowsSavedObs(page, api, FORM, encounterUuid)).page;
-    await expect(view.locator('#typeOfVisit .value')).toHaveText('Outpatient consultation');
-    await expect(view.locator('#patientSupportType .value')).toContainText('Referral');
-    await expect(view.locator('#patientSupportRole .value')).toContainText('CHA');
-    await expect(view.locator('#patientSupportName .value')).toHaveText('Test Escort');
-    await expect(view.locator('#patientSupportPhone .value')).toHaveText('0770000000');
-    await expect(view.locator('#patientSupportLocation .value')).toHaveCount(0); // PIH:6402 is in the VIEW only and was never entered
-    await expect(view.locator('select, input[type=text], #save-form, input.submitButton, #who, #where')).toHaveCount(0);
+    const visit = await VisitPage.open(page, context.visitUuid);
+    const entry = visit.encounterOfType(CHECKIN_ENCOUNTER_TYPE_UUID);
+    await expect(entry).toHaveCount(1);
+    await expect(entry.locator('.encounter-name').first()).toContainText('Check-in');
+    const long = await visit.expand(entry);
+    // the rows are filled when HFE's encounter.json has come back
+    const rows = async () => (await long.locator('.obs-value').allInnerTexts()).map((t) => t.replace(/\s+/g, ' ').trim());
+    await expect.poll(async () => (await rows()).join(' | ')).toMatch(/Outpatient/i); // the type of visit
+    const shown = (await rows()).join(' | ');
+    expect(shown).toMatch(/Referral/i); // PIH:11521
+    expect(shown).toMatch(/CHA|Community health assistant/i); // PIH:14496
+    expect(await rows()).toContain('Test Escort'); // CIEL:164141
+    expect(await rows()).toContain('0770000000'); // PIH:2614
+    await expect(long.locator('#most-recent-encounter-title, select, input[type=text], #save-form, input.submitButton, #who, #where')).toHaveCount(0); // none of the form's own HTML
   });
 
-  test('VIEW: a check-in without a patient support group shows no support values', async ({ page, api, createEntryContext }) => {
+  test('the visit page shows no support rows for a check-in without a patient support group', async ({ page, api, createEntryContext }) => {
     const context = await newPatient(createEntryContext);
     await openSimple(page, context);
     await selectDefaultProvider(page);
     await goTo(page, 'Type of visit');
     await typeOfVisit(page).selectOption({ label: 'Emergency' });
     await saveSimple(page);
-    const { encounterUuid } = await savedCheckin(api, context.patient.uuid);
+    await savedCheckin(api, context.patient.uuid);
 
-    const view = (await expectViewShowsSavedObs(page, api, FORM, encounterUuid)).page;
-    await expect(view.locator('#typeOfVisit .value')).toContainText('Emergency');
-    await expect(view.locator('.patient-support-questions .value')).toHaveCount(0);
+    const visit = await VisitPage.open(page, context.visitUuid);
+    const long = await visit.expand(visit.encounterOfType(CHECKIN_ENCOUNTER_TYPE_UUID));
+    const rows = async () => (await long.locator('.obs-value').allInnerTexts()).map((t) => t.replace(/\s+/g, ' ').trim());
+    await expect.poll(async () => (await rows()).join(' | ')).toMatch(/Emergency/i);
+    expect((await rows()).join(' | ')).not.toMatch(/Referral|Escort|0770000000/i);
   });
 });

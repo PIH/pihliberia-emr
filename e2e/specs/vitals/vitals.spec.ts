@@ -16,7 +16,7 @@ import { EntryFormPage, expectViewShowsSavedObs, VISIT_PAGE_URL, visitPagePath }
 //   includeIf age < 3            :318, :667   ratio script / head circumference + MUAC/HC ratio questions
 //   includeIf $visit.open :395 / !open + retro privilege :410-:455   hidden defaults / editable provider, location, date (closed visit,
 //     not covered); the two #encounterDate (:401, :450) sit in these exclusive branches, so the inventory's duplicate-id lead is a false positive
-//   ifMode VIEW (include true/false) :19-:644  view-only vs entry-only blocks (VIEW: getAsHtml.action)
+//   ifMode VIEW (include true/false) :19-:644  view-only vs entry-only blocks (VIEW: on the visit page)
 // Scripts: ExitHandlers :90-143 inches -> cm (x2.54), lbs -> kg (/2.2), Fahrenheit -> Celsius ((F-32)*5/9), one decimal, source field
 //   cleared; BMI :152-188 = kg/(cm/100)^2, one decimal, hidden while weight or height is missing; cm -> mm (x10) :252-258 and mm -> cm
 //   (/10) :262-270 on leaving the MUAC question, cm shown again from the saved mm on load (EDIT :276-281); ratio :320-356 = (mm/10)/HC;
@@ -302,7 +302,7 @@ test.describe('vitals', () => {
     expect((await getEncounterObs(api, encounterUuid)).map((o) => o.display)).not.toContain('Weight (kg): 70.0');
   });
 
-  // VIEW :19-644 (getAsHtml.action). The entry-only converter inputs (:463, :487, :536, :644) are ifMode VIEW include=false.
+  // VIEW :19-644 (on the visit page). The entry-only converter inputs (:463, :487, :536, :644) are ifMode VIEW include=false.
   test('VIEW: shows the saved values, no converter inputs and no Save button; unanswered head circumference is not offered to an adult', async ({
     page,
     api,

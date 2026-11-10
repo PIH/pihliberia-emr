@@ -7,7 +7,7 @@ const config: PlaywrightTestConfig = {
   testDir: './specs',
   timeout: 30 * 1000,
   expect: {
-    timeout: 10 * 1000,
+    timeout: 15 * 1000,
   },
   fullyParallel: true,
   // One worker by default: the specs create and void their own patients on a shared server (`--workers=N` overrides it).
@@ -19,7 +19,7 @@ const config: PlaywrightTestConfig = {
   use: {
     // Trailing slash is required so that relative page.goto() paths keep the "/openmrs" prefix.
     baseURL: `${process.env.E2E_BASE_URL}/`,
-    actionTimeout: 10 * 1000,
+    actionTimeout: 15 * 1000,
     storageState: 'storageState.json',
     video: 'retain-on-failure',
     trace: 'retain-on-failure',

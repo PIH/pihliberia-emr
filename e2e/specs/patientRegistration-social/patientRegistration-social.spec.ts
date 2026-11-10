@@ -11,8 +11,11 @@
 // Save: the form's own button `#buttons button.submitButton` (onclick submitHtmlForm()), no `#submit`: buttonsSubmit().
 // Side effects on save: none. Encounter type Patient Registration. The hidden `input#displayEncounterDate` (:26) is outside any
 //   ifMode, so it is also in the VIEW.
-// VIEW (getAsHtml.action with this form, see expectViewShowsSavedObs): the saved birthplace and occupation under #placeOfBirth and
-//   #occupation (`.value`), an unanswered one is not shown as a value, the h2 and #buttons are absent.
+// Visit-page display: none. The Patient Registration entry of encounterTypeConfig.js (873f968a-..., resolved for `liberia`) has
+//   showOnVisitList false, no templateModelUrl and no editUrl (`defaultEncounterLong.page`): on the real page the encounter is still drawn as
+//   a card (type, date, location) that expands to the obs as label + value rows ("Birthplace Gbarnga") and cannot be edited or deleted, so the
+//   form's own VIEW (ifMode VIEW :6, :20, :57) is not tested; the last test asserts that card. (The registration summary page renders the form in VIEW through its "most recent encounter" widget; not covered.) The VIEW
+//   assertions of the earlier version (values under #placeOfBirth / #occupation, "Plantation Worker" label) were removed for that reason.
 // Not covered here: the summary-page widget, Cancel, the occupation answers one by one (only the label list and two samples).
 //
 // Findings:
@@ -21,14 +24,14 @@
 //                  matching answer concept is PIH 12624 "Child greater than 5 years not attending school" (read in the PIH OCL
 //                  export of ~/openmrs/liberia, not on a server). Fix: use the answer concepts. (unconfirmed: not run)
 //   V2 Low :48-49  "Plantation Worker" (zl...plantationWorker.label) is bound to `PIH:HOUSEWORK/FIELDWORK`, whose concept is
-//                  "Housework/Fieldwork" (tested below: VIEW shows the label, the saved value is the concept). Intent unconfirmed.
+//                  "Housework/Fieldwork" (tested below: the saved value is the concept). Intent unconfirmed.
 //   V3 Low :50     `size="dropdown"` is not an attribute of <obs> (the default dropdown renders anyway). Fix: delete it.
 
 import { type APIRequestContext, type Page } from '@playwright/test';
 import { test, expect, type SectionEncounter } from '../../core';
 import { PATIENT_REGISTRATION_ENCOUNTER_TYPE_UUID } from '../../core/constants';
 import { getEncounterObs } from '../../commands';
-import { SectionFormPage, buttonsSubmit, expectViewShowsSavedObs, openEditWithButtonsSubmit } from '../../pages';
+import { SectionFormPage, VisitPage, buttonsSubmit, openEditWithButtonsSubmit } from '../../pages';
 
 const FORM = 'patientRegistration-social.xml';
 
@@ -103,7 +106,7 @@ test.describe('patientRegistration-social', () => {
     expect(await getEncounterObs(api, section.encounter.uuid)).toHaveLength(0);
   });
 
-  test('saves the birthplace text and the occupation, and EDIT starts from them; VIEW shows both', async ({ page, api }) => {
+  test('saves the birthplace text and the occupation, and EDIT starts from them', async ({ page, api }) => {
     await birthplace(page).fill('Gbarnga');
     await occupation(page).selectOption({ label: 'Farmer' });
     await saveAndWait(page);
@@ -117,15 +120,6 @@ test.describe('patientRegistration-social', () => {
     await openForm(page, section);
     await expect(birthplace(page)).toHaveValue('Gbarnga');
     await expect(occupation(page).locator('option:checked')).toHaveText('Farmer');
-
-    // VIEW: both values under their ids; the ENTER/EDIT-only parts are absent
-    const view = await expectViewShowsSavedObs(page, api, FORM, section.encounter.uuid);
-    await expect(view.page.locator('#placeOfBirth .value')).toHaveText('Gbarnga');
-    await expect(view.page.locator('#occupation .value')).toHaveText('Farmer');
-    for (const gone of ['h2', '#buttons', 'button.submitButton', '#placeOfBirth input', '#occupation select']) {
-      await expect(view.page.locator(gone), `${gone} is ENTER/EDIT only`).toHaveCount(0);
-    }
-    await expect(view.page.locator('#displayEncounterDate')).toHaveCount(1); // the hidden input is outside any ifMode
   });
 
   test('EDIT: changing the occupation and clearing the birthplace replaces what was saved', async ({ page, api }) => {
@@ -141,25 +135,32 @@ test.describe('patientRegistration-social', () => {
     const displays = (await savedDisplays(api, section.encounter.uuid)).map((d) => d.toLowerCase());
     expect(displays).toHaveLength(1);
     expect(displays[0]).toContain('retired');
-
-    // VIEW of the second save: the new occupation, no birthplace value
-    const view = await expectViewShowsSavedObs(page, api, FORM, section.encounter.uuid);
-    await expect(view.page.locator('#occupation .value')).toHaveText('Retired');
-    await expect(view.page.locator('#placeOfBirth .value')).toHaveCount(0);
   });
 
   // answerCodes :49 vs answerConceptIds :48 (V2): the option labelled "Plantation Worker" is PIH:HOUSEWORK/FIELDWORK
-  test('"Plantation Worker" saves the concept "Housework/Fieldwork" and the VIEW shows the label', async ({ page, api }) => {
+  test('"Plantation Worker" saves the concept "Housework/Fieldwork"', async ({ page, api }) => {
     await occupation(page).selectOption({ label: 'Plantation Worker' });
     await saveAndWait(page);
 
     const displays = (await savedDisplays(api, section.encounter.uuid)).map((d) => d.toLowerCase());
     expect(displays.some((d) => d.includes('housework/fieldwork'))).toBeTruthy();
+  });
 
-    // a coded answer the form labels differently from the concept name goes in `labels` (obs display -> text shown)
-    const view = await expectViewShowsSavedObs(page, api, FORM, section.encounter.uuid, {
-      'Main activity: Housework/Fieldwork': 'Plantation Worker',
-    });
-    await expect(view.page.locator('#occupation .value')).toHaveText('Plantation Worker');
+  // Visit-page display (header): defaultEncounterLong lists the obs as label + value rows; no edit or delete button (no editUrl)
+  test('the visit page shows the saved birthplace and occupation as plain rows of the Patient Registration card, with no edit or delete', async ({ page }) => {
+    await birthplace(page).fill('Gbarnga');
+    await occupation(page).selectOption({ label: 'Farmer' });
+    await saveAndWait(page);
+
+    const visit = await VisitPage.openOfEncounter(page, section.encounter.uuid);
+    const entry = visit.encounterOfType(PATIENT_REGISTRATION_ENCOUNTER_TYPE_UUID);
+    await expect(entry).toHaveCount(1);
+    await expect(entry).toContainText('Patient Registration');
+    const long = await visit.expand(entry);
+    await expect(long).toContainText('Birthplace');
+    await expect(long).toContainText('Gbarnga');
+    await expect(long).toContainText('Farmer');
+    await expect(long.locator('input, select, #buttons, h2')).toHaveCount(0); // none of the form's own HTML
+    await expect(entry.locator('a.edit-encounter:visible, a.delete-encounter:visible')).toHaveCount(0);
   });
 });
