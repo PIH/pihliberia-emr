@@ -3,3 +3,4 @@ export * from './entry-form-page';
 export * from './view-form-page';
 export * from './provider';
 export * from './visit-page';
+export * from './form-widgets';

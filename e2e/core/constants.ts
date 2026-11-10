@@ -3,7 +3,7 @@
 // type come from the repo's locations.csv, identifierTypes.csv and the pihemr visit types. Verify against the
 // target server's REST metadata endpoints if a spec cannot create its fixtures.
 //
-// NOT YET RUN: these were taken from the config files, not from a server.
+// Checked against the local server on :7072 (locations and their tags, 2026-11-09) and exercised by the suite.
 
 // "Liberia EMR ID": no format, no validator (see commands/patient-operations.ts).
 export const LIBERIA_EMR_ID_IDENTIFIER_TYPE_UUID = '0bc545e0-f401-11e4-b939-0800200c9a66';

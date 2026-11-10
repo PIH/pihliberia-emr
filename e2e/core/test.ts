@@ -50,7 +50,7 @@ export const test = base.extend<CustomTestFixtures, CustomWorkerFixtures>({
 
   // When a test fails, attaches what the browser saw of the server: every failed /openmrs request (such as the
   // `create visit: 400`), the form submit request and its response (the `errors` name the widget the server rejected),
-  // the console errors and warnings, and the API user's providers (a form without a provider cannot be saved). Declared
+  // the console errors and warnings, and the uuids of the API user's providers (a form without a provider cannot be saved). Declared
   // before failOnJsError so that it is torn down after it, when the test's status is final.
   attachDiagnostics: [
     async ({ context, api }, use, testInfo) => {
@@ -86,8 +86,9 @@ export const test = base.extend<CustomTestFixtures, CustomWorkerFixtures>({
       let user = '(not read)';
       try {
         const session = await (await api.get('session')).json();
-        const providers = await (await api.get(`provider?user=${session.user.uuid}&v=custom:(uuid,display)`)).json();
-        user = `${session.user.display}: ${JSON.stringify(providers.results)}`;
+        const providers = await (await api.get(`provider?user=${session.user.uuid}&v=custom:(uuid)`)).json();
+        // uuids only: names are staff data and must not end up in logs or CI output
+        user = `user ${session.user.uuid}, provider uuids: ${JSON.stringify(providers.results.map((p: { uuid: string }) => p.uuid))}`;
       } catch (e) {
         user = `(failed: ${e})`;
       }

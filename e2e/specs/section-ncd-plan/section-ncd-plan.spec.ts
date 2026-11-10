@@ -158,8 +158,8 @@ test.describe('section-ncd-plan', () => {
     expect(shown).toContain('[X] Normal');
     expect(shown).toContain('[X] Diabetes');
     expect(shown).toContain('Poorly controlled diabetes');
-    await expect(view.page.locator('#apptDate .value')).toHaveText(apptText);
-    await expect(view.page.locator('#test-orders .value, #disposition .value')).toHaveCount(0);
+    await expect(view.root.locator('#apptDate .value')).toHaveText(apptText);
+    await expect(view.root.locator('#test-orders .value, #disposition .value')).toHaveCount(0);
   });
 
   // VIEW: ifMode VIEW include=false (:29 heading, :381 buttons) must be absent.
@@ -169,8 +169,8 @@ test.describe('section-ncd-plan', () => {
 
     const view = await expectViewShowsSavedObs(page, api, FORM, section.encounter.uuid);
     expect(await view.valueTexts()).toContain('Only a plan');
-    await expect(view.page.locator('h1')).toHaveCount(0);
-    await expect(view.page.locator('#buttons, input.submitButton, button.cancel')).toHaveCount(0);
-    await expect(view.page.locator('#clinical-impress .value, #radiology-orders .value')).toHaveCount(0);
+    await expect(view.root.locator('h1')).toHaveCount(0);
+    await expect(view.root.locator('#buttons, input.submitButton, button.cancel')).toHaveCount(0);
+    await expect(view.root.locator('#clinical-impress .value, #radiology-orders .value')).toHaveCount(0);
   });
 });

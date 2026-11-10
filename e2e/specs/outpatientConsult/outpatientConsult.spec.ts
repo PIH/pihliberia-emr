@@ -2,7 +2,7 @@ import { type APIRequestContext, type Page } from '@playwright/test';
 import { test, expect, type CustomTestFixtures } from '../../core';
 import { CONSULT_ENCOUNTER_TYPE_UUID, NCD_CLINIC_LOCATION_UUID } from '../../core/constants';
 import { getEncounterObs, getPatientEncounters } from '../../commands';
-import { EntryFormPage, ViewFormPage, buttonsSubmit, selectDefaultProvider, viewMismatches, VISIT_PAGE_URL, visitPagePath } from '../../pages';
+import { EntryFormPage, VisitPage, buttonsSubmit, selectDefaultProvider, VISIT_PAGE_URL, visitPagePath } from '../../pages';
 
 // outpatientConsult.xml v1.0: "Clinic Consult" (coded diagnoses, procedure, disposition, return visit date, comments) with the shared
 // who/when/where block (EPLD, tag "Consult Note Location"). Reached with a synthetic adult patient who has an active visit and no encounter,
@@ -12,7 +12,7 @@ import { EntryFormPage, ViewFormPage, buttonsSubmit, selectDefaultProvider, view
 //
 // Conditions in the form, from documentation inventory (outpatientConsult.inv.md):
 //   ifMode VIEW include=false :16-32, :81-83, :128-133  layout CSS, the h2 heading and the Save / Cancel buttons (ENTER and EDIT only)
-//   ifMode EDIT               :34-43  CSS for #disposition (EDIT only, V3)
+//   ifMode EDIT               :34-43  CSS for #disposition (EDIT only, V1)
 //   encounterDisposition :110 (pih-dispositions-liberia.json, this encounter type): Admission (no extra field), ED Observation,
 //     Transfer out of hospital (#transferExternalLocation), Transfer within hospital (#transferInternalLocation); no Discharge or Death
 // Scripts: :46-79 validateForm(), run on load and on every document click/change: Save (#buttons .submitButton, starts with class
@@ -21,19 +21,19 @@ import { EntryFormPage, ViewFormPage, buttonsSubmit, selectDefaultProvider, view
 // Side effects on save: ApplyDispositionAction (:3) runs the actions of the chosen disposition (pih-dispositions-liberia.json): the tests
 //   use "ED Observation" (no actions, keeps the visit open) and assert the visit stays open and the patient is not dead. The coded
 //   diagnosis is saved as a Visit Diagnoses group. Nothing creates an order.
+// Visit-page display: the visit page does NOT show this form's VIEW. The Consultation entry of encounterTypeConfig.js (encounter type
+//   92fd09b4-..., resolved for `liberia`) has no templateModelUrl: it renders the encounter's obs with templates/encounters/clinicConsultLong.page
+//   (rows Diagnoses, Non-Coded Diagnoses, Disposition, Procedure performed, Return visit date, Clinical Note), so the VIEW test asserts those
+//   rows. The form's own VIEW (ifMode VIEW :16-32, :81-83, :128-133) is therefore not tested, and HAI-1278 (validateForm :46-79 calls
+//   htmlForm.disableSubmitButton, undefined on the visit page) does not apply to this encounter type: the earlier V1 test.fail() for it was removed.
 // Not covered here: the Procedure autocomplete (:105, needs concept set members), saving Admission / Transfer (they change visit or
 //   location), provider/date behaviour (_shared.e2e.md).
 //
 // Findings:
-//   V1 Medium :46-79   the script is outside any ifMode, so it also runs in VIEW (visit page), where htmlForm is undefined:
-//                      validateForm() calls htmlForm.disableSubmitButton() on load and throws "htmlForm is not defined" (HAI-1278 in zl-emr).
-//                      Fix: wrap the script in <ifMode mode="VIEW" include="false">. (TESTED below with test.fail, VIEW test)
-//   V2 Low    :34-43   the #disposition CSS sits in ifMode EDIT, so it is not applied on first entry (ENTER). Fix: ifMode VIEW include="false".
-//   V3 Low    :50-56   hasDisposition is computed and unused; needsDisposition is always true (dead code).
+//   V1 Low    :34-43   the #disposition CSS sits in ifMode EDIT, so it is not applied on first entry (ENTER). Fix: ifMode VIEW include="false".
+//   V2 Low    :50-56   hasDisposition is computed and unused; needsDisposition is always true (dead code).
 
 const FORM = 'outpatientConsult.xml';
-// what the form's disposition shows (its configured label), and the concept name the obs reads back with
-const VIEW_LABELS = { 'Disposition categories: Emergency Department observation': '' };
 
 const save = (page: Page) => buttonsSubmit(page);
 const disposition = (page: Page) => page.locator('#disposition select').first();
@@ -182,26 +182,22 @@ test.describe('outpatientConsult', () => {
       .toEqual(expect.arrayContaining(['Clinical impression comments: seen again']));
   });
 
-  // V1: remove test.fail() when the script is wrapped in ifMode VIEW include="false"
-  test.fail('V1 VIEW: a saved consult shows its diagnosis, disposition and comments without a script error', async ({
-    page,
-    api,
-    createEntryContext,
-  }) => {
-    // validateForm :46-79 runs in VIEW and throws "htmlForm is not defined" (the auto failOnJsError fixture or ViewFormPage.open fails)
-    const { encounters, displays } = await saveConsult(page, api, createEntryContext);
-    const view = await ViewFormPage.open(page, FORM, encounters[0].uuid);
-    // the diagnosis tag prints the diagnosis as plain text in #data-collection (no span.value), so the generic check skips the Diagnosis obs
-    expect((await viewMismatches(api, view, encounters[0].uuid, VIEW_LABELS)).filter((m) => !m.startsWith('Diagnosis'))).toEqual([]);
-    const diagnosis = displays.find((d) => d.startsWith('Diagnosis: ')) ?? '';
-    await expect(view.page.locator('#data-collection').getByText(diagnosis.replace('Diagnosis: ', ''))).toHaveCount(1);
-    await expect(view.page.locator('#encounter-diagnoses-target')).toBeEmpty(); // the entry-mode chip target stays empty
-    await expect(view.page.locator('#disposition .value')).toHaveText(/ED Observation|Emergency Department observation/i);
-    await expect(view.page.locator('#data-collection p:has(label) > .value')).toHaveText('seen in clinic'); // the comments obs has no id
-    await expect(view.page.locator('#apptDate .value')).toHaveCount(1);
-    // not filled in: the extra field of the other dispositions
-    await expect(view.page.locator('#transferExternalLocation .value, #transferInternalLocation .value')).toHaveCount(0);
-    // ifMode VIEW include=false :81, :128: heading, entry widgets and the Save / Cancel buttons are not in the VIEW
-    await expect(view.page.locator('h2, #buttons, button.submitButton, #diagnosis-search, textarea')).toHaveCount(0);
+  test('the visit page shows the saved consult in its own rows: diagnosis, disposition, return visit date and comments (clinicConsultLong)', async ({ page, api, createEntryContext }) => {
+    const { context, displays } = await saveConsult(page, api, createEntryContext);
+    const visit = await VisitPage.open(page, context.visitUuid);
+    const long = await visit.expand(visit.encounterOfType(CONSULT_ENCOUNTER_TYPE_UUID));
+    // each row is a div with a left-column heading and a right-column value
+    const row = (heading: string) => long.locator(`div:has(> .left-column > h3:text-is("${heading}")) > .right-column`);
+    const diagnosis = (displays.find((d) => d.startsWith('Diagnosis: ')) ?? '').replace('Diagnosis: ', '');
+    await expect(row('Diagnoses').locator('p.diagnosis')).toHaveCount(1);
+    await expect(row('Diagnoses')).toContainText(diagnosis);
+    await expect(row('Diagnoses')).toContainText('Primary');
+    await expect(row('Disposition')).toContainText('Emergency Department observation');
+    await expect(row('Return visit date')).not.toHaveText('');
+    await expect(row('Clinical Note')).toHaveText('seen in clinic');
+    // not filled in: the non-coded diagnosis and the procedure
+    for (const heading of ['Non-Coded Diagnoses', 'Procedure performed']) {
+      await expect(row(heading), `${heading} is empty`).toHaveText('');
+    }
   });
 });

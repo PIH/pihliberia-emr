@@ -10,6 +10,10 @@ export interface TestEncounter {
   visitUuid: string;
 }
 
+// Every datetime the harness sends is 60 seconds in the past. The server rejects an encounter (and a visit start, and an obs)
+// dated after its own clock ("Encounter.datetimeShouldBeBeforeCurrent", HTTP 400), and a developer machine's clock that leads the
+// server's by even 200 ms made about one create in ten fail at random. Do not use a bare new Date() for these.
+
 // Starts a visit for the patient. Entry forms (the ones that create the encounter) open inside a visit.
 export const createVisit = async (api: APIRequestContext, patientUuid: string): Promise<string> => {
   const res = await api.post('visit', {
@@ -17,7 +21,7 @@ export const createVisit = async (api: APIRequestContext, patientUuid: string): 
       patient: patientUuid,
       visitType: CLINIC_OR_HOSPITAL_VISIT_TYPE_UUID,
       location: HEALTH_FACILITY_VISIT_LOCATION_UUID,
-      startDatetime: new Date().toISOString(),
+      startDatetime: new Date(Date.now() - 60_000).toISOString(),
     },
   });
   expect(res.ok(), `create visit: ${res.status()}`).toBeTruthy();
@@ -43,7 +47,7 @@ export const createVisitWithEncounter = async (
   patientUuid: string,
   encounterTypeUuid: string,
 ): Promise<TestEncounter> => {
-  const now = new Date().toISOString();
+  const now = new Date(Date.now() - 60_000).toISOString();
 
   const visitRes = await api.post('visit', {
     data: {

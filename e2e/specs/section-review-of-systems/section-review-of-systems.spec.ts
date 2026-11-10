@@ -17,7 +17,7 @@ import { SectionFormPage, ViewFormPage, expectViewShowsSavedObs } from '../../pa
 // Scripts: :9 setUpNextAndSubmitButtons(); mch.js (global): click on `.toggle-div` toggles `.open` on the next
 //   `.collapsible-content`; in EDIT a block with a ticked box is opened at load (see _shared V7, V15).
 // Side effects on save: none. Required fields: none.
-// VIEW (getAsHtml.action): ticked symptoms are `[X] <label>` values, unticked ones are not values, the button row is absent.
+// VIEW (the visit page, which fetches getAsHtml.action for this section): ticked symptoms are `[X] <label>` values, unticked ones are not values, the button row is absent.
 // Not covered here: #next (needs the visit page), the comment input in VIEW (rendering unknown).
 //
 // Findings (the subform's own findings are recorded once in _shared.e2e.md):
@@ -183,14 +183,14 @@ test.describe('section-review-of-systems', () => {
     // ifMode VIEW (subform :5-24): every block is forced open
     await expect(block(view.page, 'Endocrine').locator('.collapsible-content')).toHaveCSS('max-height', 'none');
     // ifMode VIEW include=false (:3, :23): no heading and no buttons
-    await expect(view.page.locator('#buttons, #submit, #next, #cancel')).toHaveCount(0);
-    await expect(view.page.locator('h3', { hasText: 'Review of Systems' })).toHaveCount(0);
+    await expect(view.root.locator('#buttons, #submit, #next, #cancel')).toHaveCount(0);
+    await expect(view.root.locator('h3', { hasText: 'Review of Systems' })).toHaveCount(0);
   });
 
   test('VIEW: a form with nothing saved shows no value', async ({ page }) => {
     await saveForm(page);
     const view = await ViewFormPage.open(page, FORM, section.encounter.uuid);
     await expect(view.values).toHaveCount(0);
-    await expect(view.page.locator('.review-of-systems-subform .section-container')).toHaveCount(9);
+    await expect(view.root.locator('.review-of-systems-subform .section-container')).toHaveCount(9);
   });
 });

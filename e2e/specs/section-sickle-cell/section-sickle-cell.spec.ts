@@ -176,9 +176,9 @@ test.describe('section-sickle-cell (NCD Followup encounter)', () => {
     expect(shown).toContain('[X] Folic acid');
     expect(shown.some((t) => /^2(\.0)?$/.test(t))).toBeTruthy();
     expect(shown.some((t) => /^3(\.0)?$/.test(t))).toBeTruthy();
-    await expect(view.page.locator('#scd-hydroxy-q .value')).toHaveText(/\[X\]\s*yes/i);
-    await expect(view.page.locator('#sickle-control .value')).toHaveCount(0); // not answered
-    await expect(view.page.locator('#buttonsTopRow, #buttons, #next, #submit')).toHaveCount(0);
+    await expect(view.root.locator('#scd-hydroxy-q .value')).toHaveText(/\[X\]\s*yes/i);
+    await expect(view.root.locator('#sickle-control .value')).toHaveCount(0); // not answered
+    await expect(view.root.locator('#buttonsTopRow, #buttons, #next, #submit')).toHaveCount(0);
   });
 
   test('a stale answer typed and then hidden by changing its question is not saved', async ({ page, api }) => {
@@ -210,10 +210,10 @@ test.describe('section-sickle-cell (NCD Followup encounter)', () => {
     // The generic check is not used: the label "uncontrolled" differs from the concept "Not controlled" and the symptom rows show
     // the symptom as text outside the value.
     const view = await ViewFormPage.open(page, FORM, section.encounter.uuid);
-    await expect(view.page.locator('#sickle-asymptom .value')).toHaveText(/\[X\]\s*no/i);
-    await expect(view.page.locator('#sc-not-asymptom p', { hasText: 'Spleen palpable' }).locator('.value')).toHaveText(/\[X\]\s*yes/i);
-    await expect(view.page.locator('#sickle-control .value')).toHaveText(/\[X\]\s*uncontrolled/i);
-    await expect(view.page.locator('#transfusion-status .value')).toHaveCount(0);
+    await expect(view.root.locator('#sickle-asymptom .value')).toHaveText(/\[X\]\s*no/i);
+    await expect(view.root.locator('#sc-not-asymptom p', { hasText: 'Spleen palpable' }).locator('.value')).toHaveText(/\[X\]\s*yes/i);
+    await expect(view.root.locator('#sickle-control .value')).toHaveText(/\[X\]\s*uncontrolled/i);
+    await expect(view.root.locator('#transfusion-status .value')).toHaveCount(0);
   });
 });
 
@@ -255,6 +255,6 @@ test.describe('section-sickle-cell (NCD Initial encounter)', () => {
     const shown = await view.valueTexts();
     expect(shown.some((t) => /^\[X\]\s*Sickle-cell trait/.test(t))).toBeTruthy();
     expect(shown).toContain('[X] HPLC');
-    await expect(view.page.locator('#scd-test-method .value')).toHaveCount(1);
+    await expect(view.root.locator('#scd-test-method .value')).toHaveCount(1);
   });
 });

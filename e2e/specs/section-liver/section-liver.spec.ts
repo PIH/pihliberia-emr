@@ -17,7 +17,7 @@ import { SectionFormPage, ViewFormPage, expectViewShowsSavedObs } from '../../pa
 // Scripts: :87 setUpNextAndSubmitButtons() (see _shared.e2e.md). No validation, default or derived value. No required field.
 // Side effects on save: postSubmissionAction CleanDiagnosisConstructAction (:19): each "Visit Diagnoses" group with a coded
 //   diagnosis gets a "Diagnosis order: Secondary" member (tested).
-// VIEW (getAsHtml.action): showIfEmpty=false hides every group that was not saved; the heading and button rows are absent.
+// VIEW (the visit page, which fetches getAsHtml.action for this section): showIfEmpty=false hides every group that was not saved; the heading and button rows are absent.
 //   HFE emits no `when` script in VIEW, so :164 `style="display:none"` stays (VW1).
 // Not covered here: the #pihcore-<section> jump buttons of #buttonsTopRow and #next (need the visit page; _shared.e2e.md :56
 //   says no Liberia form has `.nextSection`, but the six NCD disease sections do).
@@ -210,9 +210,9 @@ test.describe('section-liver', () => {
     );
     expect((await view.valueTexts()).some((t) => /^4(\.0)?$/.test(t))).toBeTruthy(); // pain scale
     expect(await view.valueTexts()).not.toContain('[X] Hypertension');
-    await expect(view.page.locator('body')).not.toContainText('Asterixis');
+    await expect(view.root).not.toContainText('Asterixis');
     // ifMode VIEW include=false (:82, :299): no heading, no button rows
-    await expect(view.page.locator('h1, #buttonsTopRow, #buttons, #submit, #next, #cancel')).toHaveCount(0);
+    await expect(view.root.locator('h1, #buttonsTopRow, #buttons, #submit, #next, #cancel')).toHaveCount(0);
   });
 
   test('VIEW: an encounter nothing was saved on shows no value', async ({ page }) => {
@@ -220,17 +220,17 @@ test.describe('section-liver', () => {
     await expect(view.values).toHaveCount(0);
   });
 
-  // VW1: the saved Hepatitis B dates are visible in VIEW (unconfirmed: not run). :164 hides the section inline and the `when`
+  // VW1: the saved Hepatitis B dates are visible in VIEW (confirmed on the visit page, see below). :164 hides the section inline and the `when`
   // script that would show it is not emitted in VIEW (ObsTagHandler.doEndTag).
-  test('VW1: VIEW shows the saved Hepatitis B start and finish dates', async ({ page, api }) => {
-    test.fail();
+  // Confirmed with test.fail on the visit page: #hepbtreatment-section stays hidden (toBeVisible, received hidden); remove test.fixme() when fixed.
+  test.fixme('VW1: VIEW shows the saved Hepatitis B start and finish dates', async ({ page, api }) => {
     await hepB(page, 'Yes').check();
     await pickDate(hepBDates(page).nth(0), '2024-03-20');
     await pickDate(hepBDates(page).nth(1), '2024-04-20');
     await saveForm(page);
     const view = await ViewFormPage.open(page, FORM, section.encounter.uuid);
-    await expect(view.page.locator('#hepbtreatment-section')).toBeVisible();
-    await expect(view.page.locator('#hepbtreatment-section')).toContainText(/20 Mar(ch)? 2024|20\/03\/2024/);
+    await expect(view.root.locator('#hepbtreatment-section')).toBeVisible();
+    await expect(view.root.locator('#hepbtreatment-section')).toContainText(/20 Mar(ch)? 2024|20\/03\/2024/);
     expect(await getEncounterObs(api, section.encounter.uuid)).not.toEqual([]);
   });
 

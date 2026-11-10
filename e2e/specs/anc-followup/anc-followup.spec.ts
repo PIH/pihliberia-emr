@@ -179,7 +179,7 @@ test.describe('anc-followup', () => {
         patient: context.patient.uuid,
         encounterType: ANC_INTAKE_ENCOUNTER_TYPE_UUID,
         location: NCD_CLINIC_LOCATION_UUID,
-        encounterDatetime: new Date().toISOString(),
+        encounterDatetime: new Date(Date.now() - 60_000).toISOString(),
         visit: context.visitUuid,
         obs: [{ concept: await conceptUuid(api, 'CIEL', '1427'), value: lmp.toISOString() }],
       },

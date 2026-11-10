@@ -2,12 +2,17 @@ import { type APIRequestContext, type Page } from '@playwright/test';
 import { test, expect, type SectionEncounter } from '../../core';
 import { NCD_INITIAL_ENCOUNTER_TYPE_UUID } from '../../core/constants';
 import { getEncounterObs } from '../../commands';
-import { SectionFormPage, expectViewShowsSavedObs } from '../../pages';
+import { SectionFormPage, VisitPage } from '../../pages';
 
 // section-other-ncd.xml ("Other NCDs"): six coded diagnoses as checkboxes (each its own "Visit Diagnoses" group) and a
-// free-text "Other NCD diagnosis". UNREFERENCED in Liberia (documentation/_availability.e2e.md: the liberia NCD configs in
-// encounterTypeConfig.js omit it): no visit-page section opens it, so the specs open the edit URL directly on an NCD Initial
-// encounter (the NCD parent chosen for them). First written without a server (locators from the XML), then run and fixed against a local Liberia server: see README.md.
+// free-text "Other NCD diagnosis". The specs open the edit URL directly on an NCD Initial encounter (the NCD parent chosen for them).
+// First written without a server (locators from the XML), then run and fixed against a local Liberia server: see README.md.
+//
+// UNREACHABLE: no profile of this repo offers this form (the `liberia` NCD entries of encounterTypeConfig.js omit it, and no type that lists it
+// is created by a Liberia entry point; _availability.e2e.md "Not reachable"). Tests open it by direct URL.
+// Visit-page display: the visit page has no VIEW of this form for any encounter a Liberia user can have: the NCD Initial and NCD Followup entries
+// (`liberia` key) list sections without `pihcore-other-ncds`, and the NCD part-2 types resolve to an entry with no sections. So the form's own VIEW
+// (showIfEmpty=false groups, ifMode VIEW :136, :173) is not tested; the VIEW test below asserts that the NCD Initial entry does not list the section.
 //
 // Conditions in the form, from documentation inventory (section-other-ncd.inv.md):
 //   ifMode VIEW include=false  :136, :173   script, and the #buttons row in ENTER/EDIT only
@@ -15,8 +20,6 @@ import { SectionFormPage, expectViewShowsSavedObs } from '../../pages';
 // Required fields: none (a blank form saves). The checkbox labels are the concept names (no answerCode).
 // Side effects on save: postSubmissionAction CleanDiagnosisConstructAction (:19): every "Visit Diagnoses" group that has a
 //   coded diagnosis gets a "Diagnosis order: Secondary" member; a group with no diagnosis is voided as dangling.
-// VIEW (getAsHtml.action): showIfEmpty=false hides the groups that were not saved, so only the ticked diagnoses and the
-//   text show; the button row is absent.
 // Not covered here: #next (needs the visit page); the Diagnosis order of a re-saved group in EDIT.
 //
 // Findings:
@@ -50,7 +53,7 @@ const obsDisplays = async (api: APIRequestContext, encounterUuid: string): Promi
   return (await getEncounterObs(api, encounterUuid)).map((o) => o.display);
 };
 
-test.describe('section-other-ncd', () => {
+test.describe('section-other-ncd @unreachable', () => {
   let section: SectionEncounter;
 
   test.beforeEach(async ({ page, createSectionEncounter }) => {
@@ -111,27 +114,17 @@ test.describe('section-other-ncd', () => {
     expect(displays.some((d) => /Atrial fibrillation/i.test(d))).toBeFalsy();
   });
 
-  // VIEW: only the saved diagnoses and the text are values; the groups that were not saved are not rendered (showIfEmpty=false).
-  test('VIEW: shows the ticked diagnoses and the text, not the others, and no buttons', async ({ page, api }) => {
+  // Visit-page display (header): the entry of the parent encounter lists no section that could show this form
+  test('the visit page does not list this section for an NCD Initial encounter that holds its obs', async ({ page }) => {
     await checkboxes(page).nth(1).check(); // Pulmonary embolism
-    await checkboxes(page).nth(4).check(); // Hyperlipidemia
     await otherText(page).fill('Gout');
     await saveForm(page);
 
-    // the Diagnosis order the action adds is not a form field, so the VIEW has no value for it
-    const labels: Record<string, string> = {};
-    for (const o of await getEncounterObs(api, section.encounter.uuid)) {
-      if (/^Diagnosis order:/i.test(o.display)) {
-        labels[o.display] = '';
-      }
-    }
-    const view = await expectViewShowsSavedObs(page, api, FORM, section.encounter.uuid, labels);
-    const shown = await view.valueTexts();
-    expect(shown).toEqual(expect.arrayContaining(['[X] Pulmonary embolism', '[X] Hyperlipidemia', 'Gout']));
-    expect(shown.filter((t) => t.startsWith('[X]'))).toHaveLength(2);
-    await expect(view.page.locator('#other-ncd')).not.toContainText('Deep vein thrombosis');
-    await expect(view.page.locator('#other-ncd')).not.toContainText('Obesity');
-    // ifMode VIEW include=false (:173)
-    await expect(view.page.locator('#buttons, #submit, #next, #cancel')).toHaveCount(0);
+    const visit = await VisitPage.openOfEncounter(page, section.encounter.uuid);
+    const entry = visit.encounterOfType(NCD_INITIAL_ENCOUNTER_TYPE_UUID);
+    await expect(entry).toHaveCount(1);
+    await visit.expand(entry);
+    await expect(visit.section('pihcore-ncd-history')).toBeVisible(); // the entry lists its sections ...
+    await expect(visit.section('pihcore-other-ncds')).toHaveCount(0); // ... but not this one, so there is no VIEW to test
   });
 });

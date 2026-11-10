@@ -1,6 +1,12 @@
 // section-exam.xml: "Examen physique" (physical exam: a normal/abnormal checkbox block per body system, women's, postpartum and
-// paediatric blocks). UNREFERENCED in Liberia (_availability.e2e.md "Sections": no Liberia encounter type shows it), so the specs
-// create an NCD Initial Consult encounter over REST (SectionEncounter) and open the edit URL directly.
+// paediatric blocks). UNREACHABLE (see below). The specs create an NCD Initial Consult encounter over REST (SectionEncounter) and open the
+// edit URL directly; the VIEW test uses a PMTCT Intake parent, because that is a type whose visit-page entry lists this section.
+//
+// UNREACHABLE: no profile of this repo offers this form (no `liberia` entry of encounterTypeConfig.js lists it and no Liberia entry point creates
+// the types that do: primary care, HIV, PMTCT, OB/GYN, oncology; _availability.e2e.md "Not reachable"). Tests open it by direct URL.
+// Visit-page display: for an encounter of a type whose entry lists the section (PMTCT Intake: `physical-exam`, templateModelUrl active,
+// `viewSectionWithHtmlFormLong`) the visit page shows the form's VIEW and the VIEW test uses it; an NCD Initial/Followup entry of the `liberia`
+// configuration does not list it.
 // First written without a server (locators from the XML), then run and fixed against a local Liberia server: see README.md.
 //
 // Conditions in the form, from documentation inventory (section-exam.inv.md):
@@ -26,7 +32,7 @@
 //                  stray "-": both CSS rules never apply. :346-347 etc. nest a <p> in <p class="comment-field"> (invalid HTML).
 //   V4 Low :1355-1360  the "Pitting" radios carry class abnormalObs, but the script only reads checkboxes: choosing a grade
 //                  does not uncheck "Normal", and "Normal" does not clear it. (unconfirmed: not run)
-//   Info: section unreferenced in Liberia; the postpartum and OB/GYN blocks need an OB/GYN or PMTCT parent (never offered here).
+//   Info: section not reachable in Liberia; the postpartum and OB/GYN blocks need an OB/GYN or PMTCT parent (never offered here).
 
 import { type APIRequestContext, type Locator, type Page } from '@playwright/test';
 import { test, expect, birthdateYearsAgo, type SectionEncounter } from '../../core';
@@ -55,7 +61,7 @@ const allObsDisplays = async (api: APIRequestContext, encounterUuid: string): Pr
 const EXAM_BLOCKS = ['#general', '#skin', '#heent', '#lymph', '#cardio', '#chest', '#abs', '#uro', '#mental', '#neuro', '#reflex', '#musculo'];
 const PEDS_BLOCKS = ['#gross', '#fine', '#lang', '#social'];
 
-test.describe('section-exam', () => {
+test.describe('section-exam @unreachable', () => {
   let section: SectionEncounter;
 
   test.beforeEach(async ({ page, createSectionEncounter }) => {
@@ -206,7 +212,13 @@ test.describe('section-exam', () => {
     await expect(page.locator('#fetus-2')).toBeVisible(); // hidden today
   });
 
-  test('saves findings of several blocks, EDIT starts from them, and the VIEW shows them and hides the empty blocks', async ({ page, api }) => {
+  test('saves findings of several blocks, EDIT starts from them, and the visit-page VIEW shows them and hides the empty blocks (PMTCT Intake parent)', async ({ page, api, createSectionEncounter }) => {
+    // PMTCT Intake parent: its visit-page entry lists this section (physical-exam), the NCD Initial of the `liberia` configuration does not
+    const section = await createSectionEncounter({
+      encounterTypeUuid: PMTCT_INTAKE_ENCOUNTER_TYPE_UUID,
+      patient: { givenName: 'AutoExam', familyName: 'Tester', gender: 'F' },
+    });
+    await SectionFormPage.openEdit(page, FORM, section);
     await tick(normalBox(page, '#general'));
     await tick(abnormalBox(page, '#skin')); // first abnormal finding of the skin block (rash)
     await page.locator('#skin textarea').fill('Itchy rash on arms');
@@ -236,9 +248,9 @@ test.describe('section-exam', () => {
     await expect(page.locator('#skin textarea')).toHaveValue('Itchy rash on arms');
     await expect(abnormalBox(page, '#heent')).not.toBeChecked();
 
-    // VIEW: the saved findings are values; hideIfEmpty (:212) hides the blocks with none; the shortcuts and buttons are ENTER/EDIT only
+    // VIEW (visit page, `physical-exam` section of the PMTCT Intake entry): the saved findings are values; hideIfEmpty (:212) hides the blocks with none; the shortcuts and buttons are ENTER/EDIT only
     const view = await expectViewShowsSavedObs(page, api, FORM, section.encounter.uuid);
-    const v = view.page;
+    const v = view.root;
     await expect(v.locator('#general .value').first()).toContainText(/normal/i);
     await expect(v.locator('#skin .value').filter({ hasText: 'Itchy rash on arms' })).toHaveCount(1);
     await expect(v.locator('#neuro .value').filter({ hasText: 'Left leg weakness' })).toHaveCount(1);

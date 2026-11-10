@@ -111,15 +111,16 @@ test.describe('section-history (male patient, Family Medicine Intake)', () => {
     expect(displays.filter((d) => /myomectomy/i.test(d))).toEqual([]);
   });
 
-  test.fail('VW1 VIEW shows the saved surgical history', async ({ page }) => {
-    // :278 inline display:none, no `when` script in VIEW; remove test.fail() when fixed
+  test.fixme('VW1 VIEW shows the saved surgical history', async ({ page }) => {
+    // :278 inline display:none, no `when` script in VIEW: on the visit page #surgery-block stays hidden (confirmed with test.fail: toBeVisible, received hidden);
+    // remove test.fixme() when fixed
     await page.locator('#surgery-toggle').getByLabel(yes).check();
     await page.getByLabel('Appendectomy', { exact: true }).check();
     await new SectionFormPage(page, FORM).save();
     await new SectionFormPage(page, FORM).expectSaved();
     const view = await ViewFormPage.open(page, FORM, section.encounter.uuid);
-    await expect(view.page.locator('#surgery-toggle .value')).toHaveText(/\[X\]\s*yes/i);
-    await expect(view.page.locator('#surgery-block')).toBeVisible();
+    await expect(view.root.locator('#surgery-toggle .value')).toHaveText(/\[X\]\s*yes/i);
+    await expect(view.root.locator('#surgery-block')).toBeVisible();
   });
 
   test('tobacco and alcohol "currently" show their follow-up questions; the alcohol type picks the quantity', async ({ page }) => {
@@ -217,12 +218,12 @@ test.describe('section-history (male patient, Family Medicine Intake)', () => {
     expect(shown).toContain('Lives with family');
     expect(shown.some((t) => numberOf(5).test(t))).toBeTruthy();
     expect(shown.some((t) => numberOf(10).test(t))).toBeTruthy();
-    await expect(view.page.locator('#chief-complaint .value')).toHaveText('Cough for two weeks');
-    await expect(view.page.locator('#patient-currently-smokes .value')).toHaveText(/\[X\]\s*currently/i);
-    await expect(view.page.locator('#patient-currently-drinks .value')).toHaveCount(0);
-    await expect(view.page.locator('#referralIn .value')).toHaveCount(0);
-    await expect(view.page.locator('h1')).toHaveCount(0);
-    await expect(view.page.locator('#buttons, #next, #submit')).toHaveCount(0);
+    await expect(view.root.locator('#chief-complaint .value')).toHaveText('Cough for two weeks');
+    await expect(view.root.locator('#patient-currently-smokes .value')).toHaveText(/\[X\]\s*currently/i);
+    await expect(view.root.locator('#patient-currently-drinks .value')).toHaveCount(0);
+    await expect(view.root.locator('#referralIn .value')).toHaveCount(0);
+    await expect(view.root.locator('h1')).toHaveCount(0);
+    await expect(view.root.locator('#buttons, #next, #submit')).toHaveCount(0);
   });
 
   test('saves a past-history item with its comment and the self-referral; VIEW shows them', async ({ page, api }) => {

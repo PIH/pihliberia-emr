@@ -1,83 +1,49 @@
-import { type APIRequestContext, type Page, expect } from '@playwright/test';
+import { type APIRequestContext, type Locator, type Page, expect } from '@playwright/test';
+import { VisitPage } from './visit-page';
 
-// VIEW mode of a form, rendered the way the visit page does it: the encounter and the form go to
-// viewEncounterWithHtmlForm/getAsHtml.action, which returns the form's HTML with every saved value in a
-// span.value and every unanswered or unselected one in a span.emptyValue. (There is no standalone VIEW page
-// in htmlformentryui, so the HTML is loaded into the test page.)
-//
-// The form's own scripts run too (the BMI of the vitals forms is computed by them), so the page they run in must look like
-// the page that normally hosts the VIEW: the visit page, which inserts the HTML with ng-bind-html (Angular runs on jQuery,
-// so the inline scripts run). Inserting HTML keeps the window of whatever page the test is on: a form's globals from an
-// earlier EDIT would clash ("Identifier 'priorities' has already been declared") and a page without jQuery would throw "jq
-// is not defined". So the test page first goes to a blank page of the server's origin, which is a fresh window, and gets the
-// scripts the visit page loads, in its order and served by the server itself (the angular, bootstrap, knockout, analytics
-// and visit-page scripts are left out).
+// VIEW mode of a form, as users see it: on the visit page. The visit page fetches the encounter and the form from
+// viewEncounterWithHtmlForm/getAsHtml.action (the `templateModelUrl` of the entry in encounterTypeConfig.js) when the entry
+// is expanded, and binds the returned HTML into its long view, where every saved value is a span.value and every unanswered
+// or unselected one a span.emptyValue. So this opens the real visit page of the encounter's visit, finds the entry whose
+// templateModelUrl names the form and expands it (VisitPage.expandFormView), and everything the test asserts is read from
+// that page: the form's own scripts run in the page that normally hosts them (the BMI of the vitals forms is computed by
+// them), the page loads the scripts the visit page loads, and `failOnJsError` fails the test on an error thrown by the
+// inserted HTML.
 //
 // The visit page does NOT load htmlFormEntry.js or htmlForm.js, so `getField`, `getValue`, `htmlForm` and `beforeSubmit` are
-// undefined there, as they are here: a form script that uses them in VIEW throws on the visit page too (HAI-1278), and these
-// tests show that. Do not add those scripts to the list to make them pass.
-const BLANK_PAGE = '/openmrs/e2e-view-blank.html';
-// The globals the page decorator (appui standardEmrPage.gsp) defines in every page of the app.
-const BLANK_BODY =
-  "<html><body><script>var OPENMRS_CONTEXT_PATH = 'openmrs'; var openmrsContextPath = '/' + OPENMRS_CONTEXT_PATH;</script></body></html>";
-const UI = '/openmrs/ms/uiframework/resource';
-const PIH = `${UI}/file/pih/scripts/global`;
-const VIEW_SCRIPTS = [
-  `${UI}/uicommons/scripts/jquery-1.12.4.min.js`,
-  `${UI}/uicommons/scripts/jquery-ui-1.9.2.custom.min.js`,
-  `${UI}/uicommons/scripts/underscore-min.js`,
-  `${UI}/uicommons/scripts/emr.js`, // var jq = jQuery
-  `${UI}/uicommons/scripts/jquery.toastmessage.js`,
-  `${UI}/uicommons/scripts/jquery.simplemodal.1.4.4.min.js`,
-  `${UI}/uicommons/scripts/handlebars/handlebars.js`,
-  `${UI}/uicommons/scripts/moment.min.js`,
-  `${UI}/pihapps/scripts/labs/renderLabOrdersByCategory.js`,
-  `${PIH}/setRequiredIfVisible.js`,
-  `${PIH}/liberia.js`,
-  `${PIH}/expandable.js`,
-  `${PIH}/nextAndSubmitButtons.js`,
-  `${PIH}/htmlFormFunctions.js`,
-  `${PIH}/hideIfEmpty.js`,
-  `${PIH}/renderOrderWidgetAsCheckboxes.js`,
-  `${PIH}/checkboxRadio.js`,
-  `${PIH}/mch.js`,
-  `${PIH}/setupDrugOrderQuantityCalculations.js`,
-  `${PIH}/pihServices.js`,
-  '/openmrs/moduleResources/htmlformentry/orderWidget.js',
-];
-
+// undefined there: a form script that uses them in VIEW throws on the visit page (HAI-1278), and the test fails with the
+// uncaught error: a finding, not something to work around.
+//
+// A form whose entry has no templateModelUrl (or one that names another form) is not shown as a VIEW: open() throws and says so.
+// Test what the visit page shows for it with VisitPage instead (skill: "Visit-page display").
 export class ViewFormPage {
-  constructor(readonly page: Page) {}
+  // `root` is the long view of the entry that shows the form: the visit page around it is not part of the VIEW.
+  constructor(
+    readonly page: Page,
+    readonly root: Locator,
+  ) {}
 
   static async open(page: Page, formFile: string, encounterUuid: string): Promise<ViewFormPage> {
-    const url =
-      `/openmrs/htmlformentryui/htmlform/viewEncounterWithHtmlForm/getAsHtml.action?encounterId=${encounterUuid}` +
-      `&definitionUiResource=file:configuration/pih/htmlforms/${formFile}`;
-    const res = await page.request.get(url, { headers: { Accept: 'application/json, text/plain, */*' } });
-    expect(res.ok(), `view ${formFile}: ${res.status()}`).toBeTruthy();
-    const body = (await res.json()) as { html?: string };
-    expect(body.html, `the VIEW of ${formFile} rendered`).toBeTruthy();
-
-    const origin = new URL(res.url()).origin;
-    const blank = `**${BLANK_PAGE}`;
-    await page.route(blank, (route) => route.fulfill({ contentType: 'text/html', body: BLANK_BODY }));
-    await page.goto(origin + BLANK_PAGE);
-    await page.unroute(blank);
-    for (const script of VIEW_SCRIPTS) {
-      await page.addScriptTag({ url: origin + script });
-    }
-    // Like the visit page, insert the HTML with jQuery: it runs the form's scripts once all of the HTML is in the
-    // document, so a jq(document).ready() in the form's head finds the elements below it. (setContent runs the
-    // scripts while the HTML is still being parsed.)
-    await page.evaluate((html) => (window as unknown as { jq: (s: string) => { html: (h: string) => void } }).jq('body').html(html), body.html!);
-    return new ViewFormPage(page);
+    const res = await page.request.get(`/openmrs/ws/rest/v1/encounter/${encounterUuid}?v=custom:(visit:(uuid))`);
+    expect(res.ok(), `get encounter ${encounterUuid}: ${res.status()}`).toBeTruthy();
+    const visitUuid = (await res.json()).visit?.uuid as string | undefined;
+    expect(visitUuid, `encounter ${encounterUuid} is in a visit (the visit page lists encounters by visit)`).toBeTruthy();
+    const visitPage = await VisitPage.open(page, visitUuid!);
+    return new ViewFormPage(page, await visitPage.expandFormView(encounterUuid, formFile));
   }
 
   // Every saved value shown by the form.
   // vital-signs-widget.js takes the "value" class off the vitals it colour-codes (.vitals-values), so they are matched by
   // their parent.
   get values() {
-    return this.page.locator('span.value, .vitals-values > span:not(.emptyValue, .units, .append-to-value)');
+    return this.root.locator('span.value, .vitals-values > span:not(.emptyValue, .units, .append-to-value)');
+  }
+
+  // The saved value of the obs whose span has this id (HFE puts the id on the span around the value). The units next to
+  // it and the placeholder of an unanswered obs are not matched, and neither is the "value" class, which
+  // vital-signs-widget.js takes off.
+  valueOf(id: string) {
+    return this.root.locator(`#${id} > span:not(.emptyValue, .units, .append-to-value)`);
   }
 
   // The text of every saved value, whitespace collapsed ("[X] yes" for a selected radio or checkbox).

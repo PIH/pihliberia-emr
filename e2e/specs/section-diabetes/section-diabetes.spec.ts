@@ -17,7 +17,7 @@ import { SectionFormPage, ViewFormPage, expectViewShowsSavedObs } from '../../pa
 // Scripts: :51 setUpNextAndSubmitButtons() (see _shared.e2e.md). No validation, default or derived value. No required field.
 // Side effects on save: postSubmissionAction CleanDiagnosisConstructAction (:19): each "Visit Diagnoses" group with a coded
 //   diagnosis gets a "Diagnosis order: Secondary" member (tested).
-// VIEW (getAsHtml.action): showIfEmpty=false hides every group that was not saved; ticked boxes are `[X] <label>`, radios
+// VIEW (the visit page, which fetches getAsHtml.action for this section): showIfEmpty=false hides every group that was not saved; ticked boxes are `[X] <label>`, radios
 //   `[X] yes|no`; the heading and button rows are absent.
 // Not covered here: the #pihcore-<section> jump buttons of #buttonsTopRow and #next (need the visit page; _shared.e2e.md :56
 //   says no Liberia form has `.nextSection`, but the six NCD disease sections do).
@@ -176,10 +176,10 @@ test.describe('section-diabetes', () => {
     );
     expect((await view.valueTexts()).some((t) => /^2(\.0)?$/.test(t))).toBeTruthy(); // missed doses
     expect(await view.valueTexts()).not.toContain('[X] Type 1 DM');
-    await expect(view.page.locator('body')).not.toContainText('Type 1 DM');
-    await expect(view.page.locator('.form-row').filter({ hasText: 'Date Diabetes treatment started' })).toContainText(/15 Mar(ch)? 2024|15\/03\/2024/);
+    await expect(view.root).not.toContainText('Type 1 DM');
+    await expect(view.root.locator('.form-row').filter({ hasText: 'Date Diabetes treatment started' })).toContainText(/15 Mar(ch)? 2024|15\/03\/2024/);
     // ifMode VIEW include=false (:46, :188): no heading, no button rows
-    await expect(view.page.locator('h1, #buttonsTopRow, #buttons, #submit, #next, #cancel')).toHaveCount(0);
+    await expect(view.root.locator('h1, #buttonsTopRow, #buttons, #submit, #next, #cancel')).toHaveCount(0);
   });
 
   // VIEW: only a complication is saved: the diagnoses group, the Other box and the indicators show no value.
@@ -189,8 +189,8 @@ test.describe('section-diabetes', () => {
 
     const view = await expectViewShowsSavedObs(page, api, FORM, section.encounter.uuid, await viewLabels(api, section.encounter.uuid));
     expect(await view.valueTexts()).toEqual(['[X] Stroke']);
-    await expect(view.page.locator('#diabetes .value')).toHaveCount(1); // the saved complication lives inside #diabetes
-    await expect(view.page.locator('.checkbox-group .value')).toHaveCount(0);
+    await expect(view.root.locator('#diabetes .value')).toHaveCount(1); // the saved complication lives inside #diabetes
+    await expect(view.root.locator('.checkbox-group .value')).toHaveCount(0);
   });
 
   test('VIEW: an encounter nothing was saved on shows no value', async ({ page }) => {
