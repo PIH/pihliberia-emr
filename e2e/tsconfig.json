@@ -11,7 +11,10 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "noEmit": true
+    "noEmit": true,
+    // The specs shared from pihemr (@pih/pihemr-e2e) are linked, so Node would resolve their "@playwright/test" by their real path and
+    // find none or a second copy. This maps it to this repo's copy (playwright.config.ts: `tsconfig`). See pihemr/e2e/README.md.
+    "paths": { "@playwright/test": ["./node_modules/@playwright/test"] }
   },
   "include": ["**/*.ts"]
 }

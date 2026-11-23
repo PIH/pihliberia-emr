@@ -68,7 +68,8 @@ test.describe('med-order', () => {
     await page.locator('#order-action-button-NEW').click();
     const row = page.locator('#drug-orders .orderwidget-order-form:visible');
     await row.locator('.order-drug input.orderwidget-autocomplete-textbox').fill('Acetylsalicylic');
-    await page.locator('.ui-autocomplete .ui-menu-item').first().click();
+    // wait for the filtered suggestion: on a slow server the menu first still lists the unfiltered drugs, and the first of those would be picked
+    await page.locator('.ui-autocomplete .ui-menu-item', { hasText: /acetylsalicylic/i }).first().click();
     await row.locator('.order-dose input').fill('1');
     await row.locator('.order-doseUnits select').selectOption({ index: 1 });
     await row.locator('.order-frequency select').selectOption({ index: 1 });

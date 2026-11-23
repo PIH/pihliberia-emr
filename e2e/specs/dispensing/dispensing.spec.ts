@@ -41,8 +41,10 @@ const newPatient = (createEntryContext: CustomTestFixtures['createEntryContext']
   createEntryContext({ givenName: 'AutoDispense', familyName: 'Tester', gender: 'F' });
 
 const whoWhereWhen = (page: Page) => page.locator('#who-where-when-view');
+// The location select is the one that lists "Pharmacy" as a whole option: a substring would also match the provider select on a server that has a provider whose name
+// contains "Pharmacy" (jjd-ci).
 const locationSelect = (page: Page) =>
-  whoWhereWhen(page).locator('select').filter({ has: page.locator('option', { hasText: 'Pharmacy' }) }).first();
+  whoWhereWhen(page).locator('select').filter({ has: page.locator('option', { hasText: /^\s*Pharmacy\s*$/ }) }).first();
 const medication = (page: Page, n: number) => page.locator('fieldset.medication').nth(n - 1);
 const medError = (page: Page, n: number) => medication(page, n).locator('p.field-error');
 const submit = (page: Page) => buttonsSubmit(page);

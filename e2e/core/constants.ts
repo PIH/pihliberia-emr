@@ -7,6 +7,8 @@
 
 // "Liberia EMR ID": no format, no validator (see commands/patient-operations.ts).
 export const LIBERIA_EMR_ID_IDENTIFIER_TYPE_UUID = '0bc545e0-f401-11e4-b939-0800200c9a66';
+// "Liberia Primary Identifier Source": the idgen source that issues a Liberia EMR ID. A test patient's identifier comes from it.
+export const LIBERIA_EMR_ID_IDENTIFIER_SOURCE_UUID = '06817a00-f405-11e4-b939-0800200c9a66';
 
 // "Health Facility": the only location with the Visit Location tag, so visits are created here.
 export const HEALTH_FACILITY_VISIT_LOCATION_UUID = '5af1ffcd-5178-11ea-a500-645d86728797';
