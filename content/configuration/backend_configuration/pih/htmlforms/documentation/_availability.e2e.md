@@ -278,7 +278,7 @@ What the specs showed about reaching the forms; the harness logs in with the adm
 
 ## Not covered
 
-None: every reachable form has a spec. (The first version of this file listed `patientRegistration-rs`, `section-chief-complaint`, `section-peds`, `section-plan` and `section-prescriptions-print` here as deferred; they have specs now: `patientRegistration-rs`, `section-chief-complaint` and `section-prescriptions-print` are the shared ones of `@pih/pihemr-e2e`, run through `e2e/specs/shared/shared.spec.ts`, and `section-peds` and `section-plan` are in `e2e/specs/`.)
+None: every reachable form has a spec. (The first version of this file listed `patientRegistration-rs`, `section-chief-complaint`, `section-peds`, `section-plan` and `section-prescriptions-print` here as deferred; they have specs now: `patientRegistration-rs`, `section-chief-complaint` and `section-prescriptions-print` are the shared ones of `@pih/pihemr-e2e`, run through `e2e/specs/shared/pihemr.spec.ts`, and `section-peds` and `section-plan` are in `e2e/specs/`.)
 
 ## To spec`) + 56 not reachable = 95 forms. Two of the 56 not-reachable forms have a spec (`section-exam.xml`, `section-other-ncd.xml`); both carry the `// UNREACHABLE` header and the `@unreachable` tag.
 
