@@ -2,7 +2,7 @@ import { type APIRequestContext, type Locator, type Page } from '@playwright/tes
 import { test, expect, type SectionEncounter } from '../../core';
 import { NCD_FOLLOWUP_ENCOUNTER_TYPE_UUID, NCD_INITIAL_ENCOUNTER_TYPE_UUID } from '../../core/constants';
 import { getEncounterObs } from '../../commands';
-import { SectionFormPage, ViewFormPage, expectViewShowsSavedObs } from '../../pages';
+import { SectionFormPage, ViewFormPage, expectViewShowsSavedObs, pickDate } from '../../pages';
 
 // section-diabetes.xml ("Diabetes"): NCD Initial only: diagnoses (each a "Visit Diagnoses" group), "Other", treatment date;
 // then complications and the follow-up indicators (yes/no radios in one PIH:14469 group). On the visit page it is the
@@ -46,18 +46,6 @@ const obsDisplays = async (api: APIRequestContext, encounterUuid: string): Promi
 const row = (page: Page, question: string) =>
   page.locator('p.list-inline-wide').filter({ hasText: new RegExp(`^\\s*${question}`) });
 const answer = (r: Locator, label: 'yes' | 'no') => r.getByLabel(new RegExp(`^${label}$`, 'i'));
-
-// Date inputs are read-only datepickers: set the date as the picker does, then fire the hidden input's change.
-const pickDate = async (input: Locator, isoDate: string) => {
-  await input.evaluate((el, iso) => {
-    const j = (window as unknown as { jq: (e: unknown) => { datepicker: (...a: unknown[]) => void; trigger: (n: string) => void } }).jq;
-    j(el).datepicker('setDate', new Date(`${iso}T12:00:00`));
-    j(el).trigger('change');
-  }, isoDate);
-  await input.locator('xpath=following-sibling::input[@type="hidden"]').evaluate((el) => {
-    (window as unknown as { jq: (e: unknown) => { trigger: (n: string) => void } }).jq(el).trigger('change');
-  });
-};
 
 // VIEW labels for obs the form shows differently from their concept names (obs display -> text shown). The keys are the
 // displays of the saved obs, found by pattern (concept names from the PIH 1.8.46 dictionary).

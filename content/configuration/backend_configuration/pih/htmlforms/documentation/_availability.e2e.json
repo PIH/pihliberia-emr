@@ -1,0 +1,1036 @@
+{
+  "schema": 1,
+  "site": "pihliberia-emr",
+  "defaultProfile": "H",
+  "profiles": {
+    "H": "Harper: stacks harper, jjd-ci, demo, jjdossen, dev (identical for forms; the specs run on a server of this profile)",
+    "P": "Pleebo: stack liberia,liberia-pleebo (no familyMedicine). No server of it is used by the specs, so its flags are read from the config and unverified"
+  },
+  "forms": {
+    "admissionNote": {
+      "formUuid": "43acf930-eb1b-11e2-91e2-0800200c9a66",
+      "path": "admissionNote.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "component off",
+      "detail": "`adt`: `enableADT` :919 (awaiting-admission link :940, visit action :956), dispatcher :271; no Liberia profile lists `adt`"
+    },
+    "anc-delivery": {
+      "formUuid": "ff193c33-5a51-11eb-b3e1-34c93de76af3",
+      "path": "anc-delivery.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "visit-action",
+        "sessionTag": "Maternal and Child Location",
+        "patient": {
+          "gender": "F"
+        }
+      }
+    },
+    "anc-followup": {
+      "formUuid": "9107ccca-d1e3-11ea-9995-3c6aa7c392cc",
+      "path": "anc-followup.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "visit-action",
+        "sessionTag": "Maternal and Child Location",
+        "patient": {
+          "gender": "F"
+        }
+      }
+    },
+    "anc-initial": {
+      "formUuid": "7bff46e5-d1e3-11ea-9995-3c6aa7c392cc",
+      "path": "anc-initial.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "visit-action",
+        "sessionTag": "Maternal and Child Location",
+        "patient": {
+          "gender": "F"
+        }
+      }
+    },
+    "ancFollowup": {
+      "formUuid": "819b7edc-910c-11e8-9eb6-529269fb1459",
+      "path": "ancFollowup.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "other country",
+      "detail": "`enableMCHForms`, final `else` branch (:2323, action :2343); Liberia has its own block (:2268) with `anc-followup`"
+    },
+    "ancIntake": {
+      "formUuid": "00e552d8-90ec-11e8-9eb6-529269fb1459",
+      "path": "ancIntake.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "other country",
+      "detail": "same final `else` branch (action :2329); Liberia offers `anc-initial`"
+    },
+    "cancelAdmission": {
+      "formUuid": "912c7800-df82-11e3-8b68-0800200c9a66",
+      "path": "cancelAdmission.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "component off",
+      "detail": "`adt` (`enableADT`, link :948)"
+    },
+    "checkin": {
+      "formUuid": "54E29E26-123E-4137-8F26-91D8227C1D5B",
+      "path": "checkin.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "visit-action",
+        "sessionTag": "Check-In Location"
+      }
+    },
+    "chemotherapyTreatment": {
+      "formUuid": "2fce4b79-a0c8-41ac-81d7-3bbfd85988fd",
+      "path": "chemotherapyTreatment.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "component off",
+      "detail": "`oncology`: `enableOncology` :1985 (action :2031), called from `enablePrograms` :4268; not listed"
+    },
+    "comment": {
+      "formUuid": "9f1e1614-6b7f-423d-a28a-f174042524e2",
+      "path": "comment.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "component off",
+      "detail": "`commentForm`: `enableCommentForm` :4572 (action :4577), dispatcher :494; not listed"
+    },
+    "covid19Discharge": {
+      "formUuid": "9d05907a-2678-46c8-a447-1517b1cb6cac",
+      "path": "covid19Discharge.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "component off",
+      "detail": "`covid19`: `enableCovid19` :3530 (action :3548), dispatcher :474; not listed"
+    },
+    "covid19Followup": {
+      "formUuid": "2bf00b0c-c411-4738-898d-9fac03a60099",
+      "path": "covid19Followup.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "component off",
+      "detail": "`covid19` (`enableCovid19`, action :3539)"
+    },
+    "covid19Intake": {
+      "formUuid": "82be8c44-cc17-4704-ae10-1179ae9702db",
+      "path": "covid19Intake.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "component off",
+      "detail": "`covid19IntakeForm`: `enableCovid19IntakeForm` :3555 (action :3560), dispatcher :478; not listed"
+    },
+    "delivery": {
+      "formUuid": "c4fb83cf-e026-487b-8189-2120c988e625",
+      "path": "delivery.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "other country",
+      "detail": "`enableMCHForms`: Haiti branch (:2310, action :2316) and the Sierra Leone `mchBasicDeliveryForm` block (:2456, action :2461); Liberia offers `anc-delivery`"
+    },
+    "dischargeNote": {
+      "formUuid": "e0a26c20-fba6-11e2-b778-0800200c9a66",
+      "path": "dischargeNote.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "unreferenced",
+      "detail": "no `getFormResource` and no `encounterTypeConfig.js` form entry; the only hit in `pihliberia-emr` is the message code `mirebalais.dischargeNote.dischargeDate.label` in `section-hospital`. Its encounter type has a visit-page entry; a launch from the O2 ADT module is unverified"
+    },
+    "dispensing": {
+      "formUuid": "ba22eda5-148d-456e-8adc-f36247d1f7c3",
+      "path": "dispensing.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "visit-action",
+        "sessionTag": "Dispensing Location"
+      }
+    },
+    "drugOrder": {
+      "formUuid": "d2adf684-34f7-42fc-a979-43178bca8e72",
+      "path": "drugOrder.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "component off",
+      "detail": "`medicationOrder`: `enableMedicationOrder` :1189 (action :1194), dispatcher :299; not listed (the Liberia `med-order` is a different form, a section)"
+    },
+    "drugRehab": {
+      "formUuid": "94372e53-2143-43a6-97ef-70c615c6446e",
+      "path": "drugRehab.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "component off",
+      "detail": "`drugRehab`: `enableDrugRehab` :3625 (action :3630), dispatcher :506; not listed"
+    },
+    "echocardiogram": {
+      "formUuid": "fdee5220-78ba-11e9-8f9e-2a86e4085a59",
+      "path": "echocardiogram.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "component off",
+      "detail": "`echocardiogram`, nested inside `ncd` (`enablePrograms` :4252 -> `enableEcho` :2249, action :2251); Liberia lists `ncd` but not `echocardiogram`"
+    },
+    "edNote": {
+      "formUuid": "793915d6-f8d9-11e2-8ff2-fd54ab5fdb2a",
+      "path": "edNote.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "component off",
+      "detail": "`edConsult`: `enableEDConsult` :905 (action :911), dispatcher :267; not listed"
+    },
+    "epilepsy": {
+      "formUuid": "4a101cb7-fab3-4d69-8fe2-84671ae82f6e",
+      "path": "epilepsy.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "visit-action",
+        "sessionTag": "Mental Health Location"
+      }
+    },
+    "epilepsyIntake": {
+      "formUuid": "e0e49050-85d8-444d-a587-c9769d0899f6",
+      "path": "epilepsyIntake.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "visit-action",
+        "sessionTag": "Mental Health Location"
+      }
+    },
+    "family-medicine-followup": {
+      "formUuid": "1d4e250c-972a-4c75-b0d8-80d6527cc1a0",
+      "path": "family-medicine-followup.xml",
+      "offered": {
+        "H": true,
+        "P": false
+      },
+      "entry": {
+        "kind": "visit-action",
+        "sessionTag": "Consult Note Location"
+      }
+    },
+    "family-medicine-intake": {
+      "formUuid": "c0d1a35a-f40c-426f-be6e-033e9fc4e69b",
+      "path": "family-medicine-intake.xml",
+      "offered": {
+        "H": true,
+        "P": false
+      },
+      "entry": {
+        "kind": "visit-action",
+        "sessionTag": "Consult Note Location"
+      }
+    },
+    "infantDocumentation": {
+      "formUuid": "529A6347-47F0-4F2B-ACD3-4D8E85D4A76E",
+      "path": "infantDocumentation.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "unreferenced",
+      "detail": "no hit; its encounter type (\"HIV Infant Documentation\") is not offered by any Liberia entry point"
+    },
+    "labResults": {
+      "formUuid": "4d778ef4-0620-11e5-a6c0-1697f925ec7b",
+      "path": "labResults.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "other",
+        "note": "offered by a Lab Results home app (Task: emr.enterLabResults), not a visit action; no visit needed"
+      }
+    },
+    "med-order": {
+      "formUuid": "3616e6be-1671-4031-9cc9-a0f1f4b1d100",
+      "path": "med-order.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "section"
+      }
+    },
+    "mentalHealth": {
+      "formUuid": "cb4fca1f-ae90-4e0a-a75d-13a8859feb66",
+      "path": "mentalHealth.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "other country",
+      "detail": "`enableMentalHealthForm` :2695: the Sierra Leone branch (:2703) and the final `else` (:2749); Liberia has its own branch (:2723) with `mentalHealthIntake` and `mentalHealthFollowup`. The visit page has a view entry for its type (`encounterTypeConfig.js` :1789) that no Liberia entry point creates"
+    },
+    "mentalHealthFollowup": {
+      "formUuid": "e1cff6a2-651a-11e8-adc0-fa7ae01bbebc",
+      "path": "mentalHealthFollowup.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "visit-action",
+        "sessionTag": "Mental Health Location"
+      }
+    },
+    "mentalHealthIntake": {
+      "formUuid": "23d64659-9325-443c-a166-5945c88f299a",
+      "path": "mentalHealthIntake.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "visit-action",
+        "sessionTag": "Mental Health Location"
+      }
+    },
+    "ncd-followup": {
+      "formUuid": "4cabb024-7f47-441c-9a08-9318122f711a",
+      "path": "ncd-followup.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "visit-action",
+        "sessionTag": "NCD Consult Location"
+      }
+    },
+    "ncd-initial": {
+      "formUuid": "edf1cecf-f1fc-4917-8bcb-2bd9669eb2f7",
+      "path": "ncd-initial.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "visit-action",
+        "sessionTag": "NCD Consult Location"
+      }
+    },
+    "obGyn": {
+      "formUuid": "ef29d697-97d3-11f0-aa57-82198ff46031",
+      "path": "obGyn.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "component off",
+      "detail": "`obgyn`, a flag inside `enableMCHForms` :2471 (action :2476); Liberia lists `mch` but not `obgyn`"
+    },
+    "obGyn_1.0": {
+      "formUuid": "97ba85df-83b6-49ed-b34f-30b33436e599",
+      "path": "obGyn_1.0.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "component off",
+      "detail": "older copy of `obGyn.xml`, named `_1.0` so the guard does not skip it as a `_v*` copy; no entry of its own"
+    },
+    "oncologyConsult": {
+      "formUuid": "28b76a20-105d-11e5-b939-0800200c9a66",
+      "path": "oncologyConsult.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "retired",
+      "detail": "its visit action is commented out in `enableOncology` (:1989-:2002, \"Removed Feb 2023 per Lormil. This form is no longer used\"); `oncology` is off anyway"
+    },
+    "oncologyIntakeConsult": {
+      "formUuid": "251a6a9f-f797-4573-b2da-04bbbe56a7b7",
+      "path": "oncologyIntakeConsult.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "component off",
+      "detail": "`oncology` (`enableOncology`, action :2042)"
+    },
+    "oncologyTreatment": {
+      "formUuid": "f55d57d3-aecb-4825-b45e-4220ceadf93f",
+      "path": "oncologyTreatment.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "component off",
+      "detail": "`oncology` (`enableOncology`, action :2013)"
+    },
+    "outpatientConsult": {
+      "formUuid": "a3fc5c38-eb32-11e2-981f-96c0fcb18276",
+      "path": "outpatientConsult.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "visit-action",
+        "sessionTag": "Consult Note Location"
+      }
+    },
+    "ovcFollowup": {
+      "formUuid": "5f486bc6-b017-4932-8037-6d667f8c3162",
+      "path": "ovcFollowup.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "component off",
+      "detail": "`ovc`: `enableOvc` :3576 (action :3593), inside `enablePrograms` :4257; not listed"
+    },
+    "ovcIntake": {
+      "formUuid": "a2f4e400-df59-4456-935f-cd0697ff28a4",
+      "path": "ovcIntake.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "component off",
+      "detail": "`ovc` (`enableOvc`, action :3583)"
+    },
+    "patientRegistration-contact": {
+      "formUuid": "9EE91561-42A0-4E1C-9469-ABA6726056BE",
+      "path": "patientRegistration-contact.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "other country",
+      "detail": "`enablePatientRegistration`: `if (!config.isCountry(LIBERIA))` :1760 (action :1768) skips the contact widget in Liberia"
+    },
+    "patientRegistration-rs": {
+      "formUuid": "6F6E6FA0-1E99-41A3-9391-E5CB8A127C11",
+      "path": "patientRegistration-rs.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "notCovered": "deferred: in `## To spec` (batch 1)",
+      "entry": {
+        "kind": "other",
+        "note": "registrationapp.registerPatient"
+      }
+    },
+    "patientRegistration-social": {
+      "formUuid": "3C953068-B460-4B1A-8889-0AAD43447CD7",
+      "path": "patientRegistration-social.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "other",
+        "note": "registrationapp.registerPatient"
+      }
+    },
+    "patientRegistration": {
+      "formUuid": "43bcbb00-8790-11e4-b4a9-0800200c9a66",
+      "path": "patientRegistration.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "unreferenced",
+      "detail": "no reference (only the text of `patientRegistration-rs`); same encounter type as the widget forms `patientRegistration-rs` and `-social`"
+    },
+    "peds": {
+      "formUuid": "fac9d9a2-d0bc-11ea-9995-3c6aa7c392cc",
+      "path": "peds.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "visit-action",
+        "sessionTag": "Maternal and Child Location",
+        "patient": {
+          "gender": "F"
+        }
+      }
+    },
+    "primary-care-adult-followup": {
+      "formUuid": "25cc7418-4dde-4b28-a3e9-fedb87243bcb",
+      "path": "primary-care-adult-followup.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "other country",
+      "detail": "`enablePrimaryCare` :2907, Haiti branch :2909 (action :2959); no Liberia branch (the others are Mexico :2969 and Sierra Leone :2987), although `primaryCare` is on at every Liberia site"
+    },
+    "primary-care-adult-initial": {
+      "formUuid": "d1ae1222-014e-496f-899a-d749e1adbe59",
+      "path": "primary-care-adult-initial.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "other country",
+      "detail": "same Haiti branch (action :2944)"
+    },
+    "primary-care-peds-followup": {
+      "formUuid": "dbc8b72d-89a0-4650-807a-e5170c995700",
+      "path": "primary-care-peds-followup.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "other country",
+      "detail": "same Haiti branch (action :2930)"
+    },
+    "primary-care-peds-initial": {
+      "formUuid": "ec186d0f-0429-4ab3-9f52-547faa3a8eea",
+      "path": "primary-care-peds-initial.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "other country",
+      "detail": "same Haiti branch (action :2915)"
+    },
+    "section-c-section": {
+      "formUuid": "7e7f7dfb-92b8-45a9-841e-304474e0fcfe",
+      "path": "section-c-section.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "other country",
+      "detail": "`cSection` section (`encounterTypeConfig.js` :521) of MCH Delivery in the `DEFAULT` config; the `liberia` key lists only `med-order`"
+    },
+    "section-chief-complaint": {
+      "formUuid": "71ee5c0c-d8ae-4777-af9f-bb57f563503a",
+      "path": "section-chief-complaint.xml",
+      "offered": {
+        "H": true,
+        "P": false
+      },
+      "notCovered": "deferred: in `## To spec` (batch 1)",
+      "entry": {
+        "kind": "section"
+      }
+    },
+    "section-comments": {
+      "formUuid": "12d6922a-1dea-452d-ae2c-bb09366de400",
+      "path": "section-comments.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "section or subform",
+      "detail": "section of the home-assessment encounter types (`encounterTypeConfig.js` :628); no Liberia entry point creates them"
+    },
+    "section-delivery": {
+      "formUuid": "ba7d705c-f818-44ea-8488-237d43d23d4f",
+      "path": "section-delivery.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "other country",
+      "detail": "`delivery` section (:509) of MCH Delivery in the `DEFAULT` config only"
+    },
+    "section-diabetes": {
+      "formUuid": "d26b1ddf-d410-4a9f-be0f-b516e7c26c40",
+      "path": "section-diabetes.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "section"
+      }
+    },
+    "section-dx-obgyn": {
+      "formUuid": "2065460f-adeb-4895-837c-1fa516b6c280",
+      "path": "section-dx-obgyn.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "section or subform",
+      "detail": "`pihcore-diagnosis-obgyn` section (:133) of the OB/GYN encounter type; parent `obGyn.xml` is `component off`"
+    },
+    "section-dx": {
+      "formUuid": "3498f204-a6fa-4df0-b7fd-a94eb03a43c9",
+      "path": "section-dx.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "section"
+      }
+    },
+    "section-education-subjects": {
+      "formUuid": "fdf32eae-f020-4075-993d-971b5633aa6d",
+      "path": "section-education-subjects.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "section or subform",
+      "detail": "home-assessment types (:598)"
+    },
+    "section-exam": {
+      "formUuid": "b34b71f4-03f1-11e5-8418-1697f925ec7b",
+      "path": "section-exam.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "section or subform",
+      "detail": "`primaryCareExam` (:92-:100) is listed only by primary care, HIV, PMTCT, OB/GYN and oncology encounter types and by the `DEFAULT`/Haiti NCD configs; no Liberia entry point creates those and the `liberia` NCD key omits it. **Has a spec** (direct edit URL; `@unreachable`)"
+    },
+    "section-family-planning-simple": {
+      "formUuid": "3e9c3181-884d-43a4-a5c7-920bc5dd5d59",
+      "path": "section-family-planning-simple.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "section or subform",
+      "detail": "`maternal-family-planning` section (:618) of the home-assessment types"
+    },
+    "section-family-planning": {
+      "formUuid": "d32b2d60-5cf1-11e7-907b-a6006ad3dba0",
+      "path": "section-family-planning.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "unreferenced",
+      "detail": "`encounterTypeConfig.js` defines the section (`familyPlanningHistory` :413) but no encounter type lists it"
+    },
+    "section-heart-failure": {
+      "formUuid": "8301277b-1062-4c15-8701-9771ac95e599",
+      "path": "section-heart-failure.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "section"
+      }
+    },
+    "section-history": {
+      "formUuid": "162091b1-0060-4e56-8c17-7015aeddf608",
+      "path": "section-history.xml",
+      "offered": {
+        "H": true,
+        "P": false
+      },
+      "entry": {
+        "kind": "section"
+      }
+    },
+    "section-hospital": {
+      "formUuid": "2d52173d-6030-4284-940a-0d0e79e48491",
+      "path": "section-hospital.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "section"
+      }
+    },
+    "section-hypertension": {
+      "formUuid": "3a1d79fe-9aa0-4289-bcea-c70aae516234",
+      "path": "section-hypertension.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "section"
+      }
+    },
+    "section-kidney": {
+      "formUuid": "1a66029d-0e0c-410b-9fa6-8ea26f697cb8",
+      "path": "section-kidney.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "section"
+      }
+    },
+    "section-lab-order": {
+      "formUuid": "178f9aa8-550a-11e7-b114-b2f933d5fe66",
+      "path": "section-lab-order.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "unreferenced",
+      "detail": "defined as `labRadOrder` (:390) and listed by no encounter type; a comment in `section-plan_v1.0.xml` calls it a duplicate"
+    },
+    "section-liver": {
+      "formUuid": "4357b34b-ab3a-4404-ab33-a73104b26fdb",
+      "path": "section-liver.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "section"
+      }
+    },
+    "section-lung": {
+      "formUuid": "add648f7-7d24-47ce-9456-8006021e074e",
+      "path": "section-lung.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "section"
+      }
+    },
+    "section-maternal-danger-signs": {
+      "formUuid": "7a2002bf-eeb2-4d71-b951-7e0b5a80f931",
+      "path": "section-maternal-danger-signs.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "section or subform",
+      "detail": "home-assessment types (:577)"
+    },
+    "section-maternal-vital-signs": {
+      "formUuid": "8dba188c-d170-4755-9895-4c8324f67e33",
+      "path": "section-maternal-vital-signs.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "section or subform",
+      "detail": "home-assessment types (:588)"
+    },
+    "section-mch-referral": {
+      "formUuid": "544d566e-a4c6-4f18-b5a7-5cea32d09301",
+      "path": "section-mch-referral.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "section or subform",
+      "detail": "home-assessment types (:566)"
+    },
+    "section-ncd-followup": {
+      "formUuid": "1d764c06-ebdc-42fa-b75a-d5b789e3f630",
+      "path": "section-ncd-followup.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "section"
+      }
+    },
+    "section-ncd-history": {
+      "formUuid": "b0b5ed18-f477-45d5-87f9-ad3df76e9b5b",
+      "path": "section-ncd-history.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "section"
+      }
+    },
+    "section-ncd-plan": {
+      "formUuid": "aa8d9374-f343-4818-8433-66f4e6145a7f",
+      "path": "section-ncd-plan.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "section"
+      }
+    },
+    "section-ncd": {
+      "formUuid": "47de1db8-bebc-4861-82bc-e4f0ee8c04aa",
+      "path": "section-ncd.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "other country",
+      "detail": "`ncd` section (:174, :186, :196) of NCD Initial/Followup in the `DEFAULT` and Haiti configs; the `liberia` NCD key lists its own sections"
+    },
+    "section-obgyn-initial": {
+      "formUuid": "fd19a3d0-4aa4-415c-a25a-dc1159098796",
+      "path": "section-obgyn-initial.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "section or subform",
+      "detail": "OB/GYN encounter type (:532); parent `obGyn.xml` is `component off`"
+    },
+    "section-obgyn-plan": {
+      "formUuid": "84bed1ec-97c4-11f0-aa57-82198ff46031",
+      "path": "section-obgyn-plan.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "section or subform",
+      "detail": "OB/GYN encounter type (:544); not the Liberia `med-order`, which is the \"Medication\" section of the ANC and delivery encounters"
+    },
+    "section-oncology-history": {
+      "formUuid": "f76d683d-8b30-47fd-8c80-1730a2ab57cf",
+      "path": "section-oncology-history.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "section or subform",
+      "detail": "Oncology Initial Consult (:648); parent `oncologyIntakeConsult.xml` is `component off`"
+    },
+    "section-oncology-plan": {
+      "formUuid": "cd0fd93e-234a-4cb0-bcb3-a0fecd3af1bd",
+      "path": "section-oncology-plan.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "section or subform",
+      "detail": "same (:659)"
+    },
+    "section-other-ncd": {
+      "formUuid": "319412b8-215c-428d-a1d2-f15c1a96b4d1",
+      "path": "section-other-ncd.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "other country",
+      "detail": "`otherNCDs` (:356) is listed by the `DEFAULT`/Haiti configs of NCD Initial and Followup (:1263, :1374) and by the NCD part-2 types (:1419, :1484); the `liberia` NCD key omits it. **Has a spec** (direct edit URL; `@unreachable`). Only in this repo, not in `pihemr`"
+    },
+    "section-palliative": {
+      "formUuid": "226796bc-24b0-4af7-98b3-f07b26e390cf",
+      "path": "section-palliative.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "section"
+      }
+    },
+    "section-peds-feeding": {
+      "formUuid": "7FC98698-C733-4CCE-B082-A3BDBC8D6EC4",
+      "path": "section-peds-feeding.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "unreferenced",
+      "detail": "no reference anywhere"
+    },
+    "section-peds-supplements": {
+      "formUuid": "CF281FB4-8A40-445A-84ED-05101240F5E8",
+      "path": "section-peds-supplements.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "unreferenced",
+      "detail": "no reference anywhere"
+    },
+    "section-peds": {
+      "formUuid": "c278f802-57be-11e9-8647-d663bd873d93",
+      "path": "section-peds.xml",
+      "offered": {
+        "H": true,
+        "P": false
+      },
+      "notCovered": "deferred: in `## To spec` (batch 1)",
+      "entry": {
+        "kind": "section"
+      }
+    },
+    "section-plan": {
+      "formUuid": "ed673783-ec75-49de-a19f-3976d031aec0",
+      "path": "section-plan.xml",
+      "offered": {
+        "H": true,
+        "P": false
+      },
+      "notCovered": "deferred: in `## To spec` (batch 1)",
+      "entry": {
+        "kind": "section"
+      }
+    },
+    "section-postpartum-counsel": {
+      "formUuid": "d2ac7d33-cb7b-440e-93b9-45a75859109f",
+      "path": "section-postpartum-counsel.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "section or subform",
+      "detail": "home-assessment types (:608)"
+    },
+    "section-prescriptions-print": {
+      "formUuid": "CA8D072A-2681-4E06-B83C-AD3B0FC3D49D",
+      "path": "section-prescriptions-print.xml",
+      "offered": {
+        "H": true,
+        "P": false
+      },
+      "notCovered": "deferred: in `## To spec` (batch 1)",
+      "entry": {
+        "kind": "section"
+      }
+    },
+    "section-return-visit-date": {
+      "formUuid": "674b13aa-9dcd-4c3e-979b-121b6b681bf4",
+      "path": "section-return-visit-date.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "section or subform",
+      "detail": "home-assessment types (:638)"
+    },
+    "section-review-of-systems": {
+      "formUuid": "1c57f8d3-65eb-4619-a375-7612b79a7b13",
+      "path": "section-review-of-systems.xml",
+      "offered": {
+        "H": true,
+        "P": false
+      },
+      "entry": {
+        "kind": "section"
+      }
+    },
+    "section-sickle-cell": {
+      "formUuid": "23afe1ed-76c4-4642-b37b-44944a9dbed9",
+      "path": "section-sickle-cell.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "section"
+      }
+    },
+    "socio-econ": {
+      "formUuid": "de845312-11e1-11e8-b642-0ed5f89f718b",
+      "path": "socio-econ.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "component off",
+      "detail": "`socioEconomics`: `enableSocioEconomics` :2828 (action :2833), dispatcher :438; not listed"
+    },
+    "surgicalPostOpNote": {
+      "formUuid": "d29a49b1-957b-4bcb-b192-07484de4165b",
+      "path": "surgicalPostOpNote.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "component off",
+      "detail": "`surgery`: `enableSurgery` :1240 (action :1246), dispatcher :307; not listed"
+    },
+    "transferNote": {
+      "formUuid": "d068bc80-fb95-11e2-b778-0800200c9a66",
+      "path": "transferNote.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "unreferenced",
+      "detail": "same searches as `dischargeNote.xml`; its encounter type has a visit-page entry, a launch from the O2 ADT module is unverified"
+    },
+    "vaccination-only": {
+      "formUuid": "1e2a4e26-7c9f-11e9-8f9e-2a86e4085a59",
+      "path": "vaccination-only.xml",
+      "offered": {
+        "H": false,
+        "P": false
+      },
+      "reason": "component off",
+      "detail": "`vaccination`: `enableVaccinationOnly` :2680 (action :2685), inside `enablePrograms` :4262; not listed"
+    },
+    "vitals": {
+      "formUuid": "68728aa6-4985-11e2-8815-657001b58a90",
+      "path": "vitals.xml",
+      "offered": {
+        "H": true,
+        "P": true
+      },
+      "entry": {
+        "kind": "visit-action",
+        "sessionTag": "Vitals Location"
+      }
+    }
+  }
+}

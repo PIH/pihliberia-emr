@@ -2,7 +2,7 @@ import { type APIRequestContext, type Locator, type Page } from '@playwright/tes
 import { test, expect, type SectionEncounter } from '../../core';
 import { NCD_FOLLOWUP_ENCOUNTER_TYPE_UUID, NCD_INITIAL_ENCOUNTER_TYPE_UUID } from '../../core/constants';
 import { getEncounterObs } from '../../commands';
-import { SectionFormPage, ViewFormPage, expectViewShowsSavedObs } from '../../pages';
+import { SectionFormPage, ViewFormPage, expectViewShowsSavedObs, pickDate } from '../../pages';
 
 // section-heart-failure.xml ("Heart Failure"): NCD Initial only: CHF diagnoses (each a "Visit Diagnoses" group), a complications
 // textarea and the treatment date; then signs and symptoms (yes/no/unknown radios, one PIH:14733 group each), body edema,
@@ -49,18 +49,6 @@ const symptom = (page: Page, name: string) =>
 const risk = (page: Page, name: string) =>
   page.locator('p.list-inline-wide').filter({ hasText: new RegExp(`^\\s*${name}`) });
 const answer = (r: Locator, label: 'yes' | 'no' | 'unknown') => r.getByLabel(new RegExp(`^${label}$`, 'i'));
-
-// Date inputs are read-only datepickers: set the date as the picker does, then fire the hidden input's change.
-const pickDate = async (input: Locator, isoDate: string) => {
-  await input.evaluate((el, iso) => {
-    const j = (window as unknown as { jq: (e: unknown) => { datepicker: (...a: unknown[]) => void; trigger: (n: string) => void } }).jq;
-    j(el).datepicker('setDate', new Date(`${iso}T12:00:00`));
-    j(el).trigger('change');
-  }, isoDate);
-  await input.locator('xpath=following-sibling::input[@type="hidden"]').evaluate((el) => {
-    (window as unknown as { jq: (e: unknown) => { trigger: (n: string) => void } }).jq(el).trigger('change');
-  });
-};
 
 // VIEW labels for obs the form shows differently from their concept names (obs display -> text shown).
 const viewLabels = async (api: APIRequestContext, encounterUuid: string): Promise<Record<string, string>> => {
